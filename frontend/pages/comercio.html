@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle del Comercio</title>
+  <link rel="stylesheet" href="../styles/lista-comercios.css">
+  <link rel="stylesheet" href="../styles/comercio.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="user-info">
+        <img src="../img/empleado.png" alt="Empleado">
+        <div>
+          <h3 id="nombre-usuario"></h3>
+          <p id="rol-usuario"></p>
+        </div>
+        <button class="logout-btn">Cerrar sesión</button>
+      </div>
+      <div class="logo-capital">
+        <img src="../img/logo-capital.png" alt="Municipalidad de la Capital">
+      </div>
+    </div>
+
+    <!-- Panel Principal -->
+    <div class="main-panel">
+      <!-- Header -->
+      <div class="header-container">
+        <a href="../pages/panel-principal.html" class="logo-calidad">
+          <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida">
+        </a>
+        <div class="header">
+          <h2>Dirección de Calidad de Vida</h2>
+        </div>
+      </div>
+
+      <!-- Título y botón Volver -->
+      <div class="titulo-contenedor">
+        <a href="lista-comercios.html" class="boton-volver">
+          <i class="fas fa-arrow-left"></i> Volver al listado
+        </a>
+        <div class="titulo-area">
+          <h1><i class="fas fa-store"></i> Detalle del Comercio</h1>
+        </div>
+      </div>
+
+      <!-- Contenido Principal -->
+      <div class="detalle-comercio">
+        <!-- Estado -->
+        <div class="seccion">
+          <h2><i class="fas fa-info-circle"></i> Estado del Comercio</h2>
+          <div class="grid-2-columnas">
+            <div class="campo">
+              <label>Habilitación:</label>
+              <div id="estado-habilitacion" class="estado-activo"></div>
+            </div>
+            <div class="campo">
+              <label>Estado Comercial:</label>
+              <button id="btn-estado-comercial" class="estado-comercial-btn">
+                <i class="fas fa-power-off"></i> <span id="texto-estado">Activo</span>
+              </button>
+            </div>
+          </div>
+            <div id="contenedor-inspeccion" style="display: none; margin-top: 5px; text-align: center;">
+    <button id="btn-inspeccion-ocular" class="boton-primario">
+      <i class="fas fa-search"></i> Realizar Inspección Ocular
+    </button>
+  </div>
+        </div>
+
+        <!-- Información Comercial -->
+        <div class="seccion">
+          <h2><i class="fas fa-store-alt"></i> Información Comercial</h2>
+          <div class="grid-2-columnas">
+            <div class="campo">
+              <label>Nombre Comercial:</label>
+              <input type="text" id="nombre-comercial" class="campo-edit" disabled>
+            </div>
+            <div class="campo">
+              <label>Razón Social:</label>
+              <input type="text" id="razon-social" class="campo-edit" readonly>
+            </div>
+            <div class="campo">
+              <label>Dirección:</label>
+              <input type="text" id="direccion" class="campo-edit" disabled>
+            </div>
+            <div class="campo">
+              <label>Teléfono:</label>
+              <input type="text" id="telefono" class="campo-edit" disabled>
+            </div>
+            <div class="campo">
+              <label>Correo Electrónico:</label>
+              <input type="text" id="correo" class="campo-edit" disabled>
+            </div>
+            <div class="campo">
+              <label>Categoría:</label>
+              <input type="text" id="categoria" class="campo-edit" disabled>
+            </div>
+            <div class="campo">
+              <label>Rubro:</label>
+              <input type="text" id="rubro" class="campo-edit" disabled>
+            </div>
+            <div class="campo">
+              <label>Metros Cuadrados:</label>
+              <input type="text" id="metros" class="campo-edit" disabled>
+            </div>
+            <div class="campo">
+              <label>Fecha de Vencimiento:</label>
+              <input type="text" id="fecha-vencimiento" class="campo-edit" readonly>
+            </div>
+          </div>
+        </div>
+
+
+<!-- Historial de Inspecciones (Sección Plegable) -->
+<div class="seccion">
+  <div class="seccion-header" id="header-inspecciones">
+    <h2><i class="fas fa-clipboard-list"></i> Historial de Inspecciones - Click para desplegar</h2>
+    <span class="toggle-icon" id="toggle-inspecciones">
+      <i class="fas fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="seccion-contenido" id="contenido-inspecciones">
+    <!-- Aquí va el contenido del historial de inspecciones -->
+    <div class="historial-inspecciones">
+      <div class="seccion">
+        <div class="tabla-container">
+          <table class="tabla-datos">
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Resultado</th>
+                <th>Inspector</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="historial-procedimientos">
+              <!-- Datos se cargarán dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+        <!-- Información de Registro -->
+        <div class="seccion">
+          <h2><i class="fas fa-clipboard-check"></i> Información de Registro</h2>
+          <div class="grid-2-columnas">
+            <div class="campo">
+              <label>Empleado que registró:</label>
+              <p id="empleado-registro">Cargando...</p>
+            </div>
+            <div class="campo">
+              <label>Fecha de Registro:</label>
+              <p id="fecha-registro"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer con Botones -->
+      <div class="footer-acciones">
+        <div id="contenedor-acciones">
+          <button id="btn-editar" class="boton-primario">
+            <i class="fas fa-edit"></i> Editar Comercio
+          </button>
+          <button id="btn-cancelar" class="boton-secundario" style="display: none;">
+            <i class="fas fa-times"></i> Cancelar
+          </button>
+          <button id="btn-baja" class="boton-peligro">
+            <i class="fas fa-trash"></i> Dar de Baja
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  
+<script type="module" src="../js/comercio.js"></script>
+
+
+<!-- Modal para detalles de procedimiento -->
+<div id="modal-detalles" class="modal">
+  <div class="modal-contenido">
+    <span class="cerrar-modal">&times;</span>
+    <h3>Detalles del Procedimiento</h3>
+    <div id="modal-detalles-contenido"></div>
+    <div id="modal-fotos" style="margin-top: 20px;"></div>
+  </div>
+</div>
+
+
+</body>
+</html>

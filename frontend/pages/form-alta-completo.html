@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alta Comercio</title>
+  <link rel="stylesheet" href="../styles/form-alta-completo.css" />
+</head>
+
+<body class="dashboard-body">
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="user-info">
+        <img src="../img/empleado.png" alt="Empleado" />
+        <h3></h3>
+        <p></p>
+        <button class="logout-btn">Cerrar sesión</button>
+      </div>
+      <div class="logo-capital">
+        <img src="../img/logo-capital.png" alt="Municipalidad de la Capital" />
+      </div>
+    </div>
+
+    <!-- Panel principal -->
+    <div class="main-panel">
+      <a href="../pages/panel-principal.html" class="logo-calidad">
+        <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida" />
+      </a>
+
+      <div class="header-titles">
+        <h2>Formulario de Alta de Comercio</h2>
+      </div>
+
+      <div class="form-container">
+        <form id="formularioComercio" enctype="multipart/form-data" novalidate>
+          <!-- Sección 1: Datos del Titular -->
+          <div class="form-section">
+            <div class="section-header" role="button" aria-expanded="true">
+              <span><i class="fas fa-user"></i> Datos del Titular</span>
+              <span class="section-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="section-content show">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="nombre">Nombre *</label>
+                  <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                  <label for="apellido">Apellido *</label>
+                  <input type="text" id="apellido" name="apellido" required>
+                </div>
+                <div class="form-group">
+                  <label for="dni">DNI *</label>
+                  <input type="text" id="dni" name="dni" required>
+                </div>
+                <div class="form-group">
+                  <label for="razon_social">Razón Social</label>
+                  <input type="text" id="razon_social" name="razon_social">
+                </div>
+                <div class="form-group">
+                  <label for="cuit">CUIT *</label>
+                  <input type="text" id="cuit" name="cuit" required>
+                </div>
+                <div class="form-group">
+                  <label for="domicilio">Domicilio *</label>
+                  <input type="text" id="domicilio" name="domicilio" required>
+                </div>
+                <div class="form-group">
+                  <label for="telefono_prop">Teléfono *</label>
+                  <input type="tel" id="telefono_prop" name="telefono_prop" required>
+                </div>
+                <div class="form-group">
+                  <label for="email_prop">Email *</label>
+                  <input type="email" id="email_prop" name="email_prop" required>
+                </div>
+                <div class="form-group">
+                  <label for="personaFisica">Persona Física *</label>
+                  <select id="personaFisica" name="personaFisica" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="tipoTitular">Tipo Titular *</label>
+                  <select id="tipoTitular" name="tipoTitular" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="comercio">Titular comercio</option>
+                    <option value="ambulante">Titular ambulante</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="fechaVencimiento">Fecha Vencimiento *</label>
+                  <input type="text" id="fechaVencimiento" name="fechaVencimiento" required placeholder="DD/MM/AA">
+                </div>
+                <div class="form-group full-width">
+                  <label for="fotoTitular">Foto Titular *</label>
+                  <input type="file" id="fotoTitular" name="fotoTitular" required accept="image/jpeg,image/png">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección 2: Datos del Comercio -->
+          <div class="form-section">
+            <div class="section-header" role="button" aria-expanded="true">
+              <span><i class="fas fa-store"></i> Datos del Comercio</span>
+              <span class="section-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="section-content show">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="nombreComercial">Nombre Comercial *</label>
+                  <input type="text" id="nombreComercial" name="nombreComercial" required>
+                </div>
+                <div class="form-group">
+                  <label for="ubicacion">Ubicación *</label>
+                  <input type="text" id="ubicacion" name="ubicacion" required>
+                </div>
+                <div class="form-group">
+                  <label for="telefono">Teléfono *</label>
+                  <input type="tel" id="telefono" name="telefono" required>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email *</label>
+                  <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                  <label for="tipoComercio">Tipo de Comercio *</label>
+                  <select id="tipoComercio" name="tipoComercio" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="ambulante">Vendedor Ambulante</option>
+                    <option value="bar_nocturno">Bar Nocturno/Confitería/Restaurante</option>
+                    <option value="food_truck">Food Truck</option>
+                    <option value="comercio_general">Comercio en General</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="rubro">Rubro *</label>
+                  <input type="text" id="rubro" name="rubro" required>
+                </div>
+                <div class="form-group">
+                  <label for="metrosCuadrados">Metros Cuadrados</label>
+                  <input type="number" id="metrosCuadrados" name="metrosCuadrados" min="1" max="10000" step="0.01">
+                </div>
+                <div class="form-group">
+                  <label for="inputAnexo">Anexo</label>
+                  <input type="text" id="inputAnexo" name="inputAnexo" value="ninguno" maxlength="50">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección 3: Documentación Requerida -->
+          <div class="form-section">
+            <div class="section-header" role="button" aria-expanded="false">
+              <span><i class="fas fa-file-alt"></i> Documentación Requerida</span>
+              <span class="section-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="section-content">
+              <!-- Documentos comunes a todos los rubros -->
+              <div class="documentos-comunes">
+                <h4><i class="fas fa-file-import"></i> Documentos Comunes a Todos los Rubros</h4>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="dni_titular">Fotocopia del DNI (anverso y reverso) *</label>
+                    <input type="file" id="dni_titular" name="dni_titular" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="certificado_residencia">Certificado de residencia *</label>
+                    <input type="file" id="certificado_residencia" name="certificado_residencia" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="certificado_salud">Certificado de buena salud *</label>
+                    <input type="file" id="certificado_salud" name="certificado_salud" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Documentos específicos por rubro -->
+              <div class="rubro-specific vendedor_ambulante">
+                <h4><i class="fas fa-walking"></i> Documentos para Vendedores Ambulantes</h4>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="conformidad_frentista">Conformidad del frentista</label>
+                    <input type="file" id="conformidad_frentista" name="conformidad_frentista" accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="declaracion_jurada">Declaración Jurada</label>
+                    <input type="file" id="declaracion_jurada" name="declaracion_jurada" accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="fotos_carnet">2 Fotos carnet *</label>
+                    <input type="file" id="fotos_carnet" name="fotos_carnet" multiple required accept=".jpg,.jpeg,.png">
+                  </div>
+                </div>
+              </div>
+
+              <div class="rubro-specific bar_nocturno">
+                <h4><i class="fas fa-glass-cheers"></i> Documentos para Bares/Confiterías/Restaurantes</h4>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="pago_inspeccion">Último pago de inspección *</label>
+                    <input type="file" id="pago_inspeccion" name="pago_inspeccion" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="plano_local">Plano del local aprobado *</label>
+                    <input type="file" id="plano_local" name="plano_local" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="contrato_alquiler">Contrato de alquiler *</label>
+                    <input type="file" id="contrato_alquiler" name="contrato_alquiler" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="factibilidad_seguridad">Factibilidad de seguridad *</label>
+                    <input type="file" id="factibilidad_seguridad" name="factibilidad_seguridad" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="certificado_bomberos">Certificado de bomberos *</label>
+                    <input type="file" id="certificado_bomberos" name="certificado_bomberos" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                </div>
+              </div>
+
+              <div class="rubro-specific food_truck">
+                <h4><i class="fas fa-truck"></i> Documentos para Food Trucks</h4>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="declaracion_rentas">Declaración jurada de rentas *</label>
+                    <input type="file" id="declaracion_rentas" name="declaracion_rentas" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="certificado_conducta">Certificado de conducta *</label>
+                    <input type="file" id="certificado_conducta" name="certificado_conducta" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="certificado_manipulacion">Certificado manipulación alimentos *</label>
+                    <input type="file" id="certificado_manipulacion" name="certificado_manipulacion" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="poliza_seguro">Póliza de seguro *</label>
+                    <input type="file" id="poliza_seguro" name="poliza_seguro" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="permiso_ubicacion">Permiso de ubicación</label>
+                    <input type="file" id="permiso_ubicacion" name="permiso_ubicacion" accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                </div>
+              </div>
+
+              <div class="rubro-specific comercio_general">
+                <h4><i class="fas fa-shopping-bag"></i> Documentos para Comercios en General</h4>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="declaracion_rentas_general">Declaración jurada de rentas *</label>
+                    <input type="file" id="declaracion_rentas_general" name="declaracion_rentas_general" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="plano_local_general">Plano del local aprobado *</label>
+                    <input type="file" id="plano_local_general" name="plano_local_general" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="contrato_alquiler_general">Contrato de alquiler *</label>
+                    <input type="file" id="contrato_alquiler_general" name="contrato_alquiler_general" required accept=".pdf,.jpg,.jpeg,.png">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resumen antes de enviar -->
+          <div id="resumenContainer" class="resumen-container" style="display: none;">
+            <h3><i class="fas fa-clipboard-check"></i> Resumen del Registro</h3>
+            <div id="resumenContenido" class="resumen-contenido"></div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="verResumenBtn" class="confirm-btn">
+              <i class="fas fa-eye"></i> Ver Resumen
+            </button>
+            <button type="submit" id="submitBtn" class="confirm-btn">
+              <i class="fas fa-check-circle"></i> Confirmar Registro
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Iconos -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
+  <script src="../js/form-alta-completo.js"></script>
+</body>
+
+</html>

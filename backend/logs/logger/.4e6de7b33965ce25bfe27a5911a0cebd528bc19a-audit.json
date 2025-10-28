@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\Usuario\\Downloads\\CDV 17\\CDV 17\\backend\\logs\\logger\\.4e6de7b33965ce25bfe27a5911a0cebd528bc19a-audit.json",
+    "files": [
+        {
+            "date": 1757504584228,
+            "name": "C:\\Users\\Usuario\\Downloads\\CDV 17\\CDV 17\\backend\\logs\\logger\\auth-2025-09-10.log",
+            "hash": "3bef03b66fda8fa05fbf5c6e13400781c81c0d00357738a72894cc62f63f3b37"
+        }
+    ],
+    "hashType": "sha256"
+}

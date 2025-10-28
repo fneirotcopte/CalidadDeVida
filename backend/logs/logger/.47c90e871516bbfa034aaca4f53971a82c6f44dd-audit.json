@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV 15-10\\backend\\logs\\logger\\.47c90e871516bbfa034aaca4f53971a82c6f44dd-audit.json",
+    "files": [
+        {
+            "date": 1761683507576,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV 15-10\\backend\\logs\\logger\\auth-2025-10-28.log",
+            "hash": "74be75835792ff937ae8d1705354b9149f98c02ff386ac2cf9ec49f5e18b9001"
+        }
+    ],
+    "hashType": "sha256"
+}

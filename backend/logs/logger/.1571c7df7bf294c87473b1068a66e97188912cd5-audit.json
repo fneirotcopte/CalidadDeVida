@@ -1,0 +1,25 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\facun\\OneDrive\\Desktop\\ANDANDOTODO\\aaaaaaaunirprueba\\backend\\logs\\logger\\.1571c7df7bf294c87473b1068a66e97188912cd5-audit.json",
+    "files": [
+        {
+            "date": 1750541814134,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\ANDANDOTODO\\aaaaaaaunirprueba\\backend\\logs\\logger\\auth-2025-06-21.log",
+            "hash": "8bc85e85ee8eda136276a5b6ffcc0c089662ea4b91961b66d656cadc746eea2c"
+        },
+        {
+            "date": 1750687621292,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\ANDANDOTODO\\aaaaaaaunirprueba\\backend\\logs\\logger\\auth-2025-06-23.log",
+            "hash": "ecf5537c90f1f20b742cd893db93ed0eb9e8398b6b46587ecb08491f86b12aff"
+        },
+        {
+            "date": 1751920199408,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\ANDANDOTODO\\aaaaaaaunirprueba\\backend\\logs\\logger\\auth-2025-07-07.log",
+            "hash": "b2334da8ebb906620174ae3c6b6fc94c4b9b72d61d132e31665257426243241d"
+        }
+    ],
+    "hashType": "sha256"
+}

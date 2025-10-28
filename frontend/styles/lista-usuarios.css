@@ -1,0 +1,538 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html {
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.fila-inactiva {
+    background-color: #e0e0e0;
+    color: #777;
+}
+
+.dashboard-body {
+  background-color: #719d72;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0.5rem;
+}
+
+.dashboard {
+  background: radial-gradient(circle at center, #a2a7a3 0%, #3d413f 100%);
+  display: flex;
+  width: 100%;
+  min-height: 90vh;
+  max-width: 1200px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-direction: column;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar {
+  width: 100%;
+  background-color: #2a4a2a;
+  color: white;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.user-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.user-info div {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.user-info h3 {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-info p {
+  font-size: 0.7rem;
+  opacity: 0.9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logout-btn {
+  background: linear-gradient(to bottom, #00ff55, #158411);
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(to bottom, #00cc44, #0e6a0d);
+  transform: translateY(-1px);
+}
+
+.main-panel {
+  position: relative;
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.header-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.logo-calidad {
+  height: 60px;
+  margin-bottom: 0.8rem;
+}
+
+.logo-calidad img {
+  height: 100%;
+  object-fit: contain;
+  transition: filter 0.3s ease;
+}
+
+.logo-calidad:hover img {
+  filter: brightness(85%);
+}
+
+.header {
+  text-align: center;
+  width: 100%;
+}
+
+.header h2 {
+  font-size: 0.9rem;
+  color: #ffffff;
+  margin-top: 0.2rem;
+  font-weight: normal;
+}
+
+.titulo-area {
+  text-align: center;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.titulo-area h1 {
+  font-size: 1.3rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.titulo-area p {
+  font-size: 0.9rem;
+  color: #ffffff;
+}
+
+.clima-widget {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 1.2rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.clima-widget:hover {
+  color: #313131;
+}
+
+.table-container {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+.table-actions {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-group-text {
+  background-color: #2a4a2a;
+  color: white;
+  padding: 0.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.input-group input {
+  border: none;
+  padding: 0.8rem;
+  flex: 1;
+  font-size: 0.9rem;
+  outline: none;
+  width: 100%;
+}
+
+.input-group input:focus {
+  box-shadow: inset 0 0 0 2px #318f45;
+}
+
+.btn-reset {
+  background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+  color: #2a4a2a;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-reset:hover {
+  background: linear-gradient(to bottom, #2a4a2a, #1a3a1a);
+  color: white;
+}
+
+.btn-add {
+  background: linear-gradient(to bottom, #50e36d, #318f45);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.btn-add:hover {
+  background: linear-gradient(to bottom, #3ec75a, #2a7a3a);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  min-width: 600px;
+}
+
+th, td {
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  word-break: break-word;
+}
+
+th {
+  background-color: #2a4a2a;
+  color: white;
+  white-space: normal;
+}
+
+th select {
+  width: 100%;
+  padding: 4px 8px;
+  margin-top: 4px;
+  border: 1px solid #4a6a4a;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #2a4a2a;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+th select:hover {
+  border-color: #50e36d;
+}
+
+th select:focus {
+  outline: none;
+  border-color: #50e36d;
+  box-shadow: 0 0 0 2px rgba(80, 227, 109, 0.2);
+}
+
+tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-action {
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.1rem;
+}
+
+.btn-edit {
+  background-color: #2196F3;
+  color: white;
+}
+
+.btn-delete {
+  background-color: #f44336;
+  color: white;
+}
+
+.logo-capital {
+  display: none;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 599px) {
+  .table-container {
+    padding: 0.5rem;
+  }
+  
+  table {
+    font-size: 0.7rem;
+  }
+  
+  th, td {
+    padding: 0.3rem;
+    max-width: 100px;
+  }
+  
+  .btn-action {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.7rem;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  
+  .btn-action i {
+    font-size: 0.7rem;
+  }
+}
+
+/* Tablet Styles */
+@media (min-width: 600px) {
+  body.dashboard-body {
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .dashboard {
+    min-height: 85vh;
+    border-radius: 14px;
+  }
+  
+  .titulo-area h1 {
+    font-size: 1.6rem;
+  }
+  
+  .logo-calidad {
+    height: 80px;
+  }
+  
+  .header h2 {
+    font-size: 1rem;
+  }
+  
+  .clima-widget {
+    font-size: 1.5rem;
+  }
+  
+  table {
+    font-size: 0.9rem;
+    min-width: auto;
+  }
+  
+  th, td {
+    padding: 0.6rem;
+    max-width: none;
+  }
+}
+
+/* Laptop Styles (900px+) */
+@media (min-width: 900px) {
+  .dashboard {
+    flex-direction: row;
+    height: 85vh;
+    border-radius: 16px;
+    max-width: 1600px;
+  }
+  
+  .sidebar {
+    width: 300px;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 2rem 1.5rem;
+    gap: 2rem;
+  }
+  
+  .user-info {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.2rem;
+  }
+  
+  .user-info img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .user-info h3 {
+    font-size: 1.5rem;
+    white-space: normal;
+  }
+  
+  .user-info p {
+    font-size: 1.1rem;
+    white-space: normal;
+  }
+  
+  .logout-btn {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1.1rem;
+  }
+  
+  .main-panel {
+    padding: 2.5rem;
+  }
+  
+  .titulo-area h1 {
+    font-size: 2.5rem;
+  }
+  
+  .logo-calidad {
+    height: 120px;
+  }
+  
+  .header h2 {
+    font-size: 1.4rem;
+  }
+  
+  .clima-widget {
+    font-size: 1.8rem;
+    left: 2rem;
+  }
+  
+  .table-container {
+    padding: 2rem;
+  }
+  
+  table {
+    font-size: 1rem;
+  }
+  
+  .logo-capital {
+    display: block;
+    margin-top: auto;
+  }
+  
+  .logo-capital img {
+    height: 120px;
+  }
+}
+
+/* 4K Styles (2560px+) */
+@media (min-width: 2000px) {
+  .dashboard {
+    max-width: 2200px;
+    height: 90vh;
+  }
+  
+  .sidebar {
+    width: 400px;
+    padding: 3rem 2rem;
+  }
+  
+  .user-info img {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .user-info h3 {
+    font-size: 2rem;
+  }
+  
+  .user-info p {
+    font-size: 1.5rem;
+  }
+  
+  .logout-btn {
+    padding: 1.2rem;
+    font-size: 1.5rem;
+  }
+  
+  .main-panel {
+    padding: 4rem;
+  }
+  
+  .titulo-area h1 {
+    font-size: 3.5rem;
+  }
+  
+  .logo-calidad {
+    height: 180px;
+  }
+  
+  .header h2 {
+    font-size: 2rem;
+  }
+  
+  .clima-widget {
+    font-size: 2.5rem;
+    left: 3rem;
+  }
+  
+  table {
+    font-size: 1.5rem;
+  }
+  
+  .logo-capital img {
+    height: 180px;
+  }
+}

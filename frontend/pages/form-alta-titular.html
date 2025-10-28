@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alta de Titular</title>
+
+  <!-- Estilos principales -->
+  <link rel="stylesheet" href="../styles/bromatologia.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/alta-comercio.css">
+  <link rel="stylesheet" href="../styles/form-alta-titular.css">
+  <link rel="icon" href="data:,">
+</head>
+
+<body class="dashboard-body">
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="user-info">
+        <img src="../img/empleado.png" alt="Empleado" />
+        <div class="user-data">
+          <h3></h3>
+          <p></p>
+        </div>
+        <button class="logout-btn">Cerrar sesión</button>
+      </div>
+
+      <div class="logo-capital">
+        <img src="../img/logo-capital.png" alt="Municipalidad de la Capital" />
+      </div>
+    </div>
+
+
+    <!-- Panel principal -->
+    <div class="main-panel">
+      <div class="header-container">
+        <a href="../pages/panel-principal.html" class="logo-calidad">
+          <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida" />
+        </a>
+        <div class="header">
+          <h2>Dirección de Calidad de Vida</h2>
+        </div>
+      </div>
+
+      <div class="titulo-area">
+        <h1><i class="fas fa-id-card"></i> Registro de Titular Comercial</h1>
+      </div>
+
+      <div class="contenedor-blanco"
+        style="width:100%; max-width:1200px; background:#fff; border-radius:12px; padding:16px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <form id="formularioTitular" class="needs-validation" novalidate enctype="multipart/form-data">
+
+          <div class="card mb-4">
+            <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+              <h5>Tipo de Titular</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="tipoTitular" class="form-label">Seleccione el tipo de titular *</label>
+                  <select class="form-select" name="tipo_titular" id="tipoTitular" required>
+                    <option value="" selected hidden>Seleccione...</option>
+                    <option value="comercio">Titular de Comercio</option>
+                    <option value="ambulante">Vendedor Ambulante</option>
+                    <!-- NUEVA -->
+                    <option value="transporte">Titular de Transporte</option>
+                  </select>
+                </div>
+                <div class="col-md-6" id="bloquePreguntaJuridica" style="display:none;">
+                  <label class="form-label d-block">¿Persona Jurídica?</label>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="es_juridica" id="juridicaNo" value="no" checked>
+                    <label class="form-check-label" for="juridicaNo">No</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="es_juridica" id="juridicaSi" value="si">
+                    <label class="form-check-label" for="juridicaSi">Sí</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4" id="bloquePersonaFisica">
+            <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+              <h5>Datos Personales</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+
+                <div class="col-md-6">
+                  <label for="nombre" class="form-label">Nombre *</label>
+                  <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="apellido" class="form-label">Apellido *</label>
+                  <input type="text" class="form-control" id="apellido" name="apellido" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="dni" class="form-label">DNI *</label>
+                  <input type="text" class="form-control" id="dni" name="dni" required>
+                </div>
+
+                <div class="col-md-6" id="grupoCuit">
+                  <label for="cuit" class="form-label">CUIT</label>
+                  <input type="text" class="form-control" id="cuit" name="cuit">
+                </div>
+
+                <div class="col-md-6" id="grupoRazonSocial">
+                  <label for="razon_social" class="form-label">Razón Social</label>
+                  <input type="text" class="form-control" id="razon_social" name="razon_social">
+                </div>
+
+                <div class="col-md-6">
+                  <label for="domicilio" class="form-label">Domicilio *</label>
+                  <input type="text" class="form-control" id="domicilio" name="domicilio" required>
+                </div>
+
+                <div class="col-md-2">
+                  <label for="cod_area" class="form-label">C. área *</label>
+                  <input type="text" class="form-control" id="cod_area" name="cod_area" maxlength="4" required>
+                  <div class="invalid-feedback">Ingrese un código de área válido (2–4 dígitos).</div>
+                </div>
+
+                <div class="col-md-4">
+                  <label for="telefono" class="form-label">N. teléfono *</label>
+                  <input type="text" class="form-control" id="telefono" name="telefono" required>
+                  <div class="invalid-feedback">Ingrese un número válido.</div>
+                </div>
+
+
+                <div class="col-md-6">
+                  <label for="correo_electronico" class="form-label">Email *</label>
+                  <input type="email" class="form-control" id="correo_electronico" name="correo_electronico" required>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Datos de la Empresa (oculto por defecto) -->
+          <div class="card mb-4" id="bloqueEmpresa" style="display:none;">
+            <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+              <h5>Datos de la Empresa</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="cuit_empresa" class="form-label">CUIT Empresa *</label>
+                  <input type="text" class="form-control" id="cuit_empresa" name="cuit_empresa">
+                </div>
+                <div class="col-md-6">
+                  <label for="razon_social_empresa" class="form-label">Razón Social *</label>
+                  <input type="text" class="form-control" id="razon_social_empresa" name="razon_social_empresa">
+                </div>
+                <div class="col-md-10">
+                  <label for="domicilio_empresa" class="form-label">Domicilio Empresa *</label>
+                  <input type="text" class="form-control" id="domicilio_empresa" name="domicilio_empresa">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Datos del Representante (oculto por defecto) -->
+          <div class="card mb-4" id="bloqueRepresentante" style="display:none;">
+            <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+              <h5>Datos del Representante Legal</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="nombre_representante" class="form-label">Nombre *</label>
+                  <input type="text" class="form-control" id="nombre_representante" name="nombre_representante">
+                </div>
+                <div class="col-md-6">
+                  <label for="apellido_representante" class="form-label">Apellido *</label>
+                  <input type="text" class="form-control" id="apellido_representante" name="apellido_representante">
+                </div>
+                <div class="col-md-6">
+                  <label for="dni_representante" class="form-label">DNI *</label>
+                  <input type="text" class="form-control" id="dni_representante" name="dni_representante">
+                </div>
+                <div class="col-md-2">
+                  <label for="cod_area_representante" class="form-label">C. área *</label>
+                  <input type="text" class="form-control" id="cod_area_representante" name="cod_area_representante"
+                    maxlength="4">
+                  <div class="invalid-feedback">Ingrese un código de área válido (2–4 dígitos).</div>
+                </div>
+                <div class="col-md-4">
+                  <label for="telefono_representante" class="form-label">N. teléfono *</label>
+                  <input type="text" class="form-control" id="telefono_representante" name="telefono_representante">
+                  <div class="invalid-feedback">Ingrese un número válido.</div>
+                </div>
+                <div class="col-md-6">
+                  <label for="correo_representante" class="form-label">Correo electrónico *</label>
+                  <input type="email" class="form-control" id="correo_representante" name="correo_representante">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+              <h5>Documentación Requerida</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+
+                <!-- DNI frente -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="dni_frente" class="form-label">DNI Frente *</label>
+                    <input type="file" class="form-control" id="dni_frente" name="dni_frente" accept="image/*" required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <!-- DNI dorso -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="dni_dorso" class="form-label">DNI Dorso *</label>
+                    <input type="file" class="form-control" id="dni_dorso" name="dni_dorso" accept="image/*" required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <!-- Carnet frente -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="carnet_frente" class="form-label">Carnet Frente (Titular) *</label>
+                    <input type="file" class="form-control" id="carnet_frente" name="carnet_frente" accept="image/*"
+                      required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <!-- Carnet dorso -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="carnet_dorso" class="form-label">Carnet Dorso (Titular) *</label>
+                    <input type="file" class="form-control" id="carnet_dorso" name="carnet_dorso" accept="image/*"
+                      required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <!-- Certificado de residencia -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="cert_residencia" class="form-label">Certificado de Residencia *</label>
+                    <input type="file" class="form-control" id="cert_residencia" name="cert_residencia" accept="image/*"
+                      required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <!-- Certificado de buena salud -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="cert_salud" class="form-label">Certificado de Buena Salud *</label>
+                    <input type="file" class="form-control" id="cert_salud" name="cert_salud" accept="image/*" required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <!-- Foto de perfil -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="foto_perfil" class="form-label">Foto de Perfil *</label>
+                    <input type="file" class="form-control" id="foto_perfil" name="foto_perfil" accept="image/*"
+                      required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <!-- Check habilita food truck (visible solo si tipo_titular = comercio) -->
+                <div class="col-12" id="foodTruckOption" style="display:none;">
+                  <div class="docu-box">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="habilitaFoodTruck" name="habilitaFoodTruck">
+                      <label class="form-check-label ms-2" for="habilitaFoodTruck">
+                        ¿Habilita Food Truck?
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Certificado de buena conducta (visible solo si habilita food truck) -->
+                <div class="col-md-6" id="certConductaField" style="display:none;">
+                  <div class="documento-item">
+                    <label for="cert_conducta" class="form-label">Certificado de Buena Conducta *</label>
+                    <input type="file" class="form-control" id="cert_conducta" name="cert_conducta" accept="image/*">
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end mt-3">
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-check-circle"></i> Registrar Titular
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="../js/form-alta-titular.js"></script>
+  <script type="module">
+    import { checkAuth, infoUsuario } from '../auth.js';
+    const userData = checkAuth();
+    if (userData) {
+      infoUsuario(userData);
+      document.querySelector('.logout-btn')?.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
+      });
+    }
+  </script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Procedimiento</title>
+  <link rel="stylesheet" href="../styles/lista-comercios.css">
+  <link rel="stylesheet" href="../styles/procedimiento.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="user-info">
+        <img src="../img/empleado.png" alt="Empleado">
+        <div>
+          <h3 id="nombre-usuario"></h3>
+          <p id="rol-usuario"></p>
+        </div>
+        <button class="logout-btn">Cerrar sesión</button>
+      </div>
+      <div class="logo-capital">
+        <img src="../img/logo-capital.png" alt="Municipalidad de la Capital">
+      </div>
+    </div>
+
+    <!-- Panel Principal -->
+    <div class="main-panel">
+      <!-- Header -->
+      <div class="header-container">
+        <a href="../pages/panel-principal.html" class="logo-calidad">
+          <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida">
+        </a>
+        <div class="header">
+          <h2>Dirección de Calidad de Vida</h2>
+        </div>
+      </div>
+
+      <!-- Título -->
+      <div class="titulo-area">
+        <h1><i class="fas fa-clipboard-check"></i> Procedimiento</h1>
+        <p id="info-comercio"></p>
+      </div>
+
+      <!-- Contenido Principal -->
+      <div class="detalle-procedimiento">
+        <!-- Formulario de Procedimiento -->
+        <div class="seccion">
+          <h2><i class="fas fa-edit"></i> Registrar Procedimiento</h2>
+          <form id="form-procedimiento">
+            <div class="grid-2-columnas">
+              <div class="campo">
+                <label for="tipo-procedimiento">Tipo de Procedimiento:</label>
+                <select id="tipo-procedimiento" required>
+                  <option value="">Seleccione un tipo</option>
+                  <option value="inspeccion-ocular">Inspección ocular</option>
+                  <option value="Inspección">Inspección</option>
+                  <option value="Verificación">Verificación</option>
+                  <option value="Control">Control</option>
+                  <option value="Fiscalización">Fiscalización</option>
+                </select>
+              </div>
+              <div class="campo">
+                <label for="fecha-procedimiento">Fecha:</label>
+                <input type="date" id="fecha-procedimiento" required>
+              </div>
+              <div class="campo">
+                <label for="resultado">Resultado:</label>
+                <select id="resultado" required>
+                  <option value="">Seleccione resultado</option>
+                  <option value="Aprobado">Aprobado</option>
+                  <option value="Observado">Observado</option>
+                  <option value="Rechazado">Rechazado</option>
+                </select>
+              </div>
+              <div class="campo">
+                <label for="documentacion">Documentación:</label>
+                <input type="text" id="documentacion" placeholder="Documentación presentada">
+              </div>
+            </div>
+            <div class="campo">
+              <label for="observacion">Observaciones:</label>
+              <textarea id="observacion" rows="3" placeholder="Ingrese observaciones relevantes"></textarea>
+            </div>
+            <div class="campo">
+              <label for="fotos">Fotos:</label>
+              <input type="file" id="fotos" multiple accept="image/*">
+            </div>
+            <div class="footer-acciones">
+              <button type="submit" class="boton-primario">
+                <i class="fas fa-save"></i> Guardar Procedimiento
+              </button>
+              <button type="button" id="btn-volver" class="boton-secundario">
+                <i class="fas fa-arrow-left"></i> Volver al Comercio
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Historial de Procedimientos -->
+        <div class="seccion">
+          <h2><i class="fas fa-history"></i> Historial de Procedimientos</h2>
+          <div class="tabla-container">
+            <table class="tabla-datos">
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Fecha</th>
+                  <th>Resultado</th>
+                  <th>Inspector</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="historial-procedimientos">
+                <!-- Datos se cargarán dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modal-detalles" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; overflow:auto;">
+    <div class="modal-contenido" style="background:white; margin:5% auto; padding:20px; width:80%; max-width:600px; border-radius:8px;">
+      <span class="cerrar-modal" style="float:right; cursor:pointer; font-size:24px;">&times;</span>
+      <h2>Detalles del Procedimiento</h2>
+      <div id="modal-detalles-contenido"></div>
+      <div id="modal-fotos" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px;"></div>
+    </div>
+  </div>
+
+
+
+  <script type="module" src="../js/procedimiento.js"></script>
+</body>
+</html>

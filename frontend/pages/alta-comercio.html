@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta de Comercios - Bromatología</title>
+    <link rel="stylesheet" href="../styles/bromatologia.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/alta-comercio.css">
+
+</head>
+
+<body class="dashboard-body">
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="user-info">
+                <img src="../img/empleado.png" alt="Empleado" />
+                <div class="user-data">
+                    <h3></h3>
+                    <p></p>
+                </div>
+                <button class="logout-btn">Cerrar sesión</button>
+            </div>
+
+            <div class="logo-capital">
+                <img src="../img/logo-capital.png" alt="Municipalidad de la Capital" />
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <div class="header-container">
+                <a href="../pages/panel-principal.html" class="logo-calidad">
+                    <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida">
+                </a>
+
+                <div class="header">
+                    <h2>Formulario</h2>
+                </div>
+            </div>
+
+            <div class="titulo-area">
+                <h1><i class="fas fa-store"></i> Alta de Comercio </h1>
+            </div>
+
+            <div class="contenedor-blanco"
+                style="width:100%; max-width:1200px; background:#fff; border-radius:12px; padding:16px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+
+                <form id="formAltaComercio" class="needs-validation" novalidate>
+                    <!-- Bloque de Selección de Categoría -->
+                    <div class="card mb-4">
+                        <div class="card-header"
+                            style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+                            <h5>Seleccionar Categoría</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="categoriaPrincipal" class="form-label">Categoría *</label>
+                                    <select class="form-select" id="categoriaPrincipal" required>
+                                        <option value="" selected disabled>Seleccione una categoría</option>
+                                        <option value="comercio en general">Comercio en general</option>
+                                        <option value="bares nocturnos, confiterias y restaurantes">Bares nocturnos,
+                                            confiterías y restaurantes</option>
+                                        <option value="food truck">Food truck</option>
+                                        <option value="vendedor ambulante">Vendedor ambulante</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Por favor seleccione una categoría.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Titular al inicio -->
+                    <div class="card mb-4">
+                        <div class="card-header"
+                            style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+                            <h5>Seleccionar Titular</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-6">
+                                    <label for="cuitBuscar" class="form-label">Ingrese un CUIT *</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="cuitBuscar"
+                                            placeholder="20-12345678-3" required>
+                                        <button class="btn btn-outline-primary" type="button" id="btnBuscarCuit"><i
+                                                class="fas fa-search"></i></button>
+                                    </div>
+                                    <div class="invalid-feedback">Ingrese un CUIT válido y busque.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="titularNombre" class="form-label">Ingrese un nombre *</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="titularNombre"
+                                            placeholder="Sin selección" required>
+                                    </div>
+                                    <input type="hidden" id="titular">
+                                    <div class="invalid-feedback">Debe seleccionar un titular válido.</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sección de Datos Básicos -->
+                    <div class="card mb-4">
+                        <div class="card-header"
+                            style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+                            <h5>Datos Básicos del Comercio</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+
+                                <!-- Rubro Principal -->
+                                <div class="col-md-6">
+                                    <label for="rubro" class="form-label">Rubro Principal *</label>
+                                    <select class="form-select" id="rubro" required disabled>
+                                        <option value="" selected disabled>Primero seleccione una categoría</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Por favor seleccione un rubro principal.
+                                    </div>
+                                </div>
+
+                                <!-- Anexos de Rubros -->
+                                <div class="col-12" id="anexosContainer">
+                                    <label class="form-label">Rubros Adicionales (opcional)</label>
+                                    <div class="row g-2 mb-2" id="anexo1Group">
+                                        <div class="col-md-10">
+                                            <select class="form-select anexo-select" id="anexo1" disabled>
+                                                <option value="" selected disabled>Seleccione un rubro adicional
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-outline-primary w-100"
+                                                onclick="removeAnexo(1)" disabled>
+                                                <i class="fas fa-times"></i> Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-primary btn-sm" id="btnAddAnexo"
+                                        disabled>
+                                        <i class="fas fa-plus"></i> Agregar otro rubro
+                                    </button>
+                                </div>
+
+                                <!-- Titular -->
+
+
+                                <!-- Nombre Comercial -->
+                                <div class="col-md-6">
+                                    <label for="nombreComercial" class="form-label">Nombre Comercial *</label>
+                                    <input type="text" class="form-control" id="nombreComercial" required>
+                                    <div class="invalid-feedback">
+                                        Por favor ingrese el nombre comercial.
+                                    </div>
+                                </div>
+
+                                <!-- Dirección -->
+                                <div class="col-md-6">
+                                    <label for="direccion" class="form-label">Dirección *</label>
+                                    <input type="text" class="form-control" id="direccion" required>
+                                    <div class="invalid-feedback">
+                                        Por favor ingrese la dirección.
+                                    </div>
+                                </div>
+
+                                <!-- Ubicación en Mapa -->
+                                <div class="col-md-6">
+                                    <label for="ubicacion" class="form-label">Ubicación (Google Maps) *</label>
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" id="ubicacion"
+                                            placeholder="Pegue aquí el enlace de Google Maps" required>
+                                        <button type="button" class="btn btn-outline-primary" id="btnBuscarMapa">
+                                            <i class="fas fa-map-marked-alt"></i> Buscar en Maps
+                                        </button>
+                                    </div>
+                                    <div id="miniMapa" class="ratio ratio-16x9 mt-2 d-none">
+                                        <!-- Aquí se mostrará el mini mapa -->
+                                    </div>
+                                    <small class="text-muted">Haga clic en el botón para buscar la ubicación en Google
+                                        Maps</small>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label for="cod_area_comercio" class="form-label">C. área *</label>
+                                    <input type="text" class="form-control" id="cod_area_comercio" maxlength="4"
+                                        required>
+                                    <div class="invalid-feedback">Ingrese un código de área válido (2–4 dígitos).</div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="telefono_comercio" class="form-label">Nº teléfono *</label>
+                                    <input type="text" class="form-control" id="telefono_comercio" required>
+                                    <div class="invalid-feedback">Ingrese un número válido.</div>
+                                </div>
+
+                                <!-- Correo Electrónico -->
+                                <div class="col-md-4">
+                                    <label for="correoElectronico" class="form-label">Correo Electrónico *</label>
+                                    <input type="email" class="form-control" id="correoElectronico" required>
+                                    <div class="invalid-feedback">
+                                        Por favor ingrese un correo electrónico válido.
+                                    </div>
+                                </div>
+
+                                <!-- Metros Cuadrados -->
+                                <div class="col-md-4" id="filaMetros">
+                                    <label for="metrosCuadrados" class="form-label">Metros Cuadrados *</label>
+                                    <input type="number" class="form-control" id="metrosCuadrados" min="1" step="0.01"
+                                        required>
+                                    <div class="invalid-feedback">
+                                        Por favor ingrese los metros cuadrados.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de Montos -->
+                    <div class="card mb-4">
+                        <div class="card-header"
+                            style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+                            <h5>Montos y Pagos</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <!-- Bloque de Montos -->
+                                <div id="bloqueMontos" class="row g-3">
+                                    <!-- Para comercio/bares/food truck -->
+                                    <div class="col-md-4 montos-generales">
+                                        <label for="montoSellado" class="form-label">Monto Sellado</label>
+                                        <input type="text" class="form-control" id="montoSellado" readonly>
+                                    </div>
+
+                                    <div class="col-md-4 montos-generales">
+                                        <label for="montoInspeccion" class="form-label">Monto Inspección Ocular</label>
+                                        <input type="text" class="form-control" id="montoInspeccion" readonly>
+                                    </div>
+
+                                    <div class="col-md-4 montos-generales">
+                                        <label for="montoTotal" class="form-label">Monto Total</label>
+                                        <input type="text" class="form-control fw-bold" id="montoTotal" readonly>
+                                    </div>
+
+                                    <!-- Para vendedores ambulantes -->
+                                    <div class="col-md-6 montos-ambulante d-none">
+                                        <label for="montoAmbulante" class="form-label">Monto a pagar</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control fw-bold" id="montoAmbulante"
+                                                readonly>
+                                            <span class="input-group-text" id="montoAmbulanteLeyenda"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Estado del Pago -->
+                                <div class="col-md-6">
+                                    <label for="estadoPago" class="form-label">Estado del Pago *</label>
+                                    <select class="form-select" id="estadoPago" required>
+                                        <option value="" selected disabled>Seleccione un estado</option>
+                                        <option value="Abonado">Abonado</option>
+                                        <option value="Pendiente">Pendiente de pago</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Por favor seleccione el estado del pago.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Documentación del Titular -->
+                    <div class="card mb-4" id="cardDocTitular">
+                        <div class="card-header"
+                            style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+                            <h5>Documentación del Titular</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3" id="contenedorDocTitular">
+                                <!-- Aquí se inyectarán las miniaturas vía JS -->
+                                <p class="text-muted">Seleccione un titular para ver su documentación.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de Documentación -->
+                    <div class="card mb-4">
+                        <div class="card-header"
+                            style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+                            <h5>Documentación Requerida</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="documentosComunes">
+                                <h6 class="mb-3">Documentos Comunes</h6>
+                                <div class="row g-3">
+                                    <!-- Documentos comunes se cargarán dinámicamente -->
+                                </div>
+                            </div>
+
+                            <div id="documentosEspecificos" class="mt-4">
+                                <h6 class="mb-3">Documentos Específicos</h6>
+                                <div class="row g-3">
+                                    <!-- Documentos específicos se cargarán dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success" id="btnConfirmar">
+                            <i class="fas fa-search"></i> Chequear datos
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para previsualización -->
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Resumen del Comercio</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="previewContent">
+                    <!-- Contenido se cargará dinámicamente -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</button>
+                    <button type="button" class="btn btn-success" id="btnConfirmarModal">Confirmar registro</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/alta-comercio.js"></script>
+    <script type="module">
+        import { checkAuth, infoUsuario } from '../auth.js';
+        const userData = checkAuth();
+        if (userData) {
+            infoUsuario(userData);
+            document.querySelector('.logout-btn')?.addEventListener('click', () => {
+                localStorage.removeItem('token');
+                window.location.href = 'login.html';
+            });
+        }
+    </script>
+
+</body>
+
+</html>

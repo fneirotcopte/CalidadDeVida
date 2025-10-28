@@ -1,0 +1,40 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV 15-10nuevo\\CDV 15-10\\CDV 15-10\\backend\\logs\\logger\\.1405605280dd9424b7fa29bc5a006b6df945e235-audit.json",
+    "files": [
+        {
+            "date": 1760618785293,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV 15-10nuevo\\CDV 15-10\\CDV 15-10\\backend\\logs\\logger\\auth-2025-10-16.log",
+            "hash": "b01a30400f90fb285785514248fca28d06c8c46a20d681c9871530c0b0762dee"
+        },
+        {
+            "date": 1760701317164,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV 15-10nuevo\\CDV 15-10\\CDV 15-10\\backend\\logs\\logger\\auth-2025-10-17.log",
+            "hash": "18fcabd81a76bdeec54c733b2b092bc4429aa061006a06fc6569f6fac308c8aa"
+        },
+        {
+            "date": 1761076296030,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV 15-10nuevo\\CDV 15-10\\CDV 15-10\\backend\\logs\\logger\\auth-2025-10-21.log",
+            "hash": "2d38d66ba02cdb2a877a130e201bd6aa94cb74e5d1b1f8701c2f1d56a7a4f83f"
+        },
+        {
+            "date": 1761131911463,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV 15-10nuevo\\CDV 15-10\\CDV 15-10\\backend\\logs\\logger\\auth-2025-10-22.log",
+            "hash": "57c3d4701d792e64a5860b1fa2b1efd0ec7b9dc0c4b4518fc3637e936b0c0863"
+        },
+        {
+            "date": 1761218522104,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV 15-10nuevo\\CDV 15-10\\CDV 15-10\\backend\\logs\\logger\\auth-2025-10-23.log",
+            "hash": "f5df8f10e76f977316751154179ca81183a2c65abec3a9a0638f56a35c3fbba3"
+        },
+        {
+            "date": 1761654810312,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV 15-10nuevo\\CDV 15-10\\CDV 15-10\\backend\\logs\\logger\\auth-2025-10-28.log",
+            "hash": "0ef71d61dc248801aa9718c57879253f3b06c6bee66e587af97a81823884256e"
+        }
+    ],
+    "hashType": "sha256"
+}

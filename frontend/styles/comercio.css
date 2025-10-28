@@ -1,0 +1,554 @@
+/* Estructura principal */
+.detalle-comercio {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  max-width: 900px; /* o más si querés aún más ancho */
+  width: 100%;
+  margin: 20px auto; /* centrado */
+}
+/* Secciones */
+.seccion {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.seccion:last-child {
+  border-bottom: none;
+}
+
+.seccion h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.seccion h2 i {
+  margin-right: 10px;
+  color: #3498db;
+}
+
+/* Grid de 2 columnas */
+.grid-2-columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Campos individuales */
+.campo {
+  margin-bottom: 15px;
+}
+
+.campo label {
+  font-weight: 600;
+  color: #555;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.campo p {
+  padding: 8px;
+  background: #f9f9f9;
+  border-radius: 4px;
+  margin: 0;
+  min-height: 18px;
+}
+
+/* Estados */
+.estado-activo {
+  display: inline-block;
+  padding: 5px 15px;
+  background-color: #27ae60;
+  color: white;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.estado-inactivo {
+  display: inline-block;
+  padding: 5px 15px;
+  background-color: #e74c3c;
+  color: white;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+/* Footer de acciones */
+.footer-acciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px 20px;
+  margin-top: 10px;
+}
+
+#contenedor-acciones {
+  display: none;
+  gap: 15px;
+}
+
+/* Botones */
+.boton-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background-color: #7f8c8d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.boton-volver:hover {
+  background-color: #6c757d;
+}
+
+.boton-peligro {
+  background-color: #e74c3c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s;
+}
+
+.boton-peligro:hover {
+  background-color: #c0392b;
+}
+
+/* Mensajes de error */
+.error-message {
+  text-align: center;
+  padding: 20px;
+  color: #e74c3c;
+}
+
+.error-message i {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.estado-comercial-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.estado-comercial-btn.activo {
+  background-color: #28a745;
+  color: white;
+}
+
+.estado-comercial-btn.inactivo {
+  background-color: #dc3545;
+  color: white;
+}
+
+.estado-comercial-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.estado-comercial-btn:active {
+  transform: translateY(0);
+}
+
+#estado-habilitacion {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.estado-activo {
+  background-color: #28a745;
+  color: white;
+}
+
+.estado-inactivo {
+  background-color: #dc3545;
+  color: white;
+}
+
+.estado-pendiente {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.campo-edit {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+}
+
+.campo-edit:enabled {
+  background-color: white;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.campo-edit:disabled {
+  border: 1px solid transparent;
+  background-color: transparent;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  font-size: inherit;
+}
+
+.modo-edicion .campo-edit:disabled {
+  display: none;
+}
+
+.modo-edicion .campo-edit:enabled {
+  display: block;
+}
+
+/* Estilos para los campos en modo visualización */
+.campo-edit:disabled {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+  cursor: default;
+}
+
+/* Estilos para los campos en modo edición */
+.campo-edit:enabled {
+  border: 1px solid #ddd;
+  background: white;
+  padding: 8px;
+  border-radius: 4px;
+  width: 100%;
+}
+
+/* Ocultar el borde en modo visualización */
+.campo input[disabled] {
+  -webkit-text-fill-color: currentColor;
+  opacity: 1;
+}
+
+/* Estilo base para botones */
+.boton-primario, .boton-exito {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Estilo específico para Guardar cambios (verde) */
+.boton-exito {
+  background-color: #28a745;
+  color: white;
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+}
+
+.boton-exito:hover {
+  background-color: #218838;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.boton-exito:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+}
+
+/* Estilo para el ícono */
+.boton-exito i {
+  font-size: 0.9rem;
+}
+/* Ocultar el contenedor original por defecto */
+#contenedor-acciones {
+  display: none;
+}
+
+/* Estilo para el nuevo contenedor del inspector */
+#contenedor-procedimiento {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* Asegurar que el campo de estado comercial esté oculto */
+.campo:has(#btn-estado-comercial) {
+  display: none;
+}
+/* Estilos para el contenedor del inspector */
+.inspector-actions {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center;    /* Centra verticalmente */
+  width: 100%;
+  padding: 20px 0;
+  margin-top: 20px;
+}
+
+/* Asegurar que el botón ocupe un ancho adecuado */
+#btn-procedimiento {
+  min-width: 250px; /* Ancho mínimo para buen aspecto */
+  padding: 12px 24px;
+  font-size: 1rem;
+}
+
+/* Opcional: ajustar el footer original si es necesario */
+.footer-acciones {
+  justify-content: center; /* También centrar los botones en otros roles */
+  gap: 15px; /* Espacio entre botones */
+}
+/* Nuevos estilos para el botón Volver */
+.titulo-contenedor {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.boton-volver {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  z-index: 10;
+}
+
+.boton-volver:hover {
+  background-color: #5a6268;
+}
+
+.titulo-area {
+  text-align: center;
+  margin: 0 auto;
+  width: fit-content;
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+  .boton-volver {
+    position: static;
+    transform: none;
+    margin-bottom: 15px;
+    display: inline-block;
+  }
+  
+  .titulo-contenedor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Estilos para la sección plegable de historial de inspecciones */
+.seccion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.toggle-icon {
+  transition: transform 0.3s ease;
+}
+
+.seccion-contenido {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.seccion-contenido.expandido {
+  max-height: 500px; /* Ajusta según sea necesario */
+}
+
+.toggle-icon.girado {
+  transform: rotate(180deg);
+}
+
+/* Estilos para el historial de inspecciones */
+.historial-inspecciones {
+  margin-top: 15px;
+}
+
+.inspeccion-item {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.inspeccion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.inspeccion-fecha {
+  font-weight: bold;
+}
+
+.inspeccion-estado {
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 0.8em;
+  color: white;
+}
+
+
+
+.inspeccion-detalle p {
+  margin: 5px 0;
+  font-size: 0.9em;
+}
+
+
+/* Estados de resultado */
+.estado-aprobado {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.estado-observado {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+.estado-rechazado {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+
+/* MODAL */
+/* Estilos del Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-contenido {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.cerrar-modal {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  right: 15px;
+  top: 10px;
+}
+
+.cerrar-modal:hover {
+  color: #000;
+}
+
+
+/* Estilos mejorados para la sección plegable de historial de inspecciones */
+.seccion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.2s ease;
+}
+
+.seccion-header:hover {
+  background-color: #f5f5f5;
+}
+
+.toggle-icon {
+  transition: transform 0.3s ease;
+  font-size: 1.2rem;
+  color: #3498db;
+}
+
+.seccion-contenido {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.seccion-contenido.expandido {
+  max-height: 500px; /* Ajusta según sea necesario */
+}
+
+.toggle-icon.girado {
+  transform: rotate(180deg);
+}

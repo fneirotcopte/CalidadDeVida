@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Renovación de Comercios</title>
+  <link rel="stylesheet" href="../styles/enconst-brom.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body class="dashboard-body">
+  <div class="dashboard">
+    <div class="sidebar">
+      <div class="user-info">
+        <img src="../img/empleado.png" alt="Empleado" />
+        <div>
+          <h3></h3>
+          <p></p>
+        </div>
+      </div>
+      <button class="logout-btn">Cerrar sesión</button>
+    </div>
+
+    <div class="main-panel">
+      <div class="header-container">
+        <a href="../pages/panel-principal.html" class="logo-calidad">
+          <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida">
+        </a>
+        
+        <div class="header">
+          <h2>Dirección de Calidad de Vida</h2>
+        </div>
+      </div>
+
+      <div class="titulo-area">
+        <h1><i class="fas fa-sync"></i> Renovación de Habilitación de Comercio</h1>
+      </div>
+
+      <div class="contenedor-blanco" style="margin: 16px; padding: 16px;">
+        <form id="form-renovacion" enctype="multipart/form-data">
+          <div class="grid-form">
+            <div class="campo">
+              <label>Cuil Razón Social</label>
+              <input type="file" name="cuil_razon_social" accept="image/*" required>
+            </div>
+            <div class="campo">
+              <label>Certificado de buena salud</label>
+              <input type="file" name="certificado_buena_salud" accept="image/*" required>
+            </div>
+            <div class="campo">
+              <label>Certificado de residencia</label>
+              <input type="file" name="certificado_residencia" accept="image/*" required>
+            </div>
+            <div class="campo">
+              <label>Contrato actualizado</label>
+              <input type="file" name="contrato_actualizado" accept="image/*" required>
+            </div>
+            <div class="campo" id="campo-vt" style="display:none;">
+              <label>Verificación técnica (solo Bar)</label>
+              <input type="file" name="verificacion_tecnica" accept="image/*">
+            </div>
+          </div>
+
+          <div class="acciones-form">
+            <button type="button" class="boton-secundario" id="btn-cancelar">
+              <i class="fas fa-arrow-left"></i> Volver
+            </button>
+            <button type="submit" class="boton-primario">
+              <i class="fas fa-save"></i> Renovar habilitación
+            </button>
+          </div>
+        </form>
+
+        <div id="alerta" style="margin-top:12px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/renovacion-comercios.js"></script>
+</body>
+
+</html>

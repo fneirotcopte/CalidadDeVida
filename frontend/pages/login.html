@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sistema de Gestión - Calidad de Vida">
+  <title>Sistema de Gestión Integral - Calidad de Vida</title>
+  <link rel="stylesheet" href="../styles/login.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="icon" href="../img/logo-calidad.png" type="image/png">
+</head>
+<body>
+  <div class="wrapper">
+    <div class="login-container">
+      <div class="login-card">
+        <div class="card-header">
+          <div class="header-content">
+            <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida" class="logo-img" />
+            <div class="header-text">
+              <h1 class="system-title">Sistema de Gestión Integral</h1>
+              <p class="system-subtitle">Calidad de Vida</p>
+              <p class="province-text">Municipio de Santiago del Estero</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="view-container" id="viewContainer">
+          <div class="view" id="loginView">
+            <div class="card-body">
+              <h2 class="form-title">Inicio de Sesión</h2>
+              
+              <form id="loginForm" class="login-form">
+                <div class="form-group">
+                  <label for="email" class="input-label">
+                    <i class="fas fa-envelope label-icon"></i>
+                    Correo Electrónico
+                  </label>
+                  <div class="input-container">
+                    <input type="email" id="email" class="form-input" placeholder="usuario@cdv.gob.ar" required />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="password" class="input-label">
+                    <i class="fas fa-lock label-icon"></i>
+                    Contraseña
+                  </label>
+                  <div class="input-container">
+                    <input type="password" id="password" class="form-input" placeholder="Ingrese su contraseña" required />
+                    <button type="button" class="password-toggle" id="passwordToggle" aria-label="Mostrar contraseña">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="attempts-warning" id="attemptsWarning" aria-live="polite"></div>
+
+                <button type="submit" class="login-btn" id="loginBtn">
+                  <span class="btn-text">Acceder al Sistema</span>
+                  <span class="btn-loader hidden">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Verificando...
+                  </span>
+                </button>
+              </form>
+
+              <div class="security-section">
+                <div class="security-badge">
+                  <i class="fas fa-shield-check security-icon"></i>
+                  <span class="security-text">Sistema Seguro</span>
+                </div>
+                <p class="support-text">
+                  <i class="fas fa-info-circle support-icon"></i>
+                  Para asistencia contacte al administrador
+                </p>
+                <p class="copyright-text">
+                  <i class="fas fa-copyright"></i>
+                  Desarrollado por Equipo ITSE
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="view hidden" id="errorView">
+            <div class="card-body">
+              <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <h2 class="form-title">Credenciales Incorrectas</h2>
+              <p class="error-message" id="errorMessage">
+                Las credenciales ingresadas no son válidas.
+              </p>
+
+              <div class="action-buttons">
+                <button class="action-btn primary" id="tryAgainLink">
+                  <i class="fas fa-redo"></i>
+                  Intentar Nuevamente
+                </button>
+                <button class="action-btn secondary" id="tryDifferentAccountLink">
+                  <i class="fas fa-user"></i>
+                  Usar Otra Cuenta
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="view hidden" id="accountLockedView">
+            <div class="card-body">
+              <div class="error-icon locked">
+                <i class="fas fa-lock"></i>
+              </div>
+              <h2 class="form-title">Cuenta Bloqueada</h2>
+              <p class="error-message" id="accountLockedMessage">
+                La cuenta <strong id="lockedEmail">usuario@ejemplo.com</strong> ha sido bloqueada.
+              </p>
+              
+              <div class="countdown-section">
+                <div class="countdown-label">Tiempo restante:</div>
+                <div class="countdown-timer" id="countdown">05:00</div>
+              </div>
+
+              <div class="action-buttons">
+                <button class="action-btn secondary" id="useDifferentAccountLink">
+                  <i class="fas fa-user-plus"></i>
+                  Usar Otra Cuenta
+                </button>
+              </div>
+
+              <div class="admin-notice">
+                <i class="fas fa-headset admin-icon"></i>
+                <div class="admin-text">
+                  <strong>¿Acceso inmediato?</strong>
+                  <span>Contacte al administrador</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/login.js"></script>
+</body>
+</html>

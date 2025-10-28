@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listado de Comercios</title>
+  <link rel="stylesheet" href="../styles/lista-comercios.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="dashboard-body">
+  <div class="dashboard">
+    <div class="sidebar">
+      <div class="user-info">
+        <img src="../img/empleado.png" alt="Empleado">
+        <div>
+          <h3></h3>
+          <p></p>
+        </div>
+        <button class="logout-btn">Cerrar sesión</button>
+      </div>
+      <div class="logo-capital">
+        <img src="../img/logo-capital.png" alt="Municipalidad de la Capital">
+      </div>
+    </div>
+
+    <div class="main-panel">
+      <!-- Header -->
+      <div class="header-container">
+        <a href="../pages/panel-principal.html" class="logo-calidad">
+          <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida">
+        </a>
+        <div class="header">
+          <h2>Dirección de Calidad de Vida</h2>
+        </div>
+      </div>
+
+      <!-- Título y botón Volver -->
+      <div class="titulo-contenedor">
+        <a href="../pages/panel-principal.html" class="boton-volver">
+          <i class="fas fa-arrow-left"></i> Volver al panel
+        </a>
+        <div class="titulo-area">
+          <h1><i class="fas fa-store"></i> Listado de Comercios</h1>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="filtros-comercios">
+        <div class="filtro-grupo">
+          <label for="filtro-estado">Estado:</label>
+          <select id="filtro-estado">
+            <option value="">Todos</option>
+            <option value="vigente">Vigentes</option>
+            <option value="proximo-30">Próximos a vencer (30 días)</option>
+            <option value="proximo-15">Próximos a vencer (15 días)</option>
+            <option value="vencido">Vencidos</option>
+            <option value="pendiente-inspeccion">Falta inspección</option>
+          </select>
+        </div>
+        <div class="filtro-grupo">
+          <label for="filtro-categoria">Categoría:</label>
+          <select id="filtro-categoria">
+            <option value="">Todas</option>
+            <option value="Comercio en general">Comercio en general</option>
+            <option value="Vendedores ambulantes">Vendedores ambulantes</option>
+            <option value="Bares nocturnos">Bares nocturnos</option>
+            <option value="Food trucks">Food trucks</option>
+          </select>
+        </div>
+        <div class="filtro-grupo">
+          <label for="filtro-rubro">Rubro:</label>
+          <select id="filtro-rubro">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="filtro-grupo">
+          <label for="filtro-busqueda">Buscar:</label>
+          <input type="text" id="filtro-busqueda" placeholder="Nombre o razón social">
+        </div>
+        <button id="btn-buscar" class="boton-primario">
+          <i class="fas fa-search"></i> Buscar
+        </button>
+        <button id="btn-reset" class="boton-primario">
+          <i class="fas fa-undo"></i> Reestablecer
+        </button>
+      </div>
+
+      <!-- Contenedor blanco para tabla -->
+      <div class="contenedor-tabla">
+        <div class="tabla-container">
+          <table class="tabla-datos">
+            <thead>
+              <tr>
+                <th>Nombre Comercial</th>
+                <th>Titular</th>
+                <th>Titular (DNI)</th>
+                <th>Categoría</th>
+                <th>Rubro</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="cuerpo-tabla">
+              <!-- Datos se cargarán dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="paginacion">
+          <button id="btn-anterior" class="boton-secundario" disabled>
+            <i class="fas fa-chevron-left"></i> Anterior
+          </button>
+          <span id="info-pagina" class="texto-paginacion">Página 1 de 1</span>
+          <button id="btn-siguiente" class="boton-secundario" disabled>
+            Siguiente <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/lista-comercios.js"></script>
+</body>
+</html>

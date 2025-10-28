@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Área de Bromatología</title>
+  <link rel="stylesheet" href="../styles/bromatologia.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="dashboard-body">
+  <div class="dashboard">
+    <div class="sidebar">
+      <div class="user-info">
+        <img src="../img/empleado.png" alt="Empleado" />
+        <div>
+          <h3></h3>
+          <p></p>
+        </div>
+      </div>
+      <button class="logout-btn">Cerrar sesión</button>
+    </div>
+
+    <div class="main-panel">
+      <div class="header-container">
+        <a href="../pages/panel-principal.html" class="logo-calidad">
+          <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida">
+        </a>
+        
+        <div class="header">
+          <h2>Dirección de Calidad de Vida</h2>
+        </div>
+      </div>
+
+      <div class="titulo-area">
+        <h1><i class="fas fa-leaf"></i> Área Bromatología</h1>
+      </div>
+
+      <div class="triada-botones">
+        <div class="fila-botones">
+          <div class="bloque-submenu bloque-habilitacion">
+            <button class="boton-funcional">Solicitud de habilitación <i class="fas fa-chevron-down"></i></button>
+            <div class="submenu">
+              <a href="form-alta-titular.html">Titular</a>
+              <a href="alta-comercio.html">Comercios</a>
+              <a href="form-alta-transporte.html">Transporte</a>
+            </div>
+          </div>
+
+          <div class="bloque-submenu bloque-renovacion">
+            <button class="boton-funcional">Renovación de habilitación <i class="fas fa-chevron-down"></i></button>
+            <div class="submenu">
+              <a href="renovacion-comercios.html">Comercios</a>
+              <a href="renovacion-transporte.html">Transporte</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="fila-botones">
+          <a href="./lista-comercios.html">
+            <button class="boton-funcional">Ver Comercios</button>
+          </a>
+          <a href="./lista-titulares.html">
+            <button class="boton-funcional">Ver Titulares</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/bromatologia.js"></script>
+</body>
+
+</html>

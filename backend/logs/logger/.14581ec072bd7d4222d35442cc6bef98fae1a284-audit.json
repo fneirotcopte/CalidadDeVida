@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\belen\\OneDrive\\Desktop\\CDV 11-9 Seba\\CDV 11-9\\backend\\logs\\logger\\.14581ec072bd7d4222d35442cc6bef98fae1a284-audit.json",
+    "files": [
+        {
+            "date": 1758061492419,
+            "name": "C:\\Users\\belen\\OneDrive\\Desktop\\CDV 11-9 Seba\\CDV 11-9\\backend\\logs\\logger\\auth-2025-09-16.log",
+            "hash": "a3cfb0aa4d46cbd775776f1da0fecf55b3b1e5d27a8e5eb62b89191f4f6f8178"
+        },
+        {
+            "date": 1758113654500,
+            "name": "C:\\Users\\belen\\OneDrive\\Desktop\\CDV 11-9 Seba\\CDV 11-9\\backend\\logs\\logger\\auth-2025-09-17.log",
+            "hash": "7a95384bd9e42de896479777442854472d16ef735a5f787cc203d2568cf359ae"
+        }
+    ],
+    "hashType": "sha256"
+}

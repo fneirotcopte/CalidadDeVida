@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV ULTIMO2\\CDV ULTIMO2\\backend\\logs\\logger\\.33a61421d848a3715c7730fbe379cc25bfaadc3c-audit.json",
+    "files": [
+        {
+            "date": 1752112479405,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV ULTIMO2\\CDV ULTIMO2\\backend\\logs\\logger\\auth-2025-07-09.log",
+            "hash": "74ec4ac0e296098b606f50d316ce04fddcd17de00eb54b28d3d9f9d2aa0ee5a7"
+        },
+        {
+            "date": 1752136926367,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV ULTIMO2\\CDV ULTIMO2\\backend\\logs\\logger\\auth-2025-07-10.log",
+            "hash": "e3fa8d0336d6212849f92a3b507659d5e073024fc488cf2fdff24e40e8d4f01b"
+        }
+    ],
+    "hashType": "sha256"
+}

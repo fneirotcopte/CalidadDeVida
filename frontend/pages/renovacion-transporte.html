@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Renovación de Vehículos</title>
+  <link rel="stylesheet" href="../styles/bromatologia.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/renovacion-transporte.css">
+</head>
+
+<body class="dashboard-body">
+  <div class="dashboard">
+    <div class="sidebar">
+      <div class="user-info">
+        <img src="../img/empleado.png" alt="Empleado" />
+        <div class="user-data">
+          <h3></h3>
+          <p></p>
+        </div>
+        <button class="logout-btn">Cerrar sesión</button>
+      </div>
+      <div class="logo-capital">
+        <img src="../img/logo-capital.png" alt="Municipalidad de la Capital" />
+      </div>
+    </div>
+
+    <div class="main-panel">
+      <div class="header-container">
+        <a href="../pages/panel-principal.html" class="logo-calidad">
+          <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida">
+        </a>
+        <div class="header">
+          <h2>Dirección de Calidad de Vida</h2>
+        </div>
+      </div>
+
+      <div class="titulo-area">
+        <h1><i class="fas fa-truck"></i> Renovación de Transporte de Alimentos</h1>
+      </div>
+
+      <div class="contenedor-blanco"
+        style="width:100%; max-width:1200px; background:#fff; border-radius:12px; padding:16px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <form id="formRenovacionTransporte" novalidate>
+
+          <div class="card mb-4">
+            <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+              <h5>Datos Generales</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3 align-items-end">
+                <div class="col-md-3">
+                  <label for="idTransporte" class="form-label">N° de habilitación *</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="idTransporte" placeholder="Ej: 1052" required>
+                    <button class="btn btn-outline-primary" type="button" id="btnBuscarTransporte"><i
+                        class="fas fa-search"></i></button>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <label for="dniTitular" class="form-label">DNI del Titular *</label>
+                  <input type="text" class="form-control" id="dniTitular" readonly>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="nombreTitular" class="form-label">Nombre y Apellido del Titular *</label>
+                  <input type="text" class="form-control" id="nombreTitular" readonly>
+                </div>
+
+                <hr class="mt-3 mb-3">
+
+                <div class="col-md-2">
+                  <label for="numeroVehiculo" class="form-label">N° Vehículo</label>
+                  <input type="number" class="form-control" id="numeroVehiculo" min="1" placeholder="1">
+                </div>
+
+                <div class="col-md-5">
+                  <label class="form-label me-3 mb-0">¿Cambia de chofer?</label>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="cambioChofer" id="cambioChoferNo" value="no"
+                      checked>
+                    <label class="form-check-label" for="cambioChoferNo">No</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="cambioChofer" id="cambioChoferSi" value="si">
+                    <label class="form-check-label" for="cambioChoferSi">Sí</label>
+                  </div>
+                </div>
+
+                <div class="col-md-5 mt-2" id="bloqueNuevoChoferTitular" style="display:none;">
+                  <label class="form-label me-3 mb-0">¿Será el titular?</label>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="choferTitular" id="choferTitularNo" value="no"
+                      checked>
+                    <label class="form-check-label" for="choferTitularNo">No</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="choferTitular" id="choferTitularSi" value="si">
+                    <label class="form-check-label" for="choferTitularSi">Sí</label>
+                  </div>
+                </div>
+
+                <!-- Cartel que se muestra si el titular es el chofer -->
+                <div id="avisoTitularEsChofer" class="col-md-10 mt-3 d-none">
+                  <input type="text" class="form-control text-center bg-light fw-bold" value="El titular es el chofer"
+                    readonly>
+                </div>
+
+                <div id="bloqueDatosChofer" class="row mt-3 g-3 align-items-end">
+                  <div class="col-md-6">
+                    <label for="nombreChofer" class="form-label">Nombre y Apellido *</label>
+                    <input type="text" class="form-control" id="nombreChofer" required>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="dniChofer" class="form-label">DNI *</label>
+                    <input type="text" class="form-control" id="dniChofer" maxlength="10" required>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="carnetChofer" class="form-label">N° Carnet *</label>
+                    <input type="text" class="form-control" id="carnetChofer" required>
+                  </div>
+
+                  <div class="row g-2 align-items-end">
+                    <div class="col-md-2">
+                      <label for="cod_area_chofer" class="form-label">C. área *</label>
+                      <input type="text" class="form-control" id="cod_area_chofer" maxlength="4" required>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="telefono_chofer" class="form-label">Teléfono *</label>
+                      <input type="text" class="form-control" id="telefono_chofer" required>
+                    </div>
+                  </div>
+                </div>
+
+                <hr class="mt-3 mb-3">
+
+                <div class="col-md-6">
+                  <label for="tipoVehiculo" class="form-label">Tipo de Vehículo *</label>
+                  <input type="text" class="form-control" id="tipoVehiculo" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label for="patente" class="form-label">Patente *</label>
+                  <input type="text" class="form-control" id="patente" readonly>
+                </div>
+                <div class="col-md-8">
+                  <label for="tipoAlimento" class="form-label">Habilitado para transporte de *</label>
+                  <select class="form-select" id="tipoAlimento" required>
+                    <option value="" selected disabled hidden>Seleccione una opción</option>
+                    <option value="panificados">Panificados y productos de panadería</option>
+                    <option value="lacteos">Lácteos y derivados</option>
+                    <option value="carnes">Carnes y subproductos cárnicos</option>
+                    <option value="pescados">Pescados y mariscos</option>
+                    <option value="frutas_verduras">Frutas y verduras frescas</option>
+                    <option value="congelados">Alimentos congelados y refrigerados</option>
+                    <option value="secos">Alimentos secos y no perecederos</option>
+                    <option value="bebidas">Bebidas y aguas envasadas</option>
+                    <option value="confiteria">Productos de confitería, pastelería y repostería</option>
+                    <option value="comidas_preparadas">Comidas preparadas y catering</option>
+                    <option value="hielo">Hielo y productos de refrigeración</option>
+                    <option value="otros">Otros (especificar)</option>
+                  </select>
+                  <input type="text" class="form-control mt-2 d-none" id="otroTipoAlimento"
+                    placeholder="Especifique el tipo de transporte">
+                </div>
+
+                <div class="col-md-6">
+                  <label for="vtoFecha" class="form-label">Vencimiento de <strong>VTO</strong> *</label>
+                  <input type="date" class="form-control" id="vtoFecha" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="seguroFecha" class="form-label">Vencimiento de <strong>Seguro</strong> *</label>
+                  <input type="date" class="form-control" id="seguroFecha" required>
+                </div>
+
+                <div class="row g-3">
+
+                  <!-- Monto del Sellado -->
+                  <div class="col-md-4">
+                    <label for="montoSellado" class="form-label">Monto Sellado *</label>
+                    <input type="text" class="form-control" id="montoSellado" readonly>
+                  </div>
+
+                  <!-- Meses a Adelantar -->
+                  <div class="col-md-4">
+                    <label for="mesesAdelantar" class="form-label">Meses *</label>
+                    <input type="number" class="form-control" id="mesesAdelantar" min="1" max="12" value="1">
+                    <div id="etiquetaMeses" class="form-text text-primary fw-bold mt-1" style="visibility:hidden;">
+                      Cantidad de meses que puede adelantar: 0
+                    </div>
+                  </div>
+
+                  <!-- Monto Total -->
+                  <div class="col-md-4">
+                    <label for="montoTotal" class="form-label">Monto Total</label>
+                    <input type="text" class="form-control fw-bold" id="montoTotal" readonly>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="card mb-4">
+              <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+                <h5>Documentación del Transporte</h5>
+              </div>
+              <div class="card-body">
+                <div class="row g-3" id="contenedorDocTransporte">
+                  <p class="text-muted">Las miniaturas de los documentos actuales aparecerán aquí con opción de
+                    renovación
+                    (↻).</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-success" id="btnConfirmar">
+                <i class="fas fa-sync-alt"></i> Confirmar renovación
+              </button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal inicial de aviso -->
+<div class="modal fade" id="modalAdvertencia" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalAdvertenciaLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 10px; overflow: hidden;">
+      <div class="modal-header" style="background-color: #6b538f; color: #fff;">
+        <h5 class="modal-title" id="modalAdvertenciaLabel">Renovación de transporte</h5>
+      </div>
+      <div class="modal-body text-center" style="font-size: 16px; color: #333;">
+        Ingrese por favor un número de habilitación para poder operar.
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn" id="btnAceptarModal" data-bs-dismiss="modal" style="background-color: #28a745; color: #fff; font-weight: 500;">
+          Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/renovacion-transporte.js"></script>
+  <script type="module">
+    import { checkAuth, infoUsuario } from '../auth.js';
+    const userData = checkAuth();
+    if (userData) {
+      infoUsuario(userData);
+      document.querySelector('.logout-btn')?.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
+      });
+    }
+  </script>
+
+  </body>
+
+</html>

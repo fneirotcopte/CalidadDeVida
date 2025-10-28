@@ -1,0 +1,166 @@
+/* Alinear visual con alta-comercio y bromatologia */
+@import url('bromatologia.css');
+
+/* Unificar tipografía con comercio */
+body {
+  background-color: transparent;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+/* Ajustes específicos para el formulario de titular */
+#grupoCuit,
+#grupoRazonSocial {
+  transition: all 0.3s ease;
+}
+
+/* Estilo para el contenedor del formulario (coincidir con alta-comercio) */
+.form-container { max-width: 100%; margin: 0 auto; padding: 8px; }
+
+/* Espaciado entre grupos y tipografía de etiquetas */
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; font-weight: normal; margin-bottom: 6px; color: #333; }
+
+/* Inputs, selects y textareas estilo Bootstrap-like para igualar alta-comercio */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="number"],
+.form-group input[type="file"],
+.form-group select,
+.form-group textarea {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: #0d6efd;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Fieldset/legend alineado al tema y con separaciones consistentes */
+fieldset { border: none; padding: 0; margin: 0; }
+legend {
+  background: linear-gradient(to bottom, #c0a6dd, #655577);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+/* Layout de dos columnas en escritorio para que los campos no ocupen todo el ancho */
+fieldset { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 900px) {
+  fieldset { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { margin-bottom: 0; }
+  /* Hacer que select de tipo, email y file se vean bien en 2 col */
+}
+
+/* Ajustes del título principal y espaciados superiores */
+.titulo-area h1 { font-size: 2rem; margin-bottom: 0.8rem; }
+.header-container { margin-bottom: 0.6rem; }
+
+/* Header principal ancho completo, más grande */
+.section-header-principal {
+  width: 100%;
+  background: linear-gradient(to bottom, #c0a6dd, #655577);
+  color: #fff;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  grid-column: 1 / -1; /* ocupar todo el ancho del grid */
+}
+.section-header-principal h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+/* Ocultar logo capital solo en resoluciones tipo tablet */
+@media (max-width: 768px) and (max-height: 600px) {
+  .logo-capital {
+    display: none !important;
+  }
+}
+
+
+
+
+@media (min-width: 900px) {
+  .section-header-principal h2 { font-size: 1.6rem; }
+}
+
+/* Ajustes para campos ocultos */
+.hidden-field {
+  display: none;
+}
+
+.form-control:valid {
+  background-color: #e9f3ff;
+}
+.form-select:valid {
+  background-color: #e9f3ff;
+}
+
+.docu-box {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  background-color: #f9f9f9;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.docu-box label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.docu-box input[type="file"] {
+  background-color: #fff;
+  border-radius: 6px;
+}
+
+/* === Estilos de documentación (igual que alta-comercio) === */
+.documento-item {
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #fff;
+}
+
+.documento-item .form-label {
+  font-weight: 600;
+}
+
+.documento-item .file-info {
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.documento-item .file-status {
+  color: #198754;
+  font-weight: bold;
+}
+
+.file-thumb {
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 6px;
+  cursor: zoom-in;
+  margin-top: 6px;
+}

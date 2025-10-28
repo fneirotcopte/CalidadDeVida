@@ -1,0 +1,30 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "F:\\Proyecto CDV\\CDV 12-10\\backend\\logs\\logger\\.182d09627084d23cc6fff04f6ae0a02a83324ef4-audit.json",
+    "files": [
+        {
+            "date": 1760293694702,
+            "name": "F:\\Proyecto CDV\\CDV 12-10\\backend\\logs\\logger\\auth-2025-10-12.log",
+            "hash": "65af00acf8e6367e834bc18c76e41075c62f60f00346cdded71f0ad324ea9223"
+        },
+        {
+            "date": 1760359873859,
+            "name": "F:\\Proyecto CDV\\CDV 12-10\\backend\\logs\\logger\\auth-2025-10-13.log",
+            "hash": "31e6f0b437b3d97eee9cfd4b4ca22faca3ba8d5ce58781fd9e593712fbad7dda"
+        },
+        {
+            "date": 1760435306816,
+            "name": "F:\\Proyecto CDV\\CDV 12-10\\backend\\logs\\logger\\auth-2025-10-14.log",
+            "hash": "5936f22db922e5276613593eb7100ce004245c3dd907ee015f6c5daed2f5349a"
+        },
+        {
+            "date": 1760497893211,
+            "name": "F:\\Proyecto CDV\\CDV 12-10\\backend\\logs\\logger\\auth-2025-10-15.log",
+            "hash": "15e27ec00baae5d411dc20d29cdfa0ceead5754927471d2d87ac51cd01403686"
+        }
+    ],
+    "hashType": "sha256"
+}

@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "E:\\Users\\Gerez\\Downloads\\cdv-\\CDV ULTIMO\\CDV ULTIMO2\\backend\\logs\\logger\\.b4362e7842b49e770ee7a5affe58d83406001a15-audit.json",
+    "files": [
+        {
+            "date": 1752101937405,
+            "name": "E:\\Users\\Gerez\\Downloads\\cdv-\\CDV ULTIMO\\CDV ULTIMO2\\backend\\logs\\logger\\auth-2025-07-09.log",
+            "hash": "c9a5acb17c231ed373d60afb52090d8f9b9158bd837804bf8c52d614dd20457b"
+        }
+    ],
+    "hashType": "sha256"
+}

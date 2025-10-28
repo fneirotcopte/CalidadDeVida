@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alta de Transporte - Bromatología</title>
+  <link rel="stylesheet" href="../styles/bromatologia.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/form-alta-transporte.css">
+
+</head>
+
+<body class="dashboard-body">
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="user-info">
+        <img src="../img/empleado.png" alt="Empleado" />
+        <div class="user-data">
+          <h3></h3>
+          <p></p>
+        </div>
+        <button class="logout-btn">Cerrar sesión</button>
+      </div>
+
+      <div class="logo-capital">
+        <img src="../img/logo-capital.png" alt="Municipalidad de la Capital" />
+      </div>
+    </div>
+
+    <div class="main-panel">
+      <div class="header-container">
+        <a href="../pages/panel-principal.html" class="logo-calidad">
+          <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida">
+        </a>
+
+        <div class="header">
+          <h2>Formulario</h2>
+        </div>
+      </div>
+
+      <div class="titulo-area">
+        <h1><i class="fas fa-truck"></i> Alta de Transporte de Alimentos</h1>
+      </div>
+
+      <div class="contenedor-blanco"
+        style="width:100%; max-width:1200px; background:#fff; border-radius:12px; padding:16px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <form id="formAltaTransporte" novalidate>
+
+          <!-- Titular al inicio -->
+          <div class="card mb-4">
+            <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+              <h5>Seleccionar Titular</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3 align-items-end">
+                <div class="col-md-6">
+                  <label for="dniBuscar" class="form-label">Ingrese un DNI *</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="dniBuscar" placeholder="Ej: 12345678" required>
+                    <button class="btn btn-outline-primary" type="button" id="btnBuscarDni">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                  <div id="sugerenciasDni" class="list-group position-absolute w-100 shadow"
+                    style="z-index:10; max-height:200px; overflow-y:auto; display:none;">
+                  </div>
+                  <div class="invalid-feedback">Ingrese un DNI válido y busque.</div>
+                </div>
+                <div class="col-md-6">
+                  <label for="titularNombre" class="form-label">Nombre del Titular *</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="titularNombre" placeholder="Sin selección" required>
+                  </div>
+                  <input type="hidden" id="titular">
+                  <div class="invalid-feedback">Debe seleccionar un titular válido.</div>
+                </div>
+
+                <!-- Pregunta dentro del bloque titular -->
+                <hr class="mt-2 mb-3">
+                <div class="row align-items-center">
+                  <div class="col-md-12 d-flex align-items-center">
+                    <label class="form-label me-3 mb-0">¿El chofer es el titular?</label>
+                    <div class="form-check form-check-inline mb-0">
+                      <input class="form-check-input" type="radio" name="choferEsTitular" id="choferNo" value="no"
+                        checked>
+                      <label class="form-check-label" for="choferNo">No</label>
+                    </div>
+                    <div class="form-check form-check-inline mb-0">
+                      <input class="form-check-input" type="radio" name="choferEsTitular" id="choferSi" value="si">
+                      <label class="form-check-label" for="choferSi">Sí</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card: Datos del Chofer (visible por defecto) -->
+          <div id="bloqueDatosChofer" class="card mb-4">
+            <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+              <h5>Datos del Chofer</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <!-- Nombre y Apellido -->
+                <div class="col-md-6">
+                  <label for="nombreChofer" class="form-label">Nombre y Apellido *</label>
+                  <input type="text" class="form-control" id="nombreChofer" required>
+                  <div class="invalid-feedback">Ingrese el nombre completo del chofer.</div>
+                </div>
+
+                <!-- DNI con formato automático de puntos -->
+                <div class="col-md-3">
+                  <label for="dniChofer" class="form-label">DNI *</label>
+                  <input type="text" class="form-control" id="dniChofer" maxlength="10" placeholder="Ej: 12.345.678"
+                    required inputmode="numeric">
+                  <div class="invalid-feedback">Ingrese un DNI válido (solo números).</div>
+                </div>
+                <script>
+                  // === Formatear DNI del chofer con puntos automáticos ===
+                  document.addEventListener("DOMContentLoaded", () => {
+                    const dniInput = document.getElementById("dniChofer");
+                    dniInput.addEventListener("input", (e) => {
+                      let valor = e.target.value.replace(/\D/g, ""); // elimina todo lo no numérico
+                      if (valor.length > 8) valor = valor.slice(0, 8);
+                      // formato con puntos (1.234.567 o 12.345.678)
+                      let formateado = valor.replace(/^(\d{2})(\d{3})(\d{3})$/, "$1.$2.$3");
+                      formateado = formateado.replace(/^(\d{1})(\d{3})(\d{3})$/, "$1.$2.$3");
+                      e.target.value = formateado;
+                    });
+                  });
+                </script>
+
+                <!-- Carnet -->
+                <div class="col-md-3">
+                  <label for="carnetChofer" class="form-label">N° Carnet de Conducir *</label>
+                  <input type="text" class="form-control" id="carnetChofer" placeholder="Sin puntos" required>
+                  <div class="invalid-feedback">Ingrese el número de carnet.</div>
+                </div>
+
+                <!-- Teléfono -->
+                <div class="col-md-2">
+                  <label for="cod_area_chofer" class="form-label">C. área *</label>
+                  <input type="text" class="form-control" id="cod_area_chofer" maxlength="4" required>
+                  <div class="invalid-feedback">Ingrese un código de área válido.</div>
+                </div>
+
+                <div class="col-md-4">
+                  <label for="telefono_chofer" class="form-label">N° teléfono *</label>
+                  <input type="text" class="form-control" id="telefono_chofer" required>
+                  <div class="invalid-feedback">Ingrese un número válido.</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Card: Datos complementarios del titular (oculta por defecto) -->
+          <div id="bloqueDatosComplementarios" class="card mb-4" style="display:none;">
+            <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+              <h5>Datos complementarios del titular</h5>
+            </div>
+            <div class="card-body">
+              <p class="text-muted mb-0">
+                Solo se agregará el <strong>Certificado de Buena Salud</strong> del titular en la sección de
+                Documentación
+                Requerida.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card: Datos del Vehículo -->
+          <div id="bloqueDatosVehiculo" class="card mb-4">
+            <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+              <h5>Datos del Vehículo</h5>
+            </div>
+
+            <div class="card-body">
+              <div class="row g-3">
+
+                <!-- Tipo de vehículo -->
+                <div class="col-md-6">
+                  <label for="tipoVehiculo" class="form-label">Tipo de Vehículo *</label>
+                  <select class="form-select" id="tipoVehiculo" required>
+                    <option value="" selected disabled hidden>Seleccione una opción</option>
+                    <option value="camioneta">Camioneta</option>
+                    <option value="camion350">Camión modelo 350 o similar</option>
+                    <option value="furgon">Camión chasis o furgón grande</option>
+                    <option value="superior">Vehículos superiores</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione el tipo de vehículo.</div>
+                </div>
+
+                <!-- Patente -->
+                <div class="col-md-3">
+                  <label for="patente" class="form-label">Patente *</label>
+                  <input type="text" class="form-control" id="patente" name="patente" required maxlength="7"
+                    pattern="^(?:[A-Z]{3}\d{3}|[A-Z]{2}\d{3}[A-Z]{2})$" placeholder="Ej: ABC123 o AB123CD">
+                  <div class="invalid-feedback">
+                    Ingrese una patente válida.
+                  </div>
+                </div>
+
+                <!-- Tipo de alimento transportado -->
+                <div class="col-md-8">
+                  <label for="tipoAlimento" class="form-label">Habilitado para transporte de *</label>
+                  <select class="form-select" id="tipoAlimento" required>
+                    <option value="" selected disabled hidden>Seleccione una opción</option>
+                    <option value="panificados">Panificados y productos de panadería</option>
+                    <option value="lacteos">Lácteos y derivados</option>
+                    <option value="carnes">Carnes y subproductos cárnicos</option>
+                    <option value="pescados">Pescados y mariscos</option>
+                    <option value="frutas_verduras">Frutas y verduras frescas</option>
+                    <option value="congelados">Alimentos congelados y refrigerados</option>
+                    <option value="secos">Alimentos secos y no perecederos</option>
+                    <option value="bebidas">Bebidas y aguas envasadas</option>
+                    <option value="confiteria">Productos de confitería y repostería</option>
+                    <option value="comidas_elaboradas">Comidas elaboradas listas para consumo</option>
+                    <option value="regionales">Productos regionales o artesanales alimenticios</option>
+                    <option value="hielo">Hielo o alimentos en hielo</option>
+                    <option value="otros">Otros (especificar)</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione el tipo de alimento a transportar.</div>
+
+                  <!-- Input dinámico para "otros" -->
+                  <input type="text" class="form-control mt-2 d-none" id="otroTipoAlimento" name="otroTipoAlimento"
+                    placeholder="Especifique el tipo de transporte" />
+                </div>
+
+                <!-- Fecha VTO -->
+                <div class="col-md-6">
+                  <label for="vtoFecha" class="form-label">Vencimiento de <strong>VTO</strong> *</label>
+                  <input type="date" class="form-control" id="vtoFecha" required>
+                  <div class="invalid-feedback">Ingrese la fecha de vencimiento de la VTO.</div>
+                </div>
+
+                <!-- Fecha seguro -->
+                <div class="col-md-6">
+                  <label for="seguroFecha" class="form-label">Vencimiento de <strong>Seguro</strong> *</label>
+
+                  <input type="date" class="form-control" id="seguroFecha" required>
+                  <div class="invalid-feedback">Ingrese la fecha de vencimiento del seguro.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card: Montos y Pago -->
+          <div id="bloqueMontos" class="card mb-4">
+            <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+              <h5>Montos y Pago</h5>
+            </div>
+
+            <div class="card-body">
+              <div class="row g-3">
+
+                <!-- Monto del Sellado -->
+                <div class="col-md-4">
+                  <label for="montoSellado" class="form-label">Monto Sellado *</label>
+                  <input type="text" class="form-control" id="montoSellado" readonly>
+                </div>
+
+                <!-- Meses a Adelantar -->
+                <div class="col-md-4">
+                  <label for="mesesAdelantar" class="form-label">Meses *</label>
+                  <input type="number" class="form-control" id="mesesAdelantar" min="1" max="12" value="1">
+                  <div id="etiquetaMeses" class="form-text text-primary fw-bold mt-1" style="visibility:hidden;">
+                    Cantidad de meses que puede adelantar: 0
+                  </div>
+                </div>
+
+                <!-- Monto Total -->
+                <div class="col-md-4">
+                  <label for="montoTotal" class="form-label">Monto Total</label>
+                  <input type="text" class="form-control fw-bold" id="montoTotal" readonly>
+                </div>
+
+                <!-- Estado del Pago -->
+                <div class="col-md-8 mb-3">
+                  <label for="estadoPago" class="form-label">Estado del Pago</label>
+                  <input type="text" id="estadoPago" class="form-control"
+                    value="El sellado bromatológico debe estar abonado para continuar." readonly
+                    style="background-color:#f8f9fa; font-style:italic;">
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Documentación del Titular -->
+          <div class="card mb-4" id="cardDocTitular">
+            <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+              <h5>Documentación del Titular</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3" id="contenedorDocTitular">
+                <!-- Aquí se inyectarán las miniaturas vía JS -->
+                <p class="text-muted">Seleccione un titular para ver su documentación.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección de Documentación -->
+          <div class="card mb-4">
+            <div class="card-header" style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+              <h5>Documentación Requerida</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+
+                <!-- DNI chofer frente -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="dni_frente" class="form-label">DNI Frente (Chofer) *</label>
+                    <input type="file" class="form-control" id="dni_frente" name="dni_frente" accept="image/*" required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <!-- DNI chofer dorso -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="dni_dorso" class="form-label">DNI Dorso (Chofer) *</label>
+                    <input type="file" class="form-control" id="dni_dorso" name="dni_dorso" accept="image/*" required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <!-- Carnet chofer frente -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="carnet_frente" class="form-label">Carnet Frente (Chofer) *</label>
+                    <input type="file" class="form-control" id="carnet_frente" name="carnet_frente" accept="image/*"
+                      required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <!-- Carnet chofer dorso -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="carnet_dorso" class="form-label">Carnet Dorso (Chofer) *</label>
+                    <input type="file" class="form-control" id="carnet_dorso" name="carnet_dorso" accept="image/*"
+                      required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <!-- 🩺 Certificado de Buena Salud (dinámico) -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="cert_salud" class="form-label" id="label-cert_salud">Certificado Buena Salud (Chofer)
+                      *</label>
+                    <input type="file" class="form-control" id="cert_salud" name="cert_salud" accept="image/*" required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <!-- 🚙 Documentación del Vehículo -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="foto_vehiculo" class="form-label">Foto del Vehículo *</label>
+                    <input type="file" class="form-control" id="foto_vehiculo" name="foto_vehiculo" accept="image/*"
+                      required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="cedula_verde" class="form-label">Cédula Verde *</label>
+                    <input type="file" class="form-control" id="cedula_verde" name="cedula_verde" accept="image/*"
+                      required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="seguro" class="form-label">Seguro Vigente *</label>
+                    <input type="file" class="form-control" id="seguro_vehiculo" name="seguro_vehiculo" accept="image/*"
+                      required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="vto" class="form-label">VTO Vigente *</label>
+                    <input type="file" class="form-control" id="vto_vehiculo" name="vto_vehiculo" accept="image/*"
+                      required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+                <!-- 📸 Sellado Bromatológico -->
+                <div class="col-md-6">
+                  <div class="documento-item">
+                    <label for="sellado_bromatologico" class="form-label">Sellado Bromatológico *</label>
+                    <input type="file" class="form-control" id="sellado_bromatologico" name="sellado_bromatologico"
+                      accept="image/*" required>
+                    <div class="file-info d-none">
+                      <span class="file-name"></span>
+                      <span class="file-status documento-cargado">✓ Cargado</span>
+                    </div>
+                    <div class="invalid-feedback">Por favor cargue este documento.</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-success" id="btnConfirmar">
+              <i class="fas fa-search"></i> Chequear datos
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para previsualización -->
+  <div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Resumen del Transporte</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="previewContent">
+          <!-- Contenido se cargará dinámicamente -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</button>
+          <button type="button" class="btn btn-success" id="btnConfirmarModal">Confirmar registro</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/form-alta-transporte.js"></script>
+  <script type="module">
+    import { checkAuth, infoUsuario } from '../auth.js';
+    const userData = checkAuth();
+    if (userData) {
+      infoUsuario(userData);
+      document.querySelector('.logout-btn')?.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
+      });
+    }
+  </script>
+
+</body>
+
+</html>

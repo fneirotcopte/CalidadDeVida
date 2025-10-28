@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Principal - Calidad de Vida</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="../styles/panel-principal.css" />
+</head>
+
+<body class="dashboard-body">
+  <div class="dashboard">
+    <div class="sidebar">
+      <div class="user-info">
+        <img src="../img/empleado.png" alt="Empleado" />
+        <div>
+          <h3></h3>
+          <p></p>
+        </div>
+      </div>
+      <button class="panelp-btn" href="panel-principal.html">Ir a panel principal</button>
+      <button class="logout-btn">Cerrar sesión</button>
+    </div>
+    
+    <div class="main-panel">
+      <div class="header-container">
+        <div class="logo-calidad">
+          <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida" />
+        </div>
+        
+        <div class="header">
+          <h1>Dirección de Calidad de Vida</h1>
+          <h2>Panel principal</h2>
+        </div>
+      </div>
+
+      <div class="admin-actions">
+        <a href="./form-registro-usuario.html" class="admin-btn">
+          <i class="fas fa-user-plus"></i> Nuevo Empleado
+        </a>
+        <a href="./lista-usuarios.html" class="admin-btn">
+          <i class="fas fa-users"></i> Ver Empleados
+        </a>
+        <a href="./lista-comercios.html" class="admin-btn">
+          <i class="fas fa-store"></i> Ver Comercios
+        </a>
+      </div>
+
+      <div class="buttons-grid">
+        <a href="./bromatologia.html" class="area-btn area-bromatologia">
+          <span>Bromatología</span>
+          <i class="fas fa-leaf"></i>
+        </a>
+        <a href="./saneamiento.html" class="area-btn area-saneamiento">
+          <span>Saneamiento</span>
+          <i class="fas fa-tint"></i>
+        </a>
+        <a href="./seguridad.html" class="area-btn area-seguridad">
+          <span>Seguridad</span>
+          <i class="fas fa-user-shield"></i>
+        </a>
+        <a href="./sonido.html" class="area-btn area-sonido">
+          <span>Sonido</span>
+          <i class="fas fa-volume-up"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/panel-principal.js"></script>
+</body>
+
+</html>

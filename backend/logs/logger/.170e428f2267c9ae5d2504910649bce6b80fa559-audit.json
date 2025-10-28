@@ -1,0 +1,25 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "E:\\Users\\Gerez\\Downloads\\CDV__\\CDV ULTIMO2\\CDV ULTIMO3\\backend\\logs\\logger\\.170e428f2267c9ae5d2504910649bce6b80fa559-audit.json",
+    "files": [
+        {
+            "date": 1752540838093,
+            "name": "E:\\Users\\Gerez\\Downloads\\CDV__\\CDV ULTIMO2\\CDV ULTIMO3\\backend\\logs\\logger\\auth-2025-07-14.log",
+            "hash": "5da7b8fb701091506fdc964e1cfb9517049507467425441d5656f44420908faf"
+        },
+        {
+            "date": 1752584906276,
+            "name": "E:\\Users\\Gerez\\Downloads\\CDV__\\CDV ULTIMO2\\CDV ULTIMO3\\backend\\logs\\logger\\auth-2025-07-15.log",
+            "hash": "3d1404c8df03d9461ff5db30a2422fe6ee2a099ba8f71979eabeace8854ed35d"
+        },
+        {
+            "date": 1752689591560,
+            "name": "E:\\Users\\Gerez\\Downloads\\CDV__\\CDV ULTIMO2\\CDV ULTIMO3\\backend\\logs\\logger\\auth-2025-07-16.log",
+            "hash": "2d2a1ec120ea1b11fe9b6feb97822652d74e5d6aaeea339509336c52e9230382"
+        }
+    ],
+    "hashType": "sha256"
+}

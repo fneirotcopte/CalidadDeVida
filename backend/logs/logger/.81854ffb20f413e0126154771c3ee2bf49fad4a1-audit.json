@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "E:\\Users\\Gerez\\Desktop\\ITSE\\CDV 11-9\\backend\\logs\\logger\\.81854ffb20f413e0126154771c3ee2bf49fad4a1-audit.json",
+    "files": [
+        {
+            "date": 1757589068645,
+            "name": "E:\\Users\\Gerez\\Desktop\\ITSE\\CDV 11-9\\backend\\logs\\logger\\auth-2025-09-11.log",
+            "hash": "cdda563bbc92469295ba045eaabe9de2fe82bee76f9731577916cf29584f54d7"
+        },
+        {
+            "date": 1757675625708,
+            "name": "E:\\Users\\Gerez\\Desktop\\ITSE\\CDV 11-9\\backend\\logs\\logger\\auth-2025-09-12.log",
+            "hash": "59f46ee52835d6f512e7204791f06aa93302681962f02eae7eaa5874c98c92a4"
+        }
+    ],
+    "hashType": "sha256"
+}

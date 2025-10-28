@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "E:\\Users\\Gerez\\Downloads\\CDV 17\\backend\\logs\\logger\\.f6628db3898b75b3979f054447bec7511b2bf88e-audit.json",
+    "files": [
+        {
+            "date": 1752801287023,
+            "name": "E:\\Users\\Gerez\\Downloads\\CDV 17\\backend\\logs\\logger\\auth-2025-07-17.log",
+            "hash": "aa85a369f70c4b2bd51a35817005103dbba37e0bc91cecfc3daea6c40821beea"
+        },
+        {
+            "date": 1752833866589,
+            "name": "E:\\Users\\Gerez\\Downloads\\CDV 17\\backend\\logs\\logger\\auth-2025-07-18.log",
+            "hash": "02132f82706a1405d1f66803179ca9915368a1497e2837ca351d5e7f30d801f0"
+        }
+    ],
+    "hashType": "sha256"
+}

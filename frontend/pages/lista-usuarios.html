@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lista de Usuarios</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="../styles/lista-usuarios.css" />
+</head>
+
+<body class="dashboard-body">
+  <div class="dashboard">
+    <div class="sidebar">
+      <div class="user-info">
+        <img src="../img/empleado.png" alt="Empleado" />
+        <div>
+          <h3></h3>
+          <p></p>
+        </div>
+        <button class="logout-btn">Cerrar sesión</button>
+      </div>
+      <div class="logo-capital">
+        <img src="../img/logo-capital.png" alt="Municipalidad de la Capital" />
+      </div>
+    </div>
+
+    <div class="main-panel">
+      <div class="header-container">
+        <a href="../pages/panel-principal.html" class="logo-calidad">
+          <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida" />
+        </a>
+
+        <div class="header">
+          <h2>Dirección de Calidad de Vida</h2>
+        </div>
+      </div>
+
+      <div class="titulo-area">
+        <h1>Lista de Usuarios</h1>
+        <p>Administración de empleados</p>
+      </div>
+
+      <div class="table-container">
+        <div class="table-actions" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+          <div class="input-group acciones-busqueda" style="max-width:520px;">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+            <input type="text" id="buscarUsuario" class="form-control" placeholder="Buscar por nombre o DNI" autocomplete="off" />
+            <button type="button" id="btnResetFiltros" class="btn-reset">Restablecer</button>
+          </div>
+          <a href="./form-registro-usuario.html" class="btn-add">
+            <i class="fas fa-user-plus"></i> Nuevo Usuario
+          </a>
+        </div>
+
+        <table id="usuariosTable">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>DNI</th>
+              <th>Área
+                <div>
+                  <select id="filtroArea">
+                    <option value="">Todas</option>
+                    <option value="Bromatología">Bromatología</option>
+                    <option value="Saneamiento">Saneamiento</option>
+                    <option value="Seguridad">Seguridad</option>
+                    <option value="Sonido">Sonido</option>
+                  </select>
+                </div>
+              </th>
+              <th>Rol
+                <div><select id="filtroRol"><option value="">Todos</option></select></div>
+              </th>
+              <th>Estado
+                <div><select id="filtroEstado">
+                  <option value="">Todos</option>
+                  <option value="activo">Activo</option>
+                  <option value="inactivo">Inactivo</option>
+                </select></div>
+              </th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Los datos se cargarán dinámicamente con JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/lista-usuarios.js"></script>
+</body>
+
+</html>
