@@ -160,15 +160,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     } else if (e.target.value === 'comercio') {
       grupoCuit.style.display = 'block';
-      grupoRazonSocial.style.display = 'block';
+      grupoRazonSocial.style.display = 'none';
+      document.getElementById('razon_social')?.removeAttribute('required');
       grupoDni.style.display = 'block'; // mostrar DNI también en comercio
-      document.querySelector('input[name="dni"]').value = '';
 
-      // ⚙️ Marcar CUIT y Razón Social como requeridos solo en comercio
-      const cuitInput = document.getElementById('cuit');
-      const razonInput = document.getElementById('razon_social');
-      if (cuitInput) cuitInput.setAttribute('required', 'true');
-      if (razonInput) razonInput.setAttribute('required', 'true');
+      // Razón Social no se usa en persona física, solo limpiamos su valor
+      const razonInput = document.querySelector('input[name="razon_social"]');
+      if (razonInput) razonInput.value = '';
+
+      // No marcar required acá. Se controla en actualizarVistaTitular() para jurídica.
+      document.querySelector('input[name="dni"]').value = '';
 
       // mostrar opción food truck
       foodTruckOption.style.display = 'block';
@@ -255,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formData = new FormData(e.target);
     const tipoTitular = document.getElementById('tipoTitular').value;
 
-    // 👉 Validar campos según tipo de titular
+    // 👉 Validar campos solo si es comercio y persona jurídica
     if (tipoTitular === 'comercio') {
       const esPersonaJuridica = document.getElementById('juridicaSi')?.checked;
 
@@ -263,11 +264,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Copiar empresa a los campos base
         formData.set('cuit', document.getElementById('cuit_empresa')?.value.trim());
         formData.set('razon_social', document.getElementById('razon_social_empresa')?.value.trim());
-      }
 
-      if (!formData.get('cuit') || !formData.get('razon_social')) {
-        alert('Para titulares de comercio, CUIT y Razón Social son requeridos');
-        return;
+        // Validar CUIT y Razón Social solo en persona jurídica
+        if (!formData.get('cuit') || !formData.get('razon_social')) {
+          alert('Para titulares de comercio (Persona Jurídica), CUIT y Razón Social son requeridos');
+          return;
+        }
       }
     }
 
@@ -653,6 +655,10 @@ function manejarCargaDocumento(input) {
     if (juridicaSi.checked) {
       // 👉 Mostrar empresa + representante
       bloquePersonaFisica.style.display = 'none';
+
+      // 🚫 Quitar required de campo Razón Social del formulario base (persona física) para evitar bloqueo
+      document.getElementById('razon_social')?.removeAttribute('required');
+
       bloqueEmpresa.style.display = 'block';
       bloqueRepresentante.style.display = 'block';
 
@@ -670,6 +676,9 @@ function manejarCargaDocumento(input) {
       // 👉 Quitar required de persona física
       ['nombre', 'apellido', 'dni', 'domicilio', 'cod_area', 'telefono', 'correo_electronico']
         .forEach(id => document.getElementById(id)?.removeAttribute('required'));
+
+      // 🚫 Además, quitar required del CUIT base (campo de persona física que queda oculto)
+      document.getElementById('cuit')?.removeAttribute('required');
 
       // 👉 Agregar required a empresa + representante
       ['cuit_empresa', 'razon_social_empresa', 'domicilio_empresa',
@@ -695,6 +704,7 @@ function manejarCargaDocumento(input) {
       bloquePersonaFisica.style.display = 'block';
       bloqueEmpresa.style.display = 'none';
       bloqueRepresentante.style.display = 'none';
+
 
       // 👇 Limpiar miniaturas y archivos al cambiar tipo de persona
       document.querySelectorAll('.file-thumb-wrapper').forEach(wrapper => wrapper.remove());
@@ -734,14 +744,73 @@ function manejarCargaDocumento(input) {
   }
 
   // 👇 sincronizar siempre los bloques de Persona Física / Jurídica
+
+  // Forzar selección de persona física antes de actualizar vista
+  if (juridicaNo) juridicaNo.checked = true;
   actualizarVistaTitular();
 
   // Eventos para los radios
   juridicaSi.addEventListener('change', actualizarVistaTitular);
   juridicaNo.addEventListener('change', actualizarVistaTitular);
 
-  // Inicializar vista
   actualizarVistaTitular();
+
+  function validarExistenciaCampo(idCampo, tipoCampo) {
+    const campo = document.getElementById(idCampo);
+    if (!campo) return;
+
+    const handler = async () => {
+      const valor = campo.value.trim();
+      if (!valor) return;
+
+      try {
+        const resp = await fetch(`/api/titular/validar?campo=${tipoCampo}&valor=${encodeURIComponent(valor)}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+        if (!resp.ok) return;
+
+        const data = await resp.json();
+        if (data.existe) {
+          campo.classList.add('is-invalid');  // Marca en rojo (Bootstrap)
+
+          // Mensaje debajo del campo si no existe
+          let feedback = campo.parentElement.querySelector('.invalid-feedback');
+          if (!feedback) {
+            feedback = document.createElement('div');
+            feedback.className = 'invalid-feedback';
+            campo.parentElement.appendChild(feedback);
+          }
+          feedback.textContent = `Este ${tipoCampo.toUpperCase()} ya está registrado.`;
+
+          campo.setCustomValidity('Duplicado'); // Bloquea envío
+        } else {
+          campo.classList.remove('is-invalid');
+          campo.setCustomValidity('');
+        }
+
+      } catch (error) {
+        console.error('Error validando existencia:', error);
+      }
+    };
+
+    campo.addEventListener('change', handler);
+
+    campo.addEventListener('input', () => {
+      campo.classList.remove('is-invalid');
+      campo.setCustomValidity('');
+    });
+
+  }
+
+  // 👉 Activar validación en los campos clave
+  validarExistenciaCampo('dni', 'dni');                 // persona física / ambulante / transporte
+  validarExistenciaCampo('cuit', 'cuit');               // comercio persona física
+  validarExistenciaCampo('cuit_empresa', 'cuit');       // comercio persona jurídica
+  validarExistenciaCampo('dni_representante', 'dni');   // representante legal
 
 });
 

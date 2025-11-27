@@ -83,7 +83,7 @@ body, html {
 }
 
 .logout-btn {
-  background: linear-gradient(to bottom, #00ff55, #158411);
+  background: linear-gradient(to bottom, #3ef362, #214420);
   color: white;
   border: none;
   padding: 0.4rem 0.8rem;
@@ -96,7 +96,7 @@ body, html {
 }
 
 .logout-btn:hover {
-  background: linear-gradient(to bottom, #00cc44, #0e6a0d);
+  background: linear-gradient(to bottom, #2fab48, #062f05);
   transform: translateY(-1px);
 }
 
@@ -255,12 +255,12 @@ body, html {
 /* Tablet Styles */
 @media (min-width: 600px) {
   body.dashboard-body {
-    align-items: center;
+    align-items: flex-start;;
     padding: 1rem;
   }
   
   .dashboard {
-    min-height: 85vh;
+    min-height: 90vh;
     border-radius: 14px;
   }
   
@@ -301,6 +301,17 @@ body, html {
   .notificaciones {
     font-size: 1.5rem;
   }
+
+/* 🔧 Ajuste para evitar que el contenido quede desplazado hacia abajo */
+body.dashboard-body {
+  align-items: stretch !important;
+}
+
+.dashboard {
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
+
 }
 
 /* Laptop Styles (900px+) */
@@ -389,6 +400,48 @@ body, html {
   }
 }
 
+/* 1️⃣ Organización inicial (ya lo tenés pegado) */
+@media (min-width: 901px) and (max-width: 993px) {
+  .triada-botones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .triada-botones .fila-botones {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .triada-botones .fila-botones:nth-child(1) > div {
+    flex: 0 0 calc(50% - 0.5rem);
+    max-width: calc(50% - 0.5rem);
+  }
+
+  .triada-botones .fila-botones:nth-child(2) {
+    justify-content: center;
+  }
+}
+
+/* 2️⃣ 🔧 Corrección para que ambos botones crezcan igual */
+@media (min-width: 901px) and (max-width: 993px) {
+  .triada-botones .fila-botones:nth-child(1) > div {
+    flex: 0 0 50%;
+    max-width: 47%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .triada-botones .fila-botones:nth-child(1) .boton-funcional {
+    width: 95%;
+    text-align: center;
+  }
+  
+}
+
 /* 4K Styles (2560px+) */
 @media (min-width: 2000px) {
   .dashboard {
@@ -450,4 +503,245 @@ body, html {
     font-size: 2.5rem;
     left: 3rem;
   }
+}
+
+/* 📍 Corrección: mantener nombre/cargo a la izquierda cuando sidebar está arriba */
+@media (min-width: 768px) and (max-width: 900px) {
+    .user-info {
+        display: flex;
+        justify-content: flex-start; /* ⬅️ Mantiene el texto a la izquierda */
+        align-items: center;
+        gap: 1rem; /* Espacio visual natural */
+    }
+
+    .logout-btn {
+        margin-left: auto; /* Botón sigue alineado a la derecha */
+    }
+}
+
+/* 📌 Ajuste de ancho del sidebar en escritorio –10% sin afectar responsividad */
+@media (min-width: 900px) and (max-width: 2000px) {
+    .sidebar {
+        width: 270px;        /* antes 300px */
+        padding: 2rem 1.5rem; /* se mantiene igual */
+    }
+}
+
+/* Ajuste específico entre 901px y 1125px */
+@media (min-width: 901px) and (max-width: 1125px) {
+    .sidebar {
+        width: 213px;
+    }
+}
+
+/* BASE UNIFICADA PARA LOS FORMULARIOS – contenedor central */
+
+/* 🎯 Diseño original del contenedor blanco trasladado desde HTML */
+.contenedor-blanco {
+    width: 100%;
+    max-width: 1200px; /* Exacto como estaba inline */
+    margin: 0 auto; /* Para centrar */
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px; /* Exacto */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* 📌 Ajuste REAL de la separación lateral entre sidebar y formulario */
+/* Para resoluciones entre 901 y 1125px */
+@media (min-width: 901px) and (max-width: 1125px) {
+  .main-panel {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .contenedor-blanco {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+/* Ajustes para el tercer botón "Ver Vehículos" */
+
+/* Para móviles - los botones en columna */
+@media (max-width: 599px) {
+  .fila-botones:nth-child(2) {
+    gap: 0.8rem;
+  }
+  
+  .fila-botones:nth-child(2) a {
+    width: 100%;
+  }
+}
+
+/* Para tablets - ajustar distribución de 3 botones */
+@media (min-width: 600px) and (max-width: 899px) {
+  .fila-botones:nth-child(2) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .fila-botones:nth-child(2) a {
+    flex: 0 0 calc(33.333% - 0.8rem);
+    max-width: calc(33.333% - 0.8rem);
+  }
+  
+  .fila-botones:nth-child(2) .boton-funcional {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+/* Para laptops - distribución de 3 botones */
+@media (min-width: 900px) {
+  .fila-botones:nth-child(2) {
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  
+  .fila-botones:nth-child(2) a {
+    flex: 0 0 auto;
+  }
+  
+  .fila-botones:nth-child(2) .boton-funcional {
+    min-width: 200px;
+  }
+}
+
+/* Ajuste específico para pantallas entre 901px y 993px */
+@media (min-width: 901px) and (max-width: 993px) {
+  .fila-botones:nth-child(2) {
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .fila-botones:nth-child(2) .boton-funcional {
+    min-width: 180px;
+    font-size: 1.2rem;
+    padding: 1.2rem;
+  }
+}
+
+/* Para pantallas muy grandes */
+@media (min-width: 2000px) {
+  .fila-botones:nth-child(2) .boton-funcional {
+    min-width: 300px;
+    font-size: 1.8rem;
+    padding: 1.8rem;
+  }
+}
+
+/* Quitar subrayado de los enlaces que contienen botones */
+.triada-botones a {
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Asegurar que los botones dentro de enlaces no hereden estilos no deseados */
+.triada-botones a .boton-funcional {
+  text-decoration: none;
+}
+
+
+/* ===== MEJORAS PARA LOS SUBMENÚS ===== */
+
+/* Estilos mejorados para los submenús */
+.submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    display: none;
+    min-width: 220px; /* Ancho mínimo para que se vea mejor */
+}
+
+/* Cada opción del submenú en línea separada */
+.submenu a {
+    display: block;
+    padding: 0.8rem 1rem;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+    white-space: nowrap; /* Evita que el texto se parta en varias líneas */
+}
+
+/* Quitar borde del último elemento */
+.submenu a:last-child {
+    border-bottom: none;
+}
+
+/* Efecto hover mejorado */
+.submenu a:hover {
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    color: #483664;
+    font-weight: 500;
+}
+
+/* Iconos para las opciones del submenú */
+.submenu a[href*="titular"]::before {
+    content: "👤 ";
+    margin-right: 0.5rem;
+}
+
+.submenu a[href*="comercio"]::before {
+    content: "🏪 ";
+    margin-right: 0.5rem;
+}
+
+.submenu a[href*="transporte"]::before {
+    content: "🚚 ";
+    margin-right: 0.5rem;
+}
+
+/* Mejorar la flecha del botón principal */
+.boton-funcional i {
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.bloque-submenu:hover .boton-funcional i {
+    transform: rotate(180deg);
+}
+
+/* Asegurar que el submenú no se desborde en pantallas pequeñas */
+@media (max-width: 600px) {
+    .submenu {
+        min-width: 180px;
+    }
+    
+    .submenu a {
+        padding: 0.7rem 0.9rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Para pantallas grandes */
+@media (min-width: 900px) {
+    .submenu {
+        min-width: 250px;
+    }
+    
+    .submenu a {
+        padding: 1rem 1.2rem;
+        font-size: 1rem;
+    }
+}
+
+.submenu {
+    background: linear-gradient(135deg, #f8f5ff 0%, #e6e0f8 100%);
+    border: 1px solid #c5b5e6;
+    /* resto igual que arriba */
+}
+
+.submenu a:hover {
+    background: linear-gradient(to right, #5d3f8f, #7b5bab);
+    color: white;
 }

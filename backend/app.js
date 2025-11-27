@@ -49,10 +49,23 @@ app.use('/api/alta-comercio', altaComercioRoutes);
 const altaTransporteRoutes = require('./routes/altaTransporteRoutes');
 app.use('/api/alta-transporte', altaTransporteRoutes);
 
+// Renovación transporte
+const renovacionTransporteRoutes = require('./routes/renovacionTransporteRoutes');
+app.use('/api/renovacion-transporte', renovacionTransporteRoutes);
+
+// Renovación comercio
+const renovacionComercioRoutes = require('./routes/renovacionComercioRoutes');
+app.use('/api/renovacion-comercio', renovacionComercioRoutes);
+
 // Registro comercio
 const comercioRoutes = require('./routes/comercioRoutes');
 app.use('/', comercioRoutes);
 app.use('/api/comercios', comercioRoutes);
+
+// Registro transporte (réplica adaptada de comercio)
+const transporteRoutes = require('./routes/transporteRoutes');
+app.use('/', transporteRoutes);
+app.use('/api/transportes', transporteRoutes);
 
 // procedimiento
 const procedimientoRoutes = require('./routes/procedimientoRoutes');
@@ -62,9 +75,11 @@ app.use('/api/procedimientos', procedimientoRoutes);
 const titularRoutes = require('./routes/titularRoutes');
 app.use('/api/titular', titularRoutes);
 
+
 // nueva ruta para listar titulares unificados (razon_social + titular_ambulante)
 const titularesRoutes = require('./routes/titularesRoutes');
 app.use('/api/titulares-unificados', titularesRoutes);
+
 
 // Levantar servidor
 app.listen(PORT, () => {
@@ -72,8 +87,3 @@ app.listen(PORT, () => {
 });
 
 
-
-
-
-const renovacionTransporteRoutes = require('./routes/renovacionTransporteRoutes');
-app.use('/api/renovacion-transporte', renovacionTransporteRoutes);

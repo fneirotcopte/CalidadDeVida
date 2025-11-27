@@ -4,10 +4,29 @@ body {
     font-family: Arial, sans-serif;
 }
 
+.titulo-area {
+  text-align: center;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.titulo-area h1 {
+  font-size: 2.5rem;
+   font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.titulo-area i {
+  margin-right: 0.5rem;
+  color: #ffffff;
+}
+
 .card {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 
 .card-header { border-radius: 10px 10px 0 0 !important; }
 
@@ -17,9 +36,37 @@ body {
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-/* Estilos para los botones */
-.btn-outline-primary { color: #655577; border-color: #655577; }
-.btn-outline-primary:hover { background-color: #655577; color: white; }
+/* === Botones estilo institucional (replicado de Renovación) === */
+.btn-outline-primary,
+#btnBuscarMapa,
+#btnAddAnexo,
+button[onclick^="removeAnexo"],
+#btnBuscarCuit {
+  background: linear-gradient(to bottom, #ccb3ea, #6b5188) !important;
+  color: #fff !important;
+  border: 1px solid #655577 !important;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.btn-outline-primary:hover,
+#btnBuscarMapa:hover,
+#btnAddAnexo:hover,
+button[onclick^="removeAnexo"]:hover,
+#btnBuscarCuit:hover {
+  background-color: #2e243e !important;
+  border-color: #4e3c66 !important;
+  color: #fff !important;
+  transform: scale(1.03);
+}
+
+.btn-outline-primary i,
+#btnBuscarMapa i,
+#btnAddAnexo i,
+button[onclick^="removeAnexo"] i,
+#btnBuscarCuit i {
+  color: #fff !important;
+}
 
 /* Estilos para la sección de documentos */
 .documento-item {
@@ -196,5 +243,50 @@ body {
   color: #6c757d;
 }
 
+/* === Alinear el botón Cerrar sesión a la derecha cuando la sidebar pasa arriba (vista móvil) === */
+@media (max-width: 768px) {
+  .sidebar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; /* logo/nombre a la izquierda, botón a la derecha */
+    gap: 12px;
+    padding: 8px 16px;
+  }
 
+  .sidebar .user-info {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .sidebar .user-data { flex: 1; }     /* ocupa el medio */
+  .sidebar .logout-btn { margin-left: auto; } /* empuja el botón a la derecha */
+}
+
+/* 📌 Ajuste entre 900px y 1245px – Evitar compresión del botón "Eliminar" y N° sucursal */
+@media (min-width: 768px) and (max-width: 1246px) {
+    /* Campo Nº sucursal: darle más espacio */
+    
+    #datosComercio .col-md-7 {
+        flex: 0 0 70%;
+        max-width: 70%;
+    }
+
+    /* Bloque Anexos – ajustar proporciones */
+    #anexosContainer .col-md-10 {
+        flex: 0 0 70%;
+        max-width: 70%;
+    }
+    #anexosContainer .col-md-2 {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+
+    /* Aseguro que el botón mantenga su relación sin romper estructura */
+    #anexosContainer button {
+        white-space: nowrap;
+    }
+}
 

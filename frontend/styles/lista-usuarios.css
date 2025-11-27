@@ -324,8 +324,45 @@ tr:nth-child(even) {
   color: white;
 }
 
-.logo-capital {
-  display: none;
+.btn-activate {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-pagina {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.btn-pagina:hover {
+  background-color: #e0e0e0;
+}
+
+.btn-numero-pagina.activa {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  border-color: #4CAF50;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 15px 0;
+}
+
+#totalEmpleados {
+  font-weight: 600;
+  font-size: 14px;
+  color: #2a4a2a;
 }
 
 /* Mobile-specific adjustments */

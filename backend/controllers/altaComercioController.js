@@ -68,49 +68,20 @@ exports.registrarComercioCompleto = async (req, res) => {
         }
 
 
-        // Establecer fechas iniciales
-        let fechaHabilitacion = null; // Por defecto es null
-        let fechaVencimiento = null;  // Por defecto es null
+        // Establecer fechas de habilitación y vencimiento
+        const fechaHabilitacion = new Date(); // Fecha actual para habilitación
+        const fechaVencimiento = new Date(fechaHabilitacion); // Copia de la fecha de habilitación
 
-        // Determinar categoría y si requiere inspección
-        const categoriaLower = (categoria || '').toLowerCase();
-        const esVendedorAmbulante = categoriaLower === 'vendedor ambulante';
-        const esFoodTruck = categoriaLower === 'food truck';
-        const categoriasQueRequierenInspeccion = [
-            'comercio en general', 
-            'bares nocturnos, confiterias y restaurantes'
-        ];
-        const requiereInspeccion = categoriasQueRequierenInspeccion.includes(categoriaLower);
-
-        // Solo vendedores ambulantes y food trucks se habilitan inmediatamente
-        if (esVendedorAmbulante || esFoodTruck) {
-            const hoy = new Date();
-            fechaHabilitacion = hoy.toISOString().split('T')[0]; // Formato YYYY-MM-DD
-            
-            // Calcular fecha de vencimiento
-            if (esVendedorAmbulante) {
-                const vencimiento = new Date(hoy);
-                vencimiento.setMonth(vencimiento.getMonth() + 1);
-                fechaVencimiento = vencimiento.toISOString().split('T')[0];
-            } else { // food truck
-                const vencimiento = new Date(hoy);
-                vencimiento.setFullYear(vencimiento.getFullYear() + 1);
-                fechaVencimiento = vencimiento.toISOString().split('T')[0];
-            }
+        // Si es vendedor ambulante, la vigencia es de 1 mes
+        if ((categoria || '').toLowerCase() === 'vendedor ambulante') {
+            fechaVencimiento.setMonth(fechaVencimiento.getMonth() + 1); // Suma un mes exacto
+        } else {
+            fechaVencimiento.setFullYear(fechaVencimiento.getFullYear() + 1); // Suma un año exacto para el resto
         }
-        // Para otros comercios, tanto fecha_habilitacion como fecha_vencimiento quedan en NULL
-        // Se establecerán cuando se apruebe la inspección ocular
 
-        // El comercio siempre inicia activo
-        let activo = 1;
-        let pendienteInspeccion = 0;
+        // El comercio inicia activo
+        const activo = 1;
 
-        // Si requiere inspección, marcamos como pendiente pero sigue activo
-        if (requiereInspeccion) {
-            pendienteInspeccion = 1;
-            // fechaHabilitacion y fechaVencimiento ya están en null por defecto
-        }
-        
         // ✅ Validación de consistencia: anexos
         if (anexos && !Array.isArray(anexos)) {
             return res.status(400).json({
@@ -142,20 +113,20 @@ exports.registrarComercioCompleto = async (req, res) => {
         const montoParsed = Number.parseFloat(monto_sellado_inspeccion);
         const montoDB = Number.isFinite(montoParsed) ? montoParsed : 0;
 
-          // 🚨 Validar geolocalización obligatoria (aplica a todos: comunes y ambulantes)
+        // 🚨 Validar geolocalización obligatoria (aplica a todos: comunes y ambulantes)
         if (!ubicacion || ubicacion.trim() === '') {
             return res.status(400).json({ error: 'La geolocalización es obligatoria.' });
         }
 
         // 1. Registrar comercio principal
         const [resultComercio] = await pool.query(`
-        INSERT INTO comercio (
+    INSERT INTO comercio (
         nombre_comercial, sucursal, direccion, telefono, correo_electronico,
         rubro, id_razon_social, id_titular_ambulante, categoria, metros_cuadrados,
         geolocalizacion, estado_pago_final, monto_sellado_inspeccion,
         id_empleado_registro, fecha_registro, fecha_habilitacion, 
-        fecha_vencimiento, activo, pendiente_inspeccion
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?)
+        fecha_vencimiento, activo
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?)
 `, [
             nombreFinal,
             sucursalNum,
@@ -171,10 +142,9 @@ exports.registrarComercioCompleto = async (req, res) => {
             estadoPago === 'Abonado' ? 1 : 0,
             montoDB,
             req.usuario.id_empleado,
-            fechaHabilitacion, // null si requiere inspección, fecha actual si es vendedor ambulante o food truck
-            fechaVencimiento, // puede ser null o una fecha en formato YYYY-MM-DD
-            activo,
-            pendienteInspeccion
+            fechaHabilitacion,
+            fechaVencimiento,
+            activo
         ]);
 
 
@@ -212,41 +182,46 @@ exports.registrarComercioCompleto = async (req, res) => {
             const documentos = [
                 // 🧾 Comercio en general
                 ...(categoria === 'comercio en general' ? [
-                    { tipo: 'declaracion_rentas', file: req.files['doc_declaracion_rentas']?.[0] },
+                    { tipo: 'doc_declaracion_rentas', file: req.files['doc_declaracion_rentas']?.[0] },
                     { tipo: 'sellado_bromatologico', file: req.files['sellado_bromatologico']?.[0] },
-                    { tipo: 'plano', file: req.files['doc_plano']?.[0] },
-                    { tipo: 'contrato_alquiler', file: req.files['doc_alquiler']?.[0] }
+                    { tipo: 'doc_plano', file: req.files['doc_plano']?.[0] },
+                    { tipo: 'doc_alquiler', file: req.files['doc_alquiler']?.[0] }
                 ] : []),
 
                 // 🌙 Bares nocturnos, confiterías y restaurantes
                 ...(categoria === 'bares nocturnos, confiterias y restaurantes' ? [
-                    { tipo: 'declaracion_rentas', file: req.files['doc_declaracion_rentas']?.[0] },
+                    { tipo: 'doc_declaracion_rentas', file: req.files['doc_declaracion_rentas']?.[0] },
                     { tipo: 'sellado_bromatologico', file: req.files['sellado_bromatologico']?.[0] },
-                    { tipo: 'plano', file: req.files['doc_plano']?.[0] },
-                    { tipo: 'contrato_alquiler', file: req.files['doc_alquiler']?.[0] },
-                    { tipo: 'seguridad', file: req.files['doc_seguridad']?.[0] },
-                    { tipo: 'bomberos', file: req.files['doc_bomberos']?.[0] }
+                    { tipo: 'doc_plano', file: req.files['doc_plano']?.[0] },
+                    { tipo: 'doc_alquiler', file: req.files['doc_alquiler']?.[0] },
+                    { tipo: 'doc_seguridad', file: req.files['doc_seguridad']?.[0] },
+                    { tipo: 'doc_bomberos', file: req.files['doc_bomberos']?.[0] }
                 ] : []),
 
                 // 🚚 Food Truck
                 ...(categoria === 'food truck' ? [
-                    { tipo: 'declaracion_rentas', file: req.files['doc_declaracion_rentas']?.[0] },
+                    { tipo: 'doc_declaracion_rentas', file: req.files['doc_declaracion_rentas']?.[0] },
                     { tipo: 'sellado_bromatologico', file: req.files['sellado_bromatologico']?.[0] },
-                    { tipo: 'manipulacion_alimentos', file: req.files['doc_manipulacion']?.[0] },
-                    { tipo: 'seguro', file: req.files['doc_seguro']?.[0] },
-                    { tipo: 'permiso', file: req.files['doc_permiso']?.[0] }
+                    { tipo: 'doc_manipulacion', file: req.files['doc_manipulacion']?.[0] },
+                    { tipo: 'doc_seguro', file: req.files['doc_seguro']?.[0] },
+                    { tipo: 'doc_permiso', file: req.files['doc_permiso']?.[0] }
                 ] : []),
 
                 // 🧍 Vendedor ambulante
                 ...(categoria === 'vendedor ambulante' ? [
                     { tipo: 'sellado_bromatologico', file: req.files['sellado_bromatologico']?.[0] },
-                    { tipo: 'frentista', file: req.files['doc_frentista']?.[0] }
+                    { tipo: 'doc_frentista', file: req.files['doc_frentista']?.[0] }
                 ] : [])
             ];
 
-                for (const doc of documentos.filter(d => d.file)) {
+            for (const doc of documentos.filter(d => d.file)) {
                 const ext = path.extname(doc.file.originalname).toLowerCase();
-                const newName = `${doc.tipo}_${idComercio}${ext}`;
+
+                // Aseguramos que el nombre del documento sea EXACTAMENTE igual al de Renovación (sin "_R")
+                const tipoDoc = doc.tipo; // Debe llegar como "doc_alquiler", "doc_plano", etc.
+
+                // Renombrado como Renovación pero SIN la "R"
+                const newName = `${tipoDoc}_${idComercio}${ext}`;
                 const newPath = path.join(uploadDir, newName);
 
                 // Renombrar el archivo físico

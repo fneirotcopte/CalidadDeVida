@@ -1,26 +1,34 @@
 // === renovacion-transporte.js (clásico, sin imports) ===
 // Respeta el patrón de form-alta-transporte.js (DOMContentLoaded, ids, sin módulos)
 
+// Mapa para llevar los reemplazos de documentos (tipo_documento -> File)
+const reemplazosDocs = new Map();
+
+// === Archivo: renovacion-transporte.js ===
 document.addEventListener('DOMContentLoaded', () => {
     console.log('✅ renovacion-transporte.js cargado');
 
-    // ---- Referencias a elementos del DOM (mismos ids del HTML) ----
+    // ---- Referencias a elementos del DOM ----
     const form = document.getElementById('formRenovacionTransporte');
-
     const idTransporte = document.getElementById('idTransporte');
     const btnBuscarTransporte = document.getElementById('btnBuscarTransporte');
 
+
+
     // --- Mostrar modal de advertencia al ingresar ---
-    window.addEventListener('DOMContentLoaded', () => {
-        const modal = new bootstrap.Modal(document.getElementById('modalAdvertencia'));
+    const modalEl = document.getElementById('modalAdvertencia');
+    if (modalEl) {
+        const modal = new bootstrap.Modal(modalEl);
         modal.show();
 
         const campoId = document.getElementById('idTransporte');
-        const boton = document.querySelector('#modalAdvertencia .btn-primary');
-        boton.addEventListener('click', () => {
-            if (campoId) campoId.focus({ preventScroll: true });
-        });
-    });
+        const boton = modalEl.querySelector('.btn-primary');
+        if (boton) {
+            boton.addEventListener('click', () => {
+                if (campoId) campoId.focus({ preventScroll: true });
+            });
+        }
+    }
 
     // --- Desactivar todos los campos hasta que se cargue un transporte ---
     // (excepto el buscador y el botón del modal)
@@ -28,6 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
         'input, select, textarea, button:not(#btnBuscarTransporte):not(#btnAceptarModal)'
     );
     camposBloqueados.forEach(el => el.disabled = true);
+
+    // 🆕 Botón reset
+    const btnResetTransporte = document.getElementById('btnResetTransporte');
+    btnResetTransporte.addEventListener('click', () => {
+        location.reload();
+    });
 
     // --- Rehabilitar solo el campo del número de habilitación y la lupa ---
     idTransporte.disabled = false;
@@ -145,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === Manejo del primer grupo de radios ("¿Cambia de chofer?") ===
     function manejarCambioChofer() {
+
         if (cambioChoferSi.checked) {
             avisoTitular.classList.add("d-none");
 
@@ -211,10 +226,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === Manejo del segundo grupo de radios ("¿Será el titular?") ===
     function manejarChoferTitular() {
+
+        const camposChofer = document.querySelectorAll('#bloqueDatosChofer input, #bloqueDatosChofer select');
+
         if (choferTitularSi.checked) {
             // Será el titular
             avisoTitular.classList.remove("d-none");
             bloqueDatosChofer.style.display = "none";
+
+            // 🧱 Deshabilitar campos del chofer y quitar required
+            camposChofer.forEach(el => {
+                el.disabled = true;
+                el.readOnly = true;
+
+                if (el.hasAttribute('required')) {
+                    el.dataset.wasRequired = '1';
+                    el.removeAttribute('required');
+                }
+            });
 
             // 🔹 Detectar si es escenario 4 (chofer distinto → titular)
             if (cambioChoferSi?.checked && window._choferEsTitularActual === false) {
@@ -234,6 +263,16 @@ document.addEventListener('DOMContentLoaded', () => {
             avisoTitular.classList.add("d-none");
             bloqueDatosChofer.style.display = "flex";
 
+            // 🧱 Rehabilitar campos del chofer y restaurar required si lo tenían
+            camposChofer.forEach(el => {
+                el.disabled = false;
+                el.readOnly = false;
+
+                if (el.dataset.wasRequired === '1') {
+                    el.setAttribute('required', '');
+                }
+            });
+
             // Limpiar los campos para ingresar nuevo chofer
             nombreChofer.value = "";
             dniChofer.value = "";
@@ -247,7 +286,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Actualizar miniaturas naturalmente según el nuevo estado
             syncDocsUI();
         }
-
     }
 
     // === EVENTOS ===
@@ -360,13 +398,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         documentos.forEach((doc) => {
             const col = document.createElement('div');
-            col.className = 'col-md-3 text-center mb-3';
+           col.className = 'col-12 col-sm-6 col-md-4 col-lg-3 text-center mb-3';
             col.dataset.tipoDocumento = doc.tipo_documento || doc.tipo || '';
 
             const wrap = document.createElement('div');
             wrap.className = 'position-relative d-inline-block';
-            wrap.style.width = '180px';
-            wrap.style.height = '130px';
+            wrap.style.width = '100%';
+            wrap.style.height = '140px';
             wrap.style.overflow = 'hidden';
 
             // === Imagen real o genérica ===
@@ -382,6 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
             vista.alt = doc.tipo_documento || doc.tipo || 'documento';
             vista.className = 'img-thumbnail';
             vista.style.maxHeight = '120px';
+            vista.style.height = '100%';
             vista.style.cursor = 'pointer';
             vista.style.objectFit = 'contain';
 
@@ -405,63 +444,126 @@ document.addEventListener('DOMContentLoaded', () => {
             btnRenovar.title = 'Reemplazar documento';
             btnRenovar.innerHTML = '<i class="fas fa-sync-alt"></i>';
 
-            btnRenovar.addEventListener('click', () => {
-                const key = (doc.tipo_documento || doc.tipo || 'documento').toString();
+           btnRenovar.addEventListener('click', () => {
+  const formEl = document.getElementById('formRenovacionTransporte'); // adaptado
+  const key = (doc.tipo_documento || doc.tipo || 'documento').toString();
 
-                if (reemplazosDocs.has(key)) {
-                    reemplazosDocs.delete(key);
-                    vista.src = pathPublico(doc.ruta_archivo || '/img/Bromat-docu.png');
-                    btnRenovar.classList.remove('btn-info');
-                    btnRenovar.classList.add('btn-success');
-                    btnRenovar.innerHTML = '<i class="fas fa-sync-alt"></i>';
-                    return;
-                }
+  // Si ya estaba seleccionado, des-seleccionar y limpiar
+  if (reemplazosDocs.has(key)) {
+    reemplazosDocs.delete(key);
 
-                const inp = document.createElement('input');
-                inp.type = 'file';
-                inp.accept = 'image/*,application/pdf';
-                inp.onchange = (e) => {
-                    const file = e.target.files[0];
-                    if (!file) return;
+    // quitar input oculto previo (si existe)
+    const previo = formEl?.querySelector(`input[type="file"][name="${key}"]`);
+    if (previo) previo.remove();
 
-                    reemplazosDocs.set(key, file);
+    // restaurar vista
+    if (!doc.ruta_archivo || doc.faltante) {
+      vista.src = '/img/Bromat-docu.png';
+    } else {
+      vista.src = pathPublico(doc.ruta_archivo);
+    }
 
-                    if (file.type.startsWith('image/')) {
-                        const url = URL.createObjectURL(file);
-                        vista.src = url;
-                    } else {
-                        vista.src = '/img/pdf_icon.png';
-                    }
+    // 🔹 restaurar borde “normal” (verde) y estado
+    vista.style.border = '1px solid #1b7937ff';
+    vista.classList.remove('doc-reemplazado', 'campo-no-modificado', 'is-invalid');
 
-                    btnRenovar.classList.remove('btn-success');
-                    btnRenovar.classList.add('btn-info');
-                    btnRenovar.innerHTML = '<i class="fas fa-check" style="font-size:1.1rem;color:white;"></i>';
-                };
-                inp.click();
-            });
+    // eliminar etiqueta azul si existía
+    const etiquetaAzul = col.querySelector('.doc-reemplazado-etiqueta');
+    if (etiquetaAzul) etiquetaAzul.remove();
+
+    // volver botón a estado original
+    btnRenovar.classList.remove('btn-info');
+    btnRenovar.classList.add('btn-success');
+    btnRenovar.innerHTML = '<i class="fas fa-sync-alt"></i>';
+    return;
+  }
+
+  // crear input oculto DENTRO del form para que FormData(form) lo tome
+  const inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = 'image/*,application/pdf';
+  inp.name = key; // mismo comportamiento que Comercio
+  inp.classList.add('d-none');
+  formEl?.appendChild(inp);
+
+  inp.onchange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      // si canceló el diálogo, limpiar el input oculto
+      inp.remove();
+      return;
+    }
+
+    // registrar en el map
+    reemplazosDocs.set(key, file);
+
+    // previsualizar
+    if (file.type.startsWith('image/')) {
+      const url = URL.createObjectURL(file);
+      vista.src = url;
+    } else {
+      vista.src = '/img/pdf_icon.png';
+    }
+
+    // 🔹 borde CELESTE para documento reemplazado
+    vista.style.border = '2px solid #0dcaf0';
+    vista.classList.add('doc-reemplazado');
+    vista.classList.remove('campo-no-modificado', 'is-invalid');
+
+    // eliminar etiqueta placeholder si existiera
+    const msgPlaceholder = col.querySelector('.msg-placeholder');
+    if (msgPlaceholder) msgPlaceholder.remove();
+
+    // crear / actualizar etiqueta azul
+    let etiquetaAzul = col.querySelector('.doc-reemplazado-etiqueta');
+    if (!etiquetaAzul) {
+      etiquetaAzul = document.createElement('span');
+      etiquetaAzul.className = 'doc-reemplazado-etiqueta';
+      col.appendChild(etiquetaAzul);
+    }
+    etiquetaAzul.textContent = 'Reemplazado';
+
+    // actualizar botón (exactamente igual que Comercio)
+    btnRenovar.classList.remove('btn-success');
+    btnRenovar.classList.add('btn-info');
+    btnRenovar.innerHTML = '<i class="fas fa-check" style="font-size:1.1rem;color:white;"></i>';
+  };
+
+  // abrir selector
+  inp.click();
+});
 
             const etiqueta = document.createElement('p');
             etiqueta.className = 'small mt-1';
 
             let textoEtiqueta = doc.tipo_documento || doc.tipo || 'Documento';
 
-            // Etiqueta más descriptiva para cert_salud (corrige escenario 4)
+            // Etiqueta más descriptiva para cert_salud (versión final: cubre todos los escenarios)
             if ((doc.tipo_documento || doc.tipo) === 'cert_salud') {
-                const esEscenario4 =
-                    cambioChoferSi?.checked &&
-                    choferTitularSi?.checked &&
-                    window._dataTransporteActual &&
-                    window._choferEsTitularActual === false;
+                const totalDocs = documentos.length;
+                const esTitularAhora = choferTitularSi?.checked === true;
+                const esChoferAhora = choferTitularNo?.checked === true;
+                const cambioDeChoferSinSegunda = cambioChoferSi?.checked && window._choferEsTitularActual === true;
+                const choferDistintoPasaATitular = cambioChoferSi?.checked && window._choferEsTitularActual === false && esTitularAhora;
 
-                if (esEscenario4) {
+                // 🟢 Caso especial: chofer distinto → pasa a titular → debe decir titular
+                if (choferDistintoPasaATitular) {
+                    textoEtiqueta = 'Certificado de buena salud (titular)';
+
+                    // 🟢 Caso especial: titular original cambia de chofer (sin segunda pregunta)
+                } else if (cambioDeChoferSinSegunda || (totalDocs === 10 && !esTitularAhora)) {
+                    textoEtiqueta = 'Certificado de buena salud (chofer)';
+
+                    // 🟢 Casos normales según cantidad de documentos
+                } else if (totalDocs === 6) {
                     textoEtiqueta = 'Certificado de buena salud (titular)';
                 } else {
-                    textoEtiqueta = doc.faltante
+                    // Fallback por seguridad
+                    textoEtiqueta = esChoferAhora
                         ? 'Certificado de buena salud (chofer)'
                         : 'Certificado de buena salud (titular)';
                 }
             }
-
 
             etiqueta.textContent = textoEtiqueta;
 
@@ -623,6 +725,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Guardar globalmente los datos del transporte y estado del chofer
             window._dataTransporteActual = data;
+
             window._choferEsTitularActual =
                 (!data.nombre_chofer && !data.dni_chofer) ||
                 (
@@ -696,12 +799,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (data.telefono_chofer) {
                 const partesTel = data.telefono_chofer.split('-');
-                codAreaChofer.value = partesTel[0] || '';
-                telefonoChofer.value = partesTel[1] || data.telefono_chofer || '';
+                const cod = (partesTel[0] || '').trim();
+                const tel = (partesTel[1] || '').trim();
+
+                // 🔹 Solo carga números válidos; si viene solo "-", deja los campos vacíos
+                codAreaChofer.value = /^\d+$/.test(cod) ? cod : '';
+                telefonoChofer.value = /^\d+$/.test(tel) ? tel : '';
             } else {
                 codAreaChofer.value = '';
                 telefonoChofer.value = '';
             }
+
 
             // === Detectar si el titular es también el chofer ===
             const avisoTitular = document.getElementById("avisoTitularEsChofer");
@@ -850,7 +958,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("📦 _aplicarModoDocs ejecutado con modo:", modo);
 
         const miniaturas = document.querySelectorAll('#contenedorDocTransporte [data-tipo-documento]');
-
         if (!miniaturas.length) return;
 
         miniaturas.forEach(col => {
@@ -873,6 +980,62 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /**
+     * 🔎 NUEVO: Inferir el estado para el RESUMEN a partir de lo ya renderizado
+     * - No modifica la lógica de placeholders
+     * - Solo lee cuántos docs visibles hay y si alguno es placeholder
+     * - Actualiza:
+     *    - window._choferEsTitularActual
+     *    - (si existe) el valor del input dentro de #avisoTitularEsChofer,
+     *      para que el resumen muestre la leyenda correcta.
+     */
+    function actualizarEstadoResumenPorDocs() {
+        const cont = document.getElementById('contenedorDocTransporte');
+        if (!cont) return;
+
+        const cols = Array.from(cont.querySelectorAll('[data-tipo-documento]'))
+            .filter(col => {
+                // visibles en pantalla
+                const visible = col.offsetParent !== null && getComputedStyle(col).display !== 'none';
+                return visible;
+            });
+
+        const visibles = cols.length;
+
+        // detectar si alguna miniatura visible es placeholder (imagen genérica)
+        const hayPlaceholderVisible = cols.some(col => {
+            const img = col.querySelector('img');
+            return img && /Bromat-docu\.png$/i.test(img.src);
+        });
+
+        // destino del texto (si existe un input interno, lo usamos; sino no tocamos nada visual)
+        const avisoCont = document.getElementById('avisoTitularEsChofer');
+        const avisoInput = avisoCont ? avisoCont.querySelector('input') : null;
+
+        // Reglas:
+        // 10 visibles -> chofer distinto (mostrar datos del chofer en el resumen)
+        // 6 visibles + placeholder -> "En la renovación el titular será el chofer"
+        // 6 visibles + sin placeholder -> "El titular es el chofer"
+        if (visibles >= 10) {
+            window._choferEsTitularActual = false;
+            if (avisoInput) avisoInput.value = ""; // evitamos que el resumen muestre el cartel
+            return;
+        }
+
+        if (visibles === 6) {
+            window._choferEsTitularActual = true;
+            if (avisoInput) {
+                avisoInput.value = hayPlaceholderVisible
+                    ? "En la renovación el titular será el chofer"
+                    : "El titular es el chofer";
+            }
+            return;
+        }
+
+        // En cualquier otro caso, no tocar estado (por seguridad)
+        // (no modificamos window._choferEsTitularActual ni el aviso)
+    }
+
     function syncDocsUI() {
         console.log("🔄 Entrando en syncDocsUI()");
 
@@ -884,10 +1047,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const modo = _decidirModoDocs();
         _aplicarModoDocs(modo);
+
+        // 🆕 Tras aplicar el modo (que solo cambia visibilidad), inferimos el estado para el RESUMEN
+        actualizarEstadoResumenPorDocs();
     }
 
+
     function reaplicarFiltroTrasRender() {
-        syncDocsUI();
+        syncDocsUI(); // sync aplica el modo y, ahora, también actualiza el estado del resumen
     }
 
     cambioChoferSi?.addEventListener('change', syncDocsUI);
@@ -907,15 +1074,11 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             choferEsTitularActual = window._choferEsTitularActual ?? false;
             console.info("✅ Titularidad definida:", choferEsTitularActual ? "Titular = chofer" : "Chofer distinto del titular");
+            // 🆕 Tras carga inicial y render, también inferimos por las miniaturas visibles
+            actualizarEstadoResumenPorDocs();
         }, 100);
     });
 
-
-    // 🔹 Al buscar transporte, guardamos estas variables globales
-    //btnBuscarTransporte?.addEventListener('click', () => {
-    //    window._dataTransporteActual = data;
-    //   window._choferEsTitularActual = choferEsTitular;
-    //});
 
     // === Escenario 2: titular (era chofer) → pasa a nuevo chofer distinto ===
     cambioChoferSi?.addEventListener('change', () => {
@@ -927,6 +1090,8 @@ document.addEventListener('DOMContentLoaded', () => {
             );
             mostrarDocumentacion(docsFiltrados);
             reaplicarFiltroTrasRender();
+            // 🆕 aseguramos que el estado del resumen se actualice tras el re-render
+            actualizarEstadoResumenPorDocs();
         }
     });
 
@@ -951,6 +1116,8 @@ document.addEventListener('DOMContentLoaded', () => {
             mostrarDocumentacion(docsFiltrados);
             reaplicarFiltroTrasRender();
             console.log("🟢 Escenario 3 ejecutado en segunda pregunta (placeholders generados)");
+            // 🆕 tras render, actualizar estado para el resumen
+            actualizarEstadoResumenPorDocs();
         }
     });
 
@@ -977,8 +1144,11 @@ document.addEventListener('DOMContentLoaded', () => {
             mostrarDocumentacion(docsFiltrados);
             reaplicarFiltroTrasRender();
             console.log("🟢 Escenario 4 ejecutado (chofer → titular, cert_salud placeholder actualizado)");
+            // 🆕 tras render, actualizar estado para el resumen
+            actualizarEstadoResumenPorDocs();
         }
     });
+
 
     // === Capitalización automática del nombre del chofer ===
     const inputNombreChofer = document.getElementById('nombreChofer');
@@ -1034,101 +1204,630 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ====== Envío de renovación ======
-    form?.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    // === Función para generar el resumen del formulario de RENOVACIÓN (idéntico al alta) ===
+    function previsualizarRenovacion() {
 
-        if (!idTransporte.value.trim()) {
-            alert('Ingrese el número de habilitación.');
-            idTransporte.focus();
+        // --- Determinar si el chofer es el titular según lo cargado en el formulario ---
+        const nombreChofer = document.getElementById("nombreChofer")?.value?.trim();
+        const dniChofer = document.getElementById("dniChofer")?.value?.trim();
+        const carnetChofer = document.getElementById("carnetChofer")?.value?.trim();
+
+        // Detectar si el titular será el chofer (según cartel del formulario)
+        let choferEsTitular = false;
+        const avisoChofer = document.querySelector("#avisoTitularEsChofer input")?.value?.trim() || "";
+
+        if (avisoChofer === "El titular es el chofer." || avisoChofer === "En la renovación el titular será el chofer") {
+            choferEsTitular = true;
+        } else {
+            choferEsTitular = !nombreChofer && !dniChofer && !carnetChofer;
+        }
+
+        // --- TITULAR ---
+        let resumenHTML = `
+    <div class="preview-item">
+      <span class="preview-label">DNI Titular:</span>
+      <span class="preview-value">${document.getElementById("dniTitular")?.value || ""}</span>
+    </div>
+    <div class="preview-item">
+      <span class="preview-label">Nombre Titular:</span>
+      <span class="preview-value">${document.getElementById("nombreTitular")?.value || ""}</span>
+    </div>
+  `;
+
+        // --- CHOFER ---
+        if (choferEsTitular) {
+            resumenHTML += `
+      <div class="preview-item">
+        <span class="preview-label">Chofer:</span>
+        <span class="preview-value fw-semibold text-success">El chofer será el titular</span>
+      </div>
+    `;
+        } else {
+            resumenHTML += `
+    <div class="preview-item">
+      <span class="preview-label">Nombre del Chofer:</span>
+      <span class="preview-value">${document.getElementById("nombreChofer")?.value || ""}</span>
+    </div>
+    <div class="preview-item">
+      <span class="preview-label">DNI:</span>
+      <span class="preview-value">${document.getElementById("dniChofer")?.value || ""}</span>
+    </div>
+    <div class="preview-item">
+      <span class="preview-label">Carnet N°:</span>
+      <span class="preview-value">${document.getElementById("carnetChofer")?.value || ""}</span>
+    </div>
+    <div class="preview-item">
+      <span class="preview-label">Teléfono:</span>
+      <span class="preview-value">(${document.getElementById("cod_area_chofer")?.value || ""
+                }) ${document.getElementById("telefono_chofer")?.value || ""}</span>
+    </div>
+  `;
+        }
+
+        // --- VEHÍCULO ---
+        resumenHTML += `
+  <div class="preview-item">
+    <span class="preview-label">Número de Vehículo:</span>
+    <span class="preview-value">${document.getElementById("numeroVehiculo")?.value || ""}</span>
+  </div>
+  <div class="preview-item">
+    <span class="preview-label">Tipo de Vehículo:</span>
+    <span class="preview-value">${document.getElementById("tipoVehiculo")?.selectedOptions?.[0]?.text ||
+            document.getElementById("tipoVehiculo")?.value || ""
+            }</span>
+  </div>
+  <div class="preview-item">
+    <span class="preview-label">Patente:</span>
+    <span class="preview-value">${document.getElementById("patente")?.value || ""}</span>
+  </div>
+  <div class="preview-item">
+    <span class="preview-label">Tipo de Alimento:</span>
+    <span class="preview-value">${document.getElementById("tipoAlimento")?.value === "otros"
+                ? document.getElementById("otroTipoAlimento")?.value.trim() || "Otros (especificar)"
+                : document.getElementById("tipoAlimento")?.selectedOptions[0]?.text || ""}</span>
+  </div>
+    </div>
+    <div class="preview-item">
+      <span class="preview-label">Vencimiento VTO:</span>
+      <span class="preview-value">${document.getElementById("vtoFecha")?.value || ""}</span>
+    </div>
+    <div class="preview-item">
+      <span class="preview-label">Vencimiento Seguro:</span>
+      <span class="preview-value">${document.getElementById("seguroFecha")?.value || ""}</span>
+    </div>
+  `;
+
+        // --- MONTOS Y PAGO ---
+        resumenHTML += `
+  <div class="preview-item">
+    <span class="preview-label">Monto Sellado:</span>
+    <span class="preview-value">${document.getElementById("montoSellado")?.value || ""}</span>
+  </div>
+  <div class="preview-item">
+    <span class="preview-label">Meses Abonados:</span>
+    <span class="preview-value">${document.getElementById("mesesAdelantar")?.value || ""}</span>
+  </div>
+  <div class="preview-item">
+    <span class="preview-label">Monto Total:</span>
+    <span class="preview-value fw-bold">${document.getElementById("montoTotal")?.value || ""}</span>
+  </div>
+`;
+        // --- Toma el número real de la BD si existe ---
+        const numRenovacionActual = Number(
+            window._dataTransporteActual?.numero_renovacion ??
+            window._dataTransporteActual?.nro_renovacion ??
+            0
+        );
+        const siguienteRenovacion = numRenovacionActual + 1;
+
+        resumenHTML += `
+  <div style="
+    text-align: center;
+    margin: 18px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0e3816ff; /* verde del botón Confirmar renovación */
+  ">
+    Esta será la renovación Nº ${siguienteRenovacion}
+  </div>
+`;
+
+        // --- DOCUMENTOS CARGADOS (visibles + renovados + faltantes obligatorios) ---
+        const placeholders = Array.from(document.querySelectorAll(".documento-item img"))
+            .filter(img => img.src.includes("Bromat-docu.png")) // placeholder visual
+            .map(img => img.closest(".documento-item")?.querySelector(".form-label")?.textContent.trim())
+            .filter(Boolean);
+
+        const renovados = Array.from(reemplazosDocs.keys());
+
+        let documentos = [...new Set([...placeholders, ...renovados])];
+
+        if (choferEsTitular) {
+            const excluir = [
+                "DNI Frente (Chofer)",
+                "DNI Dorso (Chofer)",
+                "Carnet Frente (Chofer)",
+                "Carnet Dorso (Chofer)"
+            ];
+            documentos = documentos.filter(d => !excluir.includes(d));
+        }
+
+        const listaDocumentos = documentos.length
+            ? documentos.map(d => `${d} *`).join("<br>")
+            : "Sin documentos nuevos ni pendientes.";
+
+        resumenHTML += `
+  <div class="preview-item">
+    <span class="preview-label">Documentos Cargados:</span>
+    <span class="preview-value">${listaDocumentos}</span>
+  </div>
+`;
+
+        // --- Mostrar en el modal ---
+        const preview = document.getElementById("previewContent");
+        if (preview) preview.innerHTML = resumenHTML;
+
+        const modal = new bootstrap.Modal(document.getElementById("previewModal"));
+        modal.show();
+    }
+
+    // === Confirmar desde el modal (idéntico al alta) ===
+    document.getElementById("btnConfirmarModal")?.addEventListener("click", async function () {
+        const form = document.getElementById("formRenovacionTransporte");
+        if (!form) return;
+
+        if (!form.checkValidity()) {
+            form.classList.add("was-validated");
             return;
         }
 
-        const formData = new FormData();
-
-        // Campos principales
-        formData.append('id_transporte', idTransporte.value.trim());
-        formData.append('nombre_chofer', nombreChofer.value.trim());
-        formData.append('dni_chofer', dniChofer.value.trim());
-        formData.append('carnet_chofer', carnetChofer.value.trim());
-
-        const codChofer = codAreaChofer.value.trim();
-        const numChofer = telefonoChofer.value.trim();
-        const telChofer = (codChofer && numChofer)
-            ? `${codChofer}-${numChofer}`
-            : '';
-
-        formData.append('telefono_chofer', telChofer);
-
-        formData.append('tipo_vehiculo', tipoVehiculo.value);
-        formData.append('tipo_alimento', tipoAlimento.value === 'otros' ? otroTipoAlimento.value : tipoAlimento.value);
-        formData.append('patente', patente.value.trim());
-        formData.append('vto_fecha', vtoFecha.value);
-        formData.append('seguro_fecha', seguroFecha.value);
-
-        // Montos (mismo criterio que alta)
-        formData.append('monto_sellado', (document.getElementById('montoSellado')?.value || '').replace(/[^\d]/g, '') || '0');
-        formData.append('meses_adelantados', document.getElementById('mesesAdelantar')?.value || '1');
-        formData.append('monto_total', (document.getElementById('montoTotal')?.value || '').replace(/[^\d]/g, '') || '0');
-
-        // 🔹 Solo documentos reemplazados (enviamos uno por tipo de documento)
-        if (reemplazosDocs.size > 0) {
-            reemplazosDocs.forEach((file, tipoDoc) => {
-                formData.append(tipoDoc, file);
-            });
-        }
-
-        // Token de autenticación
-        const token = getToken();
-        if (!token) {
-            alert('Error: sesión no válida. Inicie sesión nuevamente.');
-            return;
-        }
-
-        try {
-            const resp = await fetch('/api/renovacion-transporte/actualizar', {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${token}` },
-                body: formData
-            });
-
-            if (!resp.ok) {
-                const errorData = await resp.json().catch(() => ({}));
-                throw new Error(errorData.message || 'Error al guardar la renovación.');
-            }
-
-            const data = await resp.json();
-
-            // Guardar datos globalmente para otros eventos
-            window._dataTransporteActual = data;
-
-            // Detectar si el chofer es titular
-            const choferEsTitular =
-                (!data.nombre_chofer && !data.dni_chofer) ||
-                (
-                    data.nombre_chofer?.trim().toUpperCase() === data.nombre_completo_titular?.trim().toUpperCase() &&
-                    data.dni_chofer?.trim() === data.dni_titular?.trim()
-                );
-
-            // Guardar también esta condición globalmente
-            window._choferEsTitularActual = choferEsTitular;
-
-            // Emitir evento global (otros módulos pueden escucharlo)
-            document.dispatchEvent(new Event("transporteCargado"));
-
-            alert(`✅ Renovación guardada correctamente.\nNúmero de renovación: ${data.numero_renovacion}\nNueva fecha de vencimiento: ${new Date(data.fecha_vencimiento).toLocaleDateString('es-AR')}`);
-
-            // 👉 Redirigir al panel principal
-            window.location.href = 'panel-principal.html';
-
-            reemplazosDocs.clear();
-        } catch (error) {
-            console.error('Error al guardar la renovación:', error);
-            alert('❌ Ocurrió un error al guardar la renovación.');
-        }
+        // 🔹 Llamá aquí a tu función de guardado actual
+        await enviarFormularioRenovacion(); // <- usa el mismo nombre que ya tenés para el fetch
     });
 
     const safeJson = async (resp) => {
         try { return await resp.json(); } catch { return null; }
     };
+
+    // === Validación y previsualización del formulario de RENOVACIÓN (idéntico al ALTA + placeholders) ===
+    document.getElementById('formRenovacionTransporte')?.addEventListener('submit', function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        // 🔹 Primero, validar los placeholders visibles
+        if (!validarPlaceholdersCompletos()) {
+            this.classList.add('was-validated');
+
+            // 🔹 Llevar el foco al primer campo inválido visible
+            setTimeout(() => {
+                const primerInvalido = this.querySelector(':invalid');
+                if (primerInvalido) {
+                    primerInvalido.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    primerInvalido.focus({ preventScroll: true });
+                }
+            }, 50);
+
+            return;
+        }
+
+        // Validar formulario general
+        if (this.checkValidity()) {
+            previsualizarRenovacion();
+        } else {
+            // 🔴 Asegurar foco y desplazamiento cuando hay errores
+            setTimeout(() => {
+                const primerInvalido = this.querySelector(':invalid');
+                if (primerInvalido) {
+                    primerInvalido.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    primerInvalido.focus({ preventScroll: true });
+                }
+            }, 50);
+        }
+
+        this.classList.add('was-validated');
+    });
+
+    // === Limpia completamente el estado visual del formulario ===
+    function resetearEstadoVisualFormulario() {
+        const form = document.getElementById("formRenovacionTransporte");
+        if (!form) return;
+
+        // Eliminar clases de validación
+        form.classList.remove("was-validated");
+
+        // Quitar bordes verdes y rojos de todos los campos
+        form.querySelectorAll(".is-valid, .is-invalid").forEach(el => {
+            el.classList.remove("is-valid", "is-invalid");
+        });
+    }
+
+    // === Validar que todos los placeholders visibles tengan imagen cargada (idéntico al alta) ===
+    function validarPlaceholdersCompletos() {
+        const imgs = Array.from(document.querySelectorAll('#contenedorDocTransporte img'));
+        let faltantes = [];
+        let primerPlaceholder = null;
+
+        imgs.forEach(img => {
+            const cont = img.closest('[data-tipo-documento], .col, .documento-item') || img;
+            const visible = cont.offsetParent !== null && getComputedStyle(cont).display !== 'none';
+            if (!visible) return;
+
+            const tipo = cont.dataset?.tipoDocumento || img.dataset?.tipoDocumento || img.getAttribute('data-tipo') || '';
+            const inputFile = tipo
+                ? (
+                    document.querySelector(`#contenedorDocTransporte input[type="file"][data-tipo-documento="${tipo}"], 
+                    #contenedorDocTransporte input[type="file"][name="${tipo}"]`)
+                    || cont.querySelector('input[type="file"]')
+                )
+                : cont.querySelector('input[type="file"]');
+            const tieneArchivo = !!(inputFile && inputFile.files && inputFile.files.length);
+            const tieneReemplazo = (typeof reemplazosDocs !== "undefined") && reemplazosDocs.has(tipo);
+            const esPlaceholder = /Bromat-docu\.png$/i.test(img.src) && !tieneArchivo && !tieneReemplazo;
+
+            // 🔸 Excepción: el "sellado bromatológico" debe renovarse siempre, aunque tenga imagen previa
+            const esSellado = tipo === 'sellado_bromatologico';
+            const debeRenovarSellado = esSellado && !(typeof reemplazosDocs !== "undefined" && reemplazosDocs.has(tipo));
+
+            // limpiar mensajes previos si los hubiera
+            const existente = cont.querySelector('.msg-placeholder');
+            if (existente) existente.remove();
+
+            if ((esPlaceholder && !tieneArchivo) || debeRenovarSellado) {
+                if (!primerPlaceholder) primerPlaceholder = img;
+                img.style.border = '2px solid #f23346ff';
+
+                const tipoDoc = cont.dataset?.tipoDocumento || 'Documento';
+                faltantes.push(tipoDoc);
+
+                // 🔹 insertar mensaje debajo del placeholder
+                const msg = document.createElement('small');
+                msg.className = 'msg-placeholder text-danger';
+                msg.style.display = 'block';
+                msg.style.marginTop = '4px';
+                msg.textContent = 'Introducir una imagen.';
+                cont.appendChild(msg);
+            } else {
+                img.style.border = '1px solid #1b7937ff';
+            }
+        });
+
+        if (faltantes.length > 0) {
+            if (primerPlaceholder) {
+                primerPlaceholder.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                primerPlaceholder.focus?.({ preventScroll: true });
+            }
+            return false;
+        }
+
+        return true;
+    }
+
+    // === VALIDACIÓN NARANJA (campos no modificados y aviso visual) ===
+    (() => {
+        const btnChequearDatos = document.getElementById("btnChequearDatos");
+        const avisoNoModificados = document.getElementById("avisoNoModificados");
+        const flechaAviso = document.getElementById("flechaAviso");
+
+        if (!btnChequearDatos) return;
+
+        let primerChequeoHecho = false;
+
+        function resetValidacionNaranja() {
+
+            // Resetear estado interno
+            primerChequeoHecho = false;
+
+            // Quitar marcas naranjas en inputs y documentos
+            document.querySelectorAll(".campo-no-modificado").forEach(el => {
+                el.classList.remove("campo-no-modificado");
+            });
+
+            // Ocultar mensajes y flecha de validación naranja
+            if (avisoNoModificados) avisoNoModificados.style.display = "none";
+            if (flechaAviso) flechaAviso.style.display = "none";
+        }
+
+        // ======================================================
+        // === 🔁 Reset automático cada vez que se cambia escenario
+        // ======================================================
+
+        // Grupo 1: “¿Cambia de chofer?”
+        cambioChoferSi.addEventListener("change", () => {
+            resetValidacionNaranja();
+            manejarCambioChofer(); // ya existente
+        });
+
+        cambioChoferNo.addEventListener("change", () => {
+            resetValidacionNaranja();
+            manejarCambioChofer(); // ya existente
+        });
+
+        // Grupo 2: “¿Será el titular?”
+        choferTitularSi.addEventListener("change", () => {
+            resetValidacionNaranja();
+            manejarChoferTitular(); // ya existente
+        });
+
+        choferTitularNo.addEventListener("change", () => {
+            resetValidacionNaranja();
+            manejarChoferTitular(); // ya existente
+        });
+
+        // 🔹 Guardar valores originales al cargar transporte
+        let datosOriginales = {};
+        document.addEventListener("transporteCargado", () => {
+            datosOriginales = {};
+            document
+                .querySelectorAll(
+                    "#formRenovacionTransporte input, #formRenovacionTransporte select, #formRenovacionTransporte textarea"
+                )
+                .forEach((el) => {
+                    if (!el.disabled && !el.readOnly && el.id) {
+                        datosOriginales[el.id] = el.value;
+                    }
+                });
+
+            // 🔸 Quitar naranja en vivo cuando el usuario modifica algo (RÉPLICA DE COMERCIO)
+            document
+                .querySelectorAll(
+                    "#formRenovacionTransporte input, #formRenovacionTransporte select, #formRenovacionTransporte textarea"
+                )
+                .forEach((el) => {
+                    el.addEventListener("input", () => {
+                        el.classList.remove("campo-no-modificado");
+                    });
+                    el.addEventListener("change", () => {
+                        el.classList.remove("campo-no-modificado");
+                    });
+                });
+        });
+
+        // === CLICK PRINCIPAL DEL BOTÓN ===
+        btnChequearDatos.addEventListener("click", () => {
+            const form = document.getElementById("formRenovacionTransporte");
+            if (!form) return;
+
+            // Primero: validar campos del formulario
+            if (!form.checkValidity()) {
+
+                // 🔥 RESET TOTAL DE VALIDACIÓN NARANJA CUANDO HAY ROJO
+                primerChequeoHecho = false;
+
+                // Quitar todas las marcas naranjas existentes
+                document.querySelectorAll(".campo-no-modificado").forEach(el => {
+                    el.classList.remove("campo-no-modificado");
+                });
+
+                // Ocultar aviso naranja y flecha si estaban visibles
+                if (avisoNoModificados) avisoNoModificados.style.display = "none";
+                if (flechaAviso) flechaAviso.style.display = "none";
+
+                // ❗ recién ahora marcamos validación roja
+                form.classList.add("was-validated");
+
+                setTimeout(() => {
+                    const primerInvalido = form.querySelector(":invalid");
+                    if (primerInvalido) {
+                        primerInvalido.scrollIntoView({ behavior: "smooth", block: "center" });
+                        primerInvalido.focus({ preventScroll: true });
+                    }
+                }, 60);
+
+                // 🔹 Asegura que el sellado bromatológico también se marque en rojo
+                validarPlaceholdersCompletos();
+
+                return; // detener aquí si hay errores de campos
+            }
+
+            // Segundo: validar placeholders
+            if (!validarPlaceholdersCompletos()) {
+                form.classList.add("was-validated");
+
+                // Buscar si hay algún campo inválido antes de hacer foco en placeholders
+                const primerInvalido = form.querySelector(":invalid");
+                if (primerInvalido) {
+                    setTimeout(() => {
+                        primerInvalido.scrollIntoView({ behavior: "smooth", block: "center" });
+                        primerInvalido.focus({ preventScroll: true });
+                    }, 60);
+                } else {
+                    // Si no hay campos inválidos, el foco lo maneja validarPlaceholdersCompletos()
+                }
+
+                return; // detener aquí si hay placeholders faltantes
+            }
+
+            // --- 2️⃣ VALIDACIÓN NARANJA ---
+            const camposEditables = Array.from(
+                document.querySelectorAll(
+                    "#formRenovacionTransporte input:not([readonly]):not([disabled]):not([type=hidden]):not([type=radio]):not(#idTransporte), #formRenovacionTransporte select:not([disabled]), #formRenovacionTransporte textarea:not([disabled])"
+                )
+            );
+
+            let noModificados = [];
+
+            // Si quedan placeholders → activar validación roja y detener
+            const placeholdersVisibles = Array.from(document.querySelectorAll('#contenedorDocTransporte img'))
+                .filter(img => /Bromat-docu\.png$/i.test(img.src) && img.offsetParent !== null);
+
+            console.log("📸 Placeholders visibles:", placeholdersVisibles.length);
+            if (placeholdersVisibles.length > 0) {
+                validarPlaceholdersCompletos(); // activa bordes rojos y mensajes
+                return;
+            }
+
+            // Campos editables no modificados
+            camposEditables.forEach((el) => {
+                const original = datosOriginales[el.id] ?? "";
+                if (el.value.trim() === original.trim()) {
+                    el.classList.add("campo-no-modificado");
+                    noModificados.push(el);
+                } else {
+                    el.classList.remove("campo-no-modificado");
+                }
+            });
+
+            // 💾 Mantener referencias activas de los archivos antes del render
+            for (const [tipo, archivo] of reemplazosDocs.entries()) {
+                reemplazosDocs.set(tipo, archivo);
+            }
+
+            // Documentos no renovados (ya sin placeholders)
+            const docs = document.querySelectorAll("#contenedorDocTransporte [data-tipo-documento]");
+            docs.forEach((col) => {
+                const tipo = col.dataset.tipoDocumento;
+                const fueReemplazado = reemplazosDocs.has(tipo);
+                const img = col.querySelector("img");
+
+                if (!fueReemplazado && img && !/Bromat-docu\.png$/i.test(img.src)) {
+                    img.classList.add("campo-no-modificado");
+                    noModificados.push(img);
+                } else if (img) {
+                    img.classList.remove("campo-no-modificado");
+                }
+            });
+
+            // --- Mostrar aviso solo si corresponde ---
+            if (!primerChequeoHecho && noModificados.length > 0) {
+
+                // 🔶 ENFOCAR el primer campo naranja
+                try {
+                    noModificados[0].focus();
+                } catch (e) {
+                    console.warn("No se pudo enfocar el primer campo naranja:", e);
+                }
+
+                // 🔶 MOSTRAR MODAL NARANJA
+                const modalNaranja = new bootstrap.Modal(
+                    document.getElementById('modalNaranjaTransporte')
+                );
+                modalNaranja.show();
+
+                avisoNoModificados.textContent = "Si no debe renovar estos campos presione nuevamente";
+                flechaAviso.innerHTML = "↓";
+
+                // Se muestran, y damos un pequeño margen de repintado antes del return
+                avisoNoModificados.style.display = "block";
+                flechaAviso.style.display = "block";
+
+                requestAnimationFrame(() => {
+                    avisoNoModificados.offsetHeight; // fuerza repintado del DOM
+                });
+
+                primerChequeoHecho = true;
+                console.log("🟢 CLICK en Chequear Datos | primerChequeoHecho:", primerChequeoHecho);
+                return;
+            }
+
+            // --- 3️⃣ Si no hay no-modificados y ya se había mostrado advertencia → abrir resumen ---
+            if (primerChequeoHecho) {
+                console.log("✅ Segundo clic detectado, abriendo resumen...");
+                previsualizarRenovacion();
+                return;
+            }
+
+            // Si no hay no-modificados y es el primer clic → va directo al resumen
+            previsualizarRenovacion();
+        });
+
+        // 🔁 Reiniciar validación si se cambia de chofer
+        document.querySelectorAll("#cambioChoferSi, #cambioChoferNo").forEach((r) => {
+            r.addEventListener("change", () => {
+                document
+                    .querySelectorAll(".campo-no-modificado")
+                    .forEach((el) => el.classList.remove("campo-no-modificado"));
+                avisoNoModificados.style.display = "none";
+                flechaAviso.style.display = "none";
+                primerChequeoHecho = false;
+            });
+        });
+    })();
+
 });
+
+// === Envío final del formulario de renovación (idéntico al alta, sin QR) ===
+async function enviarFormularioRenovacion() {
+    try {
+        const form = document.getElementById('formRenovacionTransporte');
+        const formData = new FormData(form);
+
+        // 🔹 Datos básicos del transporte
+        formData.append('id_titular_ambulante', window._dataTransporteActual?.id_titular_ambulante || '');
+        formData.append('id_transporte', window._dataTransporteActual?.id_transporte || '');
+        formData.append('tipo_vehiculo', document.getElementById('tipoVehiculo')?.value || '');
+        formData.append('patente', document.getElementById('patente')?.value?.trim() || '');
+        formData.append('tipo_alimento', document.getElementById('tipoAlimento')?.value === 'otros'
+            ? document.getElementById('otroTipoAlimento')?.value.trim()
+            : document.getElementById('tipoAlimento')?.value || '');
+
+        formData.append('vto_fecha', document.getElementById('vtoFecha')?.value || '');
+        formData.append('seguro_fecha', document.getElementById('seguroFecha')?.value || '');
+
+        // 🔹 Datos del chofer
+        formData.append('nombre_chofer', document.getElementById('nombreChofer')?.value || '');
+        formData.append('dni_chofer', document.getElementById('dniChofer')?.value || '');
+        formData.append('carnet_chofer', document.getElementById('carnetChofer')?.value || '');
+        const codChofer = document.getElementById('cod_area_chofer')?.value?.trim() || '';
+        const numChofer = document.getElementById('telefono_chofer')?.value?.trim() || '';
+        const telChofer = (codChofer && numChofer)
+            ? `${codChofer}-${numChofer}`
+            : (document.getElementById('telefonoChofer')?.value || '');
+        formData.append('telefono_chofer', telChofer);
+
+        // 🔹 Montos
+        formData.append('monto_sellado', (document.getElementById('montoSellado')?.value || '').replace(/[^\d]/g, '') || '0');
+        formData.append('meses_adelantados', document.getElementById('mesesAdelantar')?.value || '1');
+        formData.append('monto_total', (document.getElementById('montoTotal')?.value || '').replace(/[^\d]/g, '') || '0');
+
+        // 🔹 Número de renovación (dato real desde la base + 1)
+        const nroActual = Number(window._dataTransporteActual?.numero_renovacion || 0);
+        formData.append('numero_renovacion', nroActual + 1);
+
+        // === Adjuntar documentos al FormData (restaurado como versión anterior) ===
+        if (typeof reemplazosDocs !== "undefined" && reemplazosDocs.size > 0) {
+            for (const [tipoDoc, archivo] of reemplazosDocs.entries()) {
+                formData.append(tipoDoc, archivo);
+            }
+        }
+
+        // 🧩 Si se eligió que el titular será el chofer, enviar los datos del chofer vacíos
+        const choferTitularSi = document.getElementById('choferTitularSi');
+        if (choferTitularSi?.checked) {
+            formData.set('nombre_chofer', '');
+            formData.set('dni_chofer', '');
+            formData.set('carnet_chofer', '');
+            formData.set('telefono_chofer', '');
+        }
+
+        // 📤 Enviar formulario (idéntico a alta, solo cambia la ruta)
+        const response = await fetch('/api/renovacion-transporte/actualizar', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+            body: formData
+        });
+
+        if (!response.ok) {
+            alert('❌ Error al registrar la renovación.');
+            return;
+        }
+
+        // ✅ Éxito
+        alert(`✅ Renovación Nº ${nroActual + 1} realizada con éxito.`);
+
+        // Cerrar modal
+        const modalEl = document.getElementById('previewModal');
+        if (modalEl) {
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) modalInstance.hide();
+        }
+
+        // Redirigir igual que el alta
+        window.location.href = 'panel-principal.html';
+
+    } catch (error) {
+        console.error('Error en enviarFormularioRenovacion:', error);
+        alert('Ocurrió un error al enviar la renovación.');
+    }
+}
+

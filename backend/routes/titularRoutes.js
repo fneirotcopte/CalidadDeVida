@@ -240,4 +240,45 @@ router.get('/documentos/:id', verificarToken, async (req, res) => {
   }
 });
 
+// ===============================
+// 🔎 Validación en vivo de DNI / CUIT
+// ===============================
+router.get('/validar', verificarToken, async (req, res) => {
+  try {
+    const { campo, valor } = req.query;
+
+    if (!campo || !valor) {
+      return res.status(400).json({ error: 'Faltan parámetros' });
+    }
+
+    let query = '';
+    let values = [];
+
+    if (campo === 'dni') {
+      // DNI puede estar en comercio (razón_social) o ambulante/transporte (titular_ambulante)
+      query = `
+        SELECT dni FROM razon_social WHERE dni = ?
+        UNION
+        SELECT dni FROM titular_ambulante WHERE dni = ?
+      `;
+      values = [valor, valor];
+    } else if (campo === 'cuit') {
+      // CUIT solo se usa en tabla razon_social
+      query = `
+        SELECT cuit FROM razon_social WHERE cuit = ?
+      `;
+      values = [valor];
+    } else {
+      return res.status(400).json({ error: 'Campo inválido' });
+    }
+
+    const [result] = await db.query(query, values);
+    res.json({ existe: result.length > 0 });
+
+  } catch (err) {
+    console.error('❌ Error en verificación de existencia:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
 module.exports = router;

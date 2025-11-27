@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalle del Transporte</title>
+    <link rel="stylesheet" href="../styles/lista-transportes.css" />
+    <link rel="stylesheet" href="../styles/transporte.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body class="dashboard-body">
+    <div class="dashboard">
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="user-info">
+                <img src="../img/empleado.png" alt="Empleado" />
+                <div>
+                    <h3 id="nombre-usuario"></h3>
+                    <p id="rol-usuario"></p>
+                </div>
+                <button class="logout-btn">Cerrar sesión</button>
+            </div>
+            <div class="logo-capital">
+                <img src="../img/logo-capital.png" alt="Municipalidad de la Capital" />
+            </div>
+        </div>
+
+        <!-- Main Panel -->
+        <div class="main-panel">
+
+            <!-- Header -->
+            <div class="header-container">
+                <a href="../pages/panel-principal.html" class="logo-calidad">
+                    <img src="../img/logo-calidad.png" alt="Logo Calidad de Vida" />
+                </a>
+                <div class="header">
+                    <h2>Dirección de Calidad de Vida</h2>
+                </div>
+            </div>
+
+            <!-- Título + volver -->
+            <div class="titulo-contenedor">
+                <a href="lista-transportes.html" class="boton-volver">
+                    <i class="fas fa-arrow-left"></i> Volver al listado
+                </a>
+                <div class="titulo-area">
+                    <h1><i class="fas fa-truck"></i> Detalle del Transporte</h1>
+                </div>
+            </div>
+
+            <!-- Contenido Principal -->
+            <div class="detalle-transporte">
+
+                <!-- Estado -->
+                <div class="seccion">
+                    <h2><i class="fas fa-info-circle"></i> Estado del Transporte</h2>
+                    <div class="grid-2-columnas">
+                        <div class="campo">
+                            <label>Habilitación:</label>
+                            <div id="estado-habilitacion" class="estado-activo"></div>
+                        </div>
+                        <div class="campo">
+                            <label>Estado:</label>
+                            <button id="btn-estado-transporte" class="estado-transporte-btn">
+                                <i class="fas fa-power-off"></i> <span id="texto-estado">Activo</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información del Transporte -->
+                <div class="seccion">
+                    <h2><i class="fas fa-truck-loading"></i> Información del Transporte</h2>
+                    <div class="grid-2-columnas">
+
+                        <!-- Bloque superior: SIEMPRE visible -->
+                        <div class="campo">
+                            <label>Titular:</label>
+                            <input type="text" id="titular" class="campo-edit" disabled />
+                        </div>
+                        <div class="campo">
+                            <label>Patente:</label>
+                            <input type="text" id="patente" class="campo-edit" disabled />
+                        </div>
+
+                        <div class="campo">
+                            <label>Tipo de Vehículo:</label>
+                            <input type="text" id="tipo-vehiculo" class="campo-edit" disabled />
+                        </div>
+                        <div class="campo">
+                            <label>Tipo de Alimento:</label>
+                            <input type="text" id="tipo-alimento" class="campo-edit" disabled />
+                        </div>
+                    </div>
+
+                    <!-- Bloque edición de chofer -->
+                    <div id="chofer-es-titular" class="grid-2-columnas" style="display:none; margin:10px 0;">
+
+                        <!-- PRIMERA COLUMNA (todo aquí, en vertical): radios y luego campo -->
+                        <div class="campo">
+                            <!-- 1️⃣ Pregunta con radios -->
+                            <span id="texto-pregunta-chofer" style="margin-bottom:3px;">¿Será el titular?</span>
+                            <div id="pregunta-chofer" style="display:flex; gap:10px; margin-bottom:10px;">
+                                <label><input type="radio" name="chofer-es-titular-radio" value="si"> Sí</label>
+                                <label><input type="radio" name="chofer-es-titular-radio" value="no"> No</label>
+                            </div>
+
+                            <!-- 2️⃣ Campo desplazado hacia abajo -->
+                            <label>Actual chofer:</label>
+                            <input type="text" id="actual-chofer" class="campo-edit" value="Es el titular" disabled />
+                        </div>
+
+                        <!-- SEGUNDA COLUMNA vacía (mantiene estructura visual) -->
+                        <div></div>
+                    </div>
+
+                    <!-- 3️⃣ Bloque chofer distinto (deshabilitado inicialmente, debajo de lo anterior) -->
+                    <div id="bloque-detalle-chofer" class="grid-2-columnas" style="display:none; margin-top:10px;">
+                        <div class="campo">
+                            <label>Nombre chofer:</label>
+                            <input type="text" id="chofer-nombre" class="campo-edit" disabled />
+                        </div>
+                        <div class="campo">
+                            <label>Teléfono chofer:</label>
+                            <input type="text" id="chofer-telefono" class="campo-edit" disabled />
+                        </div>
+                        <div class="campo">
+                            <label>DNI chofer:</label>
+                            <input type="text" id="chofer-dni" class="campo-edit" disabled />
+                        </div>
+                        <div class="campo">
+                            <label>N° Carnet:</label>
+                            <input type="text" id="chofer-carnet" class="campo-edit" disabled />
+                        </div>
+                    </div>
+
+                    <!-- Bloque inferior: SIEMPRE visible -->
+                    <div class="campo" style="margin-top:10px;">
+                        <label>Fecha de Vencimiento:</label>
+                        <input type="text" id="fecha-vencimiento" class="campo-edit" readonly />
+                    </div>
+                </div>
+
+                <!-- Información de Registro -->
+                <div class="seccion">
+                    <h2><i class="fas fa-clipboard-check"></i> Información de Registro</h2>
+                    <div class="grid-2-columnas">
+                        <div class="campo">
+                            <label>Empleado que registró:</label>
+                            <p id="empleado-registro">Cargando...</p>
+                        </div>
+                        <div class="campo">
+                            <label>Fecha de Registro:</label>
+                            <p id="fecha-registro"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="footer-acciones">
+                <div id="contenedor-acciones">
+                    <button id="btn-editar" class="boton-primario">
+                        <i class="fas fa-edit"></i> Editar Transporte
+                    </button>
+                    <button id="btn-cancelar" class="boton-secundario" style="display: none;">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button id="btn-baja" class="boton-peligro">
+                        <i class="fas fa-trash"></i> Dar de Baja
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/transporte.js"></script>
+</body>
+
+</html>

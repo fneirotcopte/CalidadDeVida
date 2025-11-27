@@ -33,6 +33,7 @@ exports.obtenerTransportePorId = async (req, res) => {
         t.fecha_habilitacion,
         t.fecha_vencimiento,
         t.numero_vehiculo,
+        t.numero_renovacion,
         ta.nombre AS nombre_titular,
         ta.apellido AS apellido_titular,
         ta.dni AS dni_titular
@@ -110,84 +111,79 @@ exports.actualizarRenovacionTransporte = async (req, res) => {
     const numeroRenovacionActual = Number(existe.numero_renovacion || 0);
     const nuevoNumeroRenovacion = numeroRenovacionActual + 1;
 
-   // 👉 Normalizaciones numéricas
-        const meses = Number.parseInt(meses_adelantados, 10) || 1;
-        const montoSellado = Number.parseFloat(monto_sellado) || 0;
-        const montoTotal = Number.parseFloat(monto_total) || 0;
+    // 👉 Normalizaciones numéricas
+    const meses = Number.parseInt(meses_adelantados, 10) || 1;
+    const montoSellado = Number.parseFloat(monto_sellado) || 0;
+    const montoTotal = Number.parseFloat(monto_total) || 0;
 
-        // 👉 Fechas habilitación / vencimiento (idéntico criterio a comercio)
-        const fechaHabilitacion = new Date();
-        const fechaVencimiento = new Date(fechaHabilitacion);
-        fechaVencimiento.setMonth(fechaVencimiento.getMonth() + meses);
+    // 👉 Fechas habilitación / vencimiento (idéntico criterio a comercio)
+    const fechaHabilitacion = new Date();
+    const fechaVencimiento = new Date(fechaHabilitacion);
+    fechaVencimiento.setMonth(fechaVencimiento.getMonth() + meses);
 
-    await conn.query(
-      `UPDATE transporte SET
-        nombre_chofer = ?, 
-        dni_chofer = ?, 
-        carnet_chofer = ?, 
-        telefono_chofer = ?, 
-        tipo_vehiculo = ?, 
-        tipo_alimento = ?, 
-        patente = ?, 
-        vto_fecha = ?, 
-        seguro_fecha = ?, 
-        monto_sellado = ?, 
-        meses_adelantados = ?, 
-        monto_total = ?, 
-        fecha_habilitacion = ?, 
-        fecha_vencimiento = ?, 
-        id_empleado_registro = ?, 
-        numero_renovacion = ? 
-      WHERE id_transporte = ?`,
-      [
-        nombre_chofer || null,
-        dni_chofer || null,
-        carnet_chofer || null,
-        telefono_chofer || null,
-        tipo_vehiculo,
-        tipo_alimento,
-        (patente || '').toString().trim().toUpperCase(),
-        vto_fecha || null,
-        seguro_fecha || null,
-        montoSellado,
-        meses,
-        montoTotal,
-        fechaHabilitacion,
-        fechaVencimiento,
-        id_empleado_registro,
-        nuevoNumeroRenovacion,
-        id_transporte
-      ]
-    );
+    await conn.query(`
+  UPDATE transporte SET
+    nombre_chofer = ?, 
+    dni_chofer = ?, 
+    carnet_chofer = ?, 
+    telefono_chofer = ?, 
+    tipo_alimento = ?, 
+    vto_fecha = ?, 
+    seguro_fecha = ?, 
+    monto_sellado = ?, 
+    meses_adelantados = ?, 
+    monto_total = ?, 
+    fecha_habilitacion = ?, 
+    fecha_vencimiento = ?, 
+    id_empleado_registro = ?, 
+    numero_renovacion = ?
+  WHERE id_transporte = ?
+`, [
+      nombre_chofer || null,
+      dni_chofer || null,
+      carnet_chofer || null,
+      telefono_chofer || null,
+      tipo_alimento,
+      vto_fecha || null,
+      seguro_fecha || null,
+      montoSellado,
+      meses,
+      montoTotal,
+      fechaHabilitacion,
+      fechaVencimiento,
+      id_empleado_registro,
+      nuevoNumeroRenovacion,
+      id_transporte
+    ]);
 
     // === DOCUMENTACIÓN (idéntica al alta, adaptada a .fields()) ===
-if (req.files && Object.keys(req.files).length > 0) {
-  const carpetaDestino = path.join("uploads", "documentos_transporte");
-  fs.mkdirSync(carpetaDestino, { recursive: true });
+    if (req.files && Object.keys(req.files).length > 0) {
+      const carpetaDestino = path.join("uploads", "documentos_transporte");
+      fs.mkdirSync(carpetaDestino, { recursive: true });
 
-  // Recorremos todos los tipos de documentos cargados
-  for (const tipoDoc in req.files) {
-    const archivo = req.files[tipoDoc][0]; // cada campo tiene un solo archivo
-    const extension = path.extname(archivo.originalname).toLowerCase();
-    const nuevoNombre = `${tipoDoc}_${id_transporte}_R${nuevoNumeroRenovacion}${extension}`;
-    const rutaDestino = path.join(carpetaDestino, nuevoNombre);
+      // Recorremos todos los tipos de documentos cargados
+      for (const tipoDoc in req.files) {
+        const archivo = req.files[tipoDoc][0]; // cada campo tiene un solo archivo
+        const extension = path.extname(archivo.originalname).toLowerCase();
+        const nuevoNombre = `${tipoDoc}_${id_transporte}_R${nuevoNumeroRenovacion}${extension}`;
+        const rutaDestino = path.join(carpetaDestino, nuevoNombre);
 
-    // mover archivo desde uploads/renovaciones
-    if (archivo?.path && fs.existsSync(archivo.path)) {
-      fs.renameSync(archivo.path, rutaDestino);
-    } else {
-      console.warn(`⚠️ Archivo temporal no encontrado: ${archivo?.path}`);
-      continue;
-    }
+        // mover archivo desde uploads/renovaciones
+        if (archivo?.path && fs.existsSync(archivo.path)) {
+          fs.renameSync(archivo.path, rutaDestino);
+        } else {
+          console.warn(`⚠️ Archivo temporal no encontrado: ${archivo?.path}`);
+          continue;
+        }
 
-    const rutaPublica = rutaDestino.replace(/\\/g, "/");
-    await conn.query(
-      `INSERT INTO documentacion_transporte (id_transporte, tipo_documento, ruta_archivo)
+        const rutaPublica = rutaDestino.replace(/\\/g, "/");
+        await conn.query(
+          `INSERT INTO documentacion_transporte (id_transporte, tipo_documento, ruta_archivo)
        VALUES (?, ?, ?)`,
-      [id_transporte, tipoDoc, rutaPublica]
-    );
-  }
-}
+          [id_transporte, tipoDoc, rutaPublica]
+        );
+      }
+    }
 
     await conn.commit();
 

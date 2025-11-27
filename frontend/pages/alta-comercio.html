@@ -25,9 +25,6 @@
                 <button class="logout-btn">Cerrar sesión</button>
             </div>
 
-            <div class="logo-capital">
-                <img src="../img/logo-capital.png" alt="Municipalidad de la Capital" />
-            </div>
         </div>
 
         <div class="main-panel">
@@ -45,8 +42,7 @@
                 <h1><i class="fas fa-store"></i> Alta de Comercio </h1>
             </div>
 
-            <div class="contenedor-blanco"
-                style="width:100%; max-width:1200px; background:#fff; border-radius:12px; padding:16px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <div class="contenedor-blanco">
 
                 <form id="formAltaComercio" class="needs-validation" novalidate>
                     <!-- Bloque de Selección de Categoría -->
@@ -108,114 +104,116 @@
                     </div>
                     <!-- Sección de Datos Básicos -->
                     <div class="card mb-4">
-                        <div class="card-header"
-                            style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
-                            <h5>Datos Básicos del Comercio</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row g-3">
+                        <div id="datosComercio">
+                            <div class="card-header"
+                                style="background: linear-gradient(to bottom, #c0a6dd, #655577); color:#fff;">
+                                <h5>Datos Básicos del Comercio</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
 
-                                <!-- Rubro Principal -->
-                                <div class="col-md-6">
-                                    <label for="rubro" class="form-label">Rubro Principal *</label>
-                                    <select class="form-select" id="rubro" required disabled>
-                                        <option value="" selected disabled>Primero seleccione una categoría</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Por favor seleccione un rubro principal.
-                                    </div>
-                                </div>
-
-                                <!-- Anexos de Rubros -->
-                                <div class="col-12" id="anexosContainer">
-                                    <label class="form-label">Rubros Adicionales (opcional)</label>
-                                    <div class="row g-2 mb-2" id="anexo1Group">
-                                        <div class="col-md-10">
-                                            <select class="form-select anexo-select" id="anexo1" disabled>
-                                                <option value="" selected disabled>Seleccione un rubro adicional
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button type="button" class="btn btn-outline-primary w-100"
-                                                onclick="removeAnexo(1)" disabled>
-                                                <i class="fas fa-times"></i> Eliminar
-                                            </button>
+                                    <!-- Rubro Principal -->
+                                    <div class="col-md-7">
+                                        <label for="rubro" class="form-label">Rubro Principal *</label>
+                                        <select class="form-select" id="rubro" required disabled>
+                                            <option value="" selected disabled>Primero seleccione una categoría</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Por favor seleccione un rubro principal.
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-outline-primary btn-sm" id="btnAddAnexo"
-                                        disabled>
-                                        <i class="fas fa-plus"></i> Agregar otro rubro
-                                    </button>
-                                </div>
 
-                                <!-- Titular -->
-
-
-                                <!-- Nombre Comercial -->
-                                <div class="col-md-6">
-                                    <label for="nombreComercial" class="form-label">Nombre Comercial *</label>
-                                    <input type="text" class="form-control" id="nombreComercial" required>
-                                    <div class="invalid-feedback">
-                                        Por favor ingrese el nombre comercial.
-                                    </div>
-                                </div>
-
-                                <!-- Dirección -->
-                                <div class="col-md-6">
-                                    <label for="direccion" class="form-label">Dirección *</label>
-                                    <input type="text" class="form-control" id="direccion" required>
-                                    <div class="invalid-feedback">
-                                        Por favor ingrese la dirección.
-                                    </div>
-                                </div>
-
-                                <!-- Ubicación en Mapa -->
-                                <div class="col-md-6">
-                                    <label for="ubicacion" class="form-label">Ubicación (Google Maps) *</label>
-                                    <div class="input-group mb-2">
-                                        <input type="text" class="form-control" id="ubicacion"
-                                            placeholder="Pegue aquí el enlace de Google Maps" required>
-                                        <button type="button" class="btn btn-outline-primary" id="btnBuscarMapa">
-                                            <i class="fas fa-map-marked-alt"></i> Buscar en Maps
+                                    <!-- Anexos de Rubros -->
+                                    <div class="col-10 mb-4" id="anexosContainer">
+                                        <label class="form-label">Rubros Adicionales (opcional)</label>
+                                        <div class="row g-2 mb-2" id="anexo1Group">
+                                            <div class="col-md-10">
+                                                <select class="form-select anexo-select" id="anexo1" disabled>
+                                                    <option value="" selected disabled>Seleccione un rubro adicional
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button type="button" class="btn btn-outline-primary w-100"
+                                                    onclick="removeAnexo(1)" disabled>
+                                                    <i class="fas fa-times"></i> Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-primary btn-sm" id="btnAddAnexo"
+                                            disabled>
+                                            <i class="fas fa-plus"></i> Agregar otro rubro
                                         </button>
                                     </div>
-                                    <div id="miniMapa" class="ratio ratio-16x9 mt-2 d-none">
-                                        <!-- Aquí se mostrará el mini mapa -->
+
+                                    <!-- Nombre Comercial -->
+                                    <div class="col-md-6">
+                                        <label for="nombreComercial" class="form-label">Nombre Comercial *</label>
+                                        <input type="text" class="form-control" id="nombreComercial" required>
+                                        <div class="invalid-feedback">
+                                            Por favor ingrese el nombre comercial.
+                                        </div>
                                     </div>
-                                    <small class="text-muted">Haga clic en el botón para buscar la ubicación en Google
-                                        Maps</small>
-                                </div>
 
-                                <div class="col-md-2">
-                                    <label for="cod_area_comercio" class="form-label">C. área *</label>
-                                    <input type="text" class="form-control" id="cod_area_comercio" maxlength="4"
-                                        required>
-                                    <div class="invalid-feedback">Ingrese un código de área válido (2–4 dígitos).</div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="telefono_comercio" class="form-label">Nº teléfono *</label>
-                                    <input type="text" class="form-control" id="telefono_comercio" required>
-                                    <div class="invalid-feedback">Ingrese un número válido.</div>
-                                </div>
-
-                                <!-- Correo Electrónico -->
-                                <div class="col-md-4">
-                                    <label for="correoElectronico" class="form-label">Correo Electrónico *</label>
-                                    <input type="email" class="form-control" id="correoElectronico" required>
-                                    <div class="invalid-feedback">
-                                        Por favor ingrese un correo electrónico válido.
+                                    <!-- Dirección -->
+                                    <div class="col-md-6">
+                                        <label for="direccion" class="form-label">Dirección *</label>
+                                        <input type="text" class="form-control" id="direccion" required>
+                                        <div class="invalid-feedback">
+                                            Por favor ingrese la dirección.
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- Metros Cuadrados -->
-                                <div class="col-md-4" id="filaMetros">
-                                    <label for="metrosCuadrados" class="form-label">Metros Cuadrados *</label>
-                                    <input type="number" class="form-control" id="metrosCuadrados" min="1" step="0.01"
-                                        required>
-                                    <div class="invalid-feedback">
-                                        Por favor ingrese los metros cuadrados.
+                                    <!-- Ubicación en Mapa -->
+                                    <div class="col-md-6">
+                                        <label for="ubicacion" class="form-label">Ubicación (Google Maps) *</label>
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="ubicacion"
+                                                placeholder="Pegue aquí el enlace de Google Maps" required>
+                                            <button type="button" class="btn btn-outline-primary" id="btnBuscarMapa"
+                                                disabled>
+                                                <i class="fas fa-map-marked-alt"></i> Buscar en Maps
+                                            </button>
+                                        </div>
+                                        <div id="miniMapa" class="ratio ratio-16x9 mt-2 d-none">
+                                            <!-- Aquí se mostrará el mini mapa -->
+                                        </div>
+                                        <small class="text-muted">Haga clic en el botón para buscar la ubicación en
+                                            Google
+                                            Maps</small>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label for="cod_area_comercio" class="form-label">C. área *</label>
+                                        <input type="text" class="form-control" id="cod_area_comercio" maxlength="4"
+                                            required>
+                                        <div class="invalid-feedback">Ingrese un código de área válido (2–4 dígitos).
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="telefono_comercio" class="form-label">Nº teléfono *</label>
+                                        <input type="text" class="form-control" id="telefono_comercio" required>
+                                        <div class="invalid-feedback">Ingrese un número válido.</div>
+                                    </div>
+
+                                    <!-- Correo Electrónico -->
+                                    <div class="col-md-4">
+                                        <label for="correoElectronico" class="form-label">Correo Electrónico *</label>
+                                        <input type="email" class="form-control" id="correoElectronico" required>
+                                        <div class="invalid-feedback">
+                                            Por favor ingrese un correo electrónico válido.
+                                        </div>
+                                    </div>
+
+                                    <!-- Metros Cuadrados -->
+                                    <div class="col-md-4" id="filaMetros">
+                                        <label for="metrosCuadrados" class="form-label">M² *</label>
+                                        <input type="number" class="form-control" id="metrosCuadrados" min="1"
+                                            step="0.01" required>
+                                        <div class="invalid-feedback">
+                                            Por favor ingrese los metros cuadrados.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -239,7 +237,7 @@
                                     </div>
 
                                     <div class="col-md-4 montos-generales">
-                                        <label for="montoInspeccion" class="form-label">Monto Inspección Ocular</label>
+                                        <label for="montoInspeccion" class="form-label">Inspección Ocular</label>
                                         <input type="text" class="form-control" id="montoInspeccion" readonly>
                                     </div>
 

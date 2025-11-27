@@ -1,0 +1,30 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV28-10\\backend\\logs\\logger\\.0b4f08d115cf04b3ca7e4101e54f6add650d4bbb-audit.json",
+    "files": [
+        {
+            "date": 1762867202882,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV28-10\\backend\\logs\\logger\\auth-2025-11-11.log",
+            "hash": "891e0ab28408c93f6122415345caedbb0c7bda908d13dee7ca4cb66b97ffb20e"
+        },
+        {
+            "date": 1764083668207,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV28-10\\backend\\logs\\logger\\auth-2025-11-25.log",
+            "hash": "74bad385525ec99f0711286a921c2980396a74336602da4f97a7cad339f57a5e"
+        },
+        {
+            "date": 1764200364915,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV28-10\\backend\\logs\\logger\\auth-2025-11-26.log",
+            "hash": "5cd2e825c0c0fa5854bca7a59e75bbf1a7192218b74b8d77ca41ba98eaa9837b"
+        },
+        {
+            "date": 1764214870828,
+            "name": "C:\\Users\\facun\\OneDrive\\Desktop\\CDV28-10\\backend\\logs\\logger\\auth-2025-11-27.log",
+            "hash": "fbc58b0e6a9bee079b91cbd1288c8e20d2f955f21f0df53cede553a0e17ea4a1"
+        }
+    ],
+    "hashType": "sha256"
+}

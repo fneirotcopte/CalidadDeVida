@@ -4,6 +4,25 @@ body {
     font-family: Arial, sans-serif;
 }
 
+.titulo-area {
+  text-align: center;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.titulo-area h1 {
+  font-size: 2.5rem;
+   font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.titulo-area i {
+  margin-right: 0.5rem;
+  color: #ffffff;
+}
+
+
 .card {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -17,9 +36,35 @@ body {
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-/* Estilos para los botones */
-.btn-outline-primary { color: #655577; border-color: #655577; }
-.btn-outline-primary:hover { background-color: #655577; color: white; }
+/* === Botones principales estilo institucional (como "Datos Generales") === */
+.btn-outline-primary,
+button[onclick^="removeAnexo"],
+#btnBuscarTransporte {
+  background: linear-gradient(to bottom, #ccb3ea, #6b5188) !important; /* mismo degradado que encabezados */
+  color: #fff !important;        /* texto blanco */
+  border: 1px solid #655577 !important;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+
+/* Efecto hover: violeta sólido más oscuro */
+.btn-outline-primary:hover,
+button[onclick^="removeAnexo"]:hover,
+#btnBuscarTransporte:hover {
+  background-color: #2e243e !important; /* violeta oscuro */
+  border-color: #4e3c66 !important;
+  color: #fff !important;
+  transform: scale(1.03); /* pequeño efecto de énfasis */
+}
+
+/* Iconos blancos dentro de los botones */
+.btn-outline-primary i,
+#btnBuscarMapa i,
+#btnAddAnexo i,
+button[onclick^="removeAnexo"] i,
+#btnBuscarComercio i {
+  color: #fff !important;
+}
 
 /* Estilos para la sección de documentos */
 .documento-item {
@@ -45,13 +90,6 @@ body {
     font-weight: bold;
 }
 
-/* Estilos para el mini mapa */
-#miniMapa { border-radius: 5px; border: 1px solid #dee2e6; margin-bottom: 10px; }
-
-#miniMapa iframe {
-    border-radius: 5px;
-}
-
 /* Estilos para la previsualización */
 #previewContent .preview-item {
     margin-bottom: 10px;
@@ -74,38 +112,11 @@ body {
     font-weight: bold;
 }
 
-/* Estilos para los anexos */
-.anexo-group {
-    margin-bottom: 10px;
-}
-
 /* Estilos responsivos */
 @media (max-width: 768px) {
     .card-body .row > div {
         margin-bottom: 15px;
     }
-}
-
-/* Estilos para selects de anexos */
-.anexo-select {
-    background-color: white !important;
-}
-
-.anexo-select:disabled {
-    background-color: #e9ecef;
-    opacity: 1;
-}
-
-.anexo-select option:disabled {
-    color: #6c757d;
-    font-style: italic;
-}
-
-/* Estilos para el ratio del mapa */
-.ratio-16x9 {
-    position: relative;
-    width: 100%;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
 }
 
 .ratio-16x9 iframe {
@@ -141,7 +152,7 @@ body {
 /* === Modal de previsualización coherente con el formulario === */
 /* Título del modal idéntico a los títulos del formulario */
 #previewModal .modal-header {
-  background: linear-gradient(to bottom, #c0a6dd, #655577);
+  background: linear-gradient(to bottom, #c0a6dd, #655577); /* 💚 degradado verde institucional */
   color: #fff;
   border-radius: 8px 8px 0 0;   /* igual que .card-header */
   border-bottom: none;
@@ -160,38 +171,239 @@ body {
   opacity: 0.9;
 }
 
-
 #previewContent {
   font-size: 0.95rem;
   line-height: 1.5;
   font-family: 'Segoe UI', Roboto, sans-serif; /* misma fuente del formulario */
 }
 
+/* Estructura de las filas del resumen */
 #previewContent .preview-item {
   display: grid;
   grid-template-columns: 40% 60%;
   margin-bottom: 6px;
-  border: 1px solid #e0d4f5;
+  border: 1px solid #c8e6c9;       /* 💚 borde verde suave */
   border-radius: 6px;
   overflow: hidden;
   background: #fff;
 }
 
+/* Columna izquierda (claves) */
 #previewContent .preview-label {
-  background: #f3e8ff;     /* violeta muy suave */
-  color: #5a189a;
+  background: #e7f4e5;             /* 💚 verde menta claro */
+  color: #0b450a;                  /* 💚 verde oscuro */
   font-weight: 600;
   padding: 6px 10px;
-  border-right: 1px solid #e0d4f5;
+  border-right: 1px solid #c8e6c9; /* 💚 borde suave */
 }
 
+/* Columna derecha (valores) */
 #previewContent .preview-value {
   padding: 6px 12px;
-  color: #212529;
+  color: #021103;                  /* verde más oscuro */
   text-align: left;
 }
 
 #previewContent .preview-value:empty::after {
   content: "—";
   color: #6c757d;
+}
+
+/* === Alinear el botón Cerrar sesión a la derecha cuando la sidebar pasa arriba (vista móvil) === */
+@media (max-width: 768px) {
+  .sidebar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; /* logo/nombre a la izquierda, botón a la derecha */
+    gap: 12px;
+    padding: 8px 16px;
+  }
+
+  .sidebar .user-info {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .sidebar .user-data { flex: 1; }     /* ocupa el medio */
+  .sidebar .logout-btn { margin-left: auto; } /* empuja el botón a la derecha */
+}
+
+/* === CAMPOS NO MODIFICADOS (estilo idéntico al borde rojo, pero naranja) === */
+.campo-no-modificado {
+  border-color: #fda219 !important;       /* naranja fuerte */
+  background-image: none !important;      /* sin fondo ni sombra */
+  background-color: #fff !important;      /* igual que normal */
+  box-shadow: 0 0 0 0.25rem rgba(255, 218, 139, 0.828) !important; /* mismo halo que el rojo */
+  transition: none !important;            /* sin fade ni transición */
+}
+
+
+/* === CONTENEDOR DEL BOTÓN Y CARTEL === */
+#contenedorChequeo {
+  text-align: center;
+  margin-top: 0.1rem !important; /* 🔽 antes era más alto */
+  padding-top: 0; /* elimina separación interna arriba si existía */
+}
+
+/* Cartel naranja */
+#avisoNoModificados {
+  display: none;
+  background-color: #f17e02;
+  border: 2px solid #f17e02;
+  color: #ffffff;
+  text-align: center;
+  font-family: inherit !important;   /* misma fuente del botón Bootstrap */
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 10px 10px;
+  border-radius: 7px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  width: fit-content;
+  margin: 0 auto 4px auto;
+}
+
+/* === FLECHA ABAJO === */
+#flechaAviso {
+  display: none;
+  font-size: 1.6rem; /* 🔽 más pequeña */
+  color: #ff9800;
+  animation: rebote 1.4s infinite ease-in-out;
+  margin: 2px 0 3px 0; /* 🔽 menos espacio entre cartel y botón */
+  line-height: 1;
+}
+
+@keyframes rebote {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* === DOCUMENTOS NO MODIFICADOS (solo línea naranja, sin halo) === */
+#contenedorDocTransporte img.campo-no-modificado {
+  border: 1px solid #fda219 !important;  /* línea naranja fuerte */
+  box-shadow: 0 0 0 0.25rem rgba(255, 218, 139, 0.828) !important; /* mismo halo que el rojo */
+  outline: none !important;
+}
+
+/* Centrado óptico de etiquetas debajo de las miniaturas */
+#contenedorDocTransporte .col-md-3.text-center.mb-3 p.small {
+  display: block;
+  width: 210px;           /* igual al ancho del contenedor de la imagen */
+  margin: 0.35rem auto 0; /* centra horizontalmente */
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #333d46;
+}
+
+/* Ajuste sutil del color de texto en campos no editables */
+input[readonly],
+input[disabled],
+textarea[readonly],
+textarea[disabled],
+select[disabled] {
+  color: #547654 !important; /* gris medio, más claro que el negro actual */
+}
+
+#contenedorDocTransporte .msg-placeholder {
+  display: block;
+  width: 210px;
+  margin: 0.35rem auto 0;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #dc3545;
+}
+
+.doc-reemplazado-etiqueta {
+    display: block;
+    width: 210px;
+    margin: 0.35rem auto 0;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #0b53c0; /* celeste oscuro */
+}
+
+/* === Modal Naranja (validación de datos no modificados) === */
+#modalNaranjaTransporte .modal-header {
+  background: linear-gradient(to bottom, #fd9737, #a46301); /* 🔶 degradado naranja */
+  color: #fff;
+  border-radius: 8px 8px 0 0; /* igual que el resumen */
+  border-bottom: none;
+  padding: 8px 16px;
+}
+
+#modalNaranjaTransporte .modal-title {
+  color: inherit;
+  font-weight: 500;
+  margin: 0;
+}
+
+.flex-input-hab {
+    flex-grow: 1 !important; /* Se expande dentro del input-group */
+    min-width: 100px; /* Solo para que no colapse del todo */
+}
+
+@media (min-width: 970px) and (max-width: 1200px) {
+    #campoHabilitacionTransporte {
+        flex: 0 0 33.333%;
+        max-width: 33.333%;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 969px) {
+    #campoHabilitacionTransporte {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+/* === Ajuste visual específico entre 768px y 836px SOLO para mantener radios alineados === */
+@media (min-width: 768px) and (max-width: 1015px) {
+
+  /* Permite dividir texto del label sin afectar radios */
+  .col-md-5 > .form-label {
+    display: inline-block;
+    white-space: normal;
+    width: 90px; /* Permite que el texto se parta en 2 líneas sin empujar los radios */
+    margin-right: 8px; /* Espacio limpio hacia los radios */
+    line-height: 1.1; /* Compacto para no aumentar altura */
+    vertical-align: middle;
+  }
+
+  /* Asegurar que los radios queden en línea y alineados */
+  .col-md-5 .form-check.form-check-inline {
+    vertical-align: middle;
+    margin-top: 0 !important; /* Evita desplazamiento hacia abajo */
+  }
+}
+
+/* === Resoluciones muy pequeñas (menos de 390px) === */
+/* Si el label no deja espacio, los radios bajan juntos en una línea horizontal */
+@media (max-width: 389px) {
+  .col-md-5 .form-check.form-check-inline {
+    display: inline-flex !important;
+    align-items: center;
+    margin-bottom: 0;
+  }
+
+  /* Agrupamos los radios para que no se separen al bajar */
+  .col-md-5 .form-check {
+    display: inline-flex !important;
+  }
+
+  /* Permitimos que la etiqueta ocupe la primera línea sola */
+  .col-md-5 > .form-label {
+    display: block;
+    width: auto;
+    margin-right: 0;
+    margin-bottom: 3px; /* pequeña separación antes de los radios */
+    white-space: normal;
+  }
 }

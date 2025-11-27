@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Estado en memoria
     let usuariosFuente = [];
+    let paginaActual = 1;
+    const itemsPorPagina = 10;
 
     // Función para cargar usuarios
     async function cargarUsuarios() {
@@ -45,7 +47,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         const tbody = document.querySelector('#usuariosTable tbody');
         tbody.innerHTML = '';
 
-        usuarios.forEach(usuario => {
+        // Calcular paginación
+        const totalItems = usuarios.length;
+        const totalPaginas = Math.ceil(totalItems / itemsPorPagina);
+        const inicio = (paginaActual - 1) * itemsPorPagina;
+        const fin = inicio + itemsPorPagina;
+        const usuariosEnPagina = usuarios.slice(inicio, fin);
+
+        // Actualizar contador total
+        document.getElementById('totalEmpleados').textContent = `Cantidad de empleados: ${totalItems}`;
+
+        // Mostrar usuarios de la página actual
+        usuariosEnPagina.forEach(usuario => {
             const tr = document.createElement('tr');
             
             tr.innerHTML = `
@@ -81,6 +94,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelectorAll('.btn-activate').forEach(btn => {
             btn.addEventListener('click', () => activarUsuario(btn.dataset.id));
         });
+
+        // Renderizar paginación
+        renderizarPaginacion(totalPaginas, totalItems);
     }
 
     // Búsqueda, filtros y sugerencias
@@ -128,6 +144,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         mostrarUsuarios(data);
         renderizarSugerenciasBusqueda(q, data);
+    }
+
+    function aplicarFiltrosYBusquedaConReset() {
+        // Resetear a página 1 cuando se aplican filtros
+        paginaActual = 1;
+        aplicarFiltrosYBusqueda();
     }
 
     function renderizarSugerenciasBusqueda(q, dataFiltrada) {
@@ -187,11 +209,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    const debouncedBuscar = crearDebounce(() => aplicarFiltrosYBusqueda(), 200);
+    const debouncedBuscar = crearDebounce(() => aplicarFiltrosYBusquedaConReset(), 200);
     inputBuscar?.addEventListener('input', debouncedBuscar);
-    filtroArea?.addEventListener('change', aplicarFiltrosYBusqueda);
-    filtroRol?.addEventListener('change', aplicarFiltrosYBusqueda);
-    filtroEstado?.addEventListener('change', aplicarFiltrosYBusqueda);
+    filtroArea?.addEventListener('change', aplicarFiltrosYBusquedaConReset);
+    filtroRol?.addEventListener('change', aplicarFiltrosYBusquedaConReset);
+    filtroEstado?.addEventListener('change', aplicarFiltrosYBusquedaConReset);
     btnReset?.addEventListener('click', () => {
         if (inputBuscar) inputBuscar.value = '';
         if (filtroArea) filtroArea.value = '';
@@ -199,7 +221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (filtroEstado) filtroEstado.value = '';
         const sug = document.getElementById('buscarSugerencias');
         if (sug) { sug.style.display = 'none'; sug.innerHTML = ''; }
-        aplicarFiltrosYBusqueda();
+        aplicarFiltrosYBusquedaConReset();
     });
 
     function crearDebounce(fn, delay) {
@@ -209,51 +231,117 @@ document.addEventListener('DOMContentLoaded', async () => {
             t = setTimeout(() => fn.apply(this, arguments), delay);
         };
     }
+
+    // Función para renderizar la paginación
+    function renderizarPaginacion(totalPaginas, totalItems) {
+        const containerPaginas = document.getElementById('paginasContainer');
+        const btnPrev = document.getElementById('btnPrevPagina');
+        const btnNext = document.getElementById('btnNextPagina');
+        
+        containerPaginas.innerHTML = '';
+
+        // Mostrar botones de paginación solo si hay más de una página
+        if (totalPaginas > 1) {
+            // Botón anterior
+            if (paginaActual > 1) {
+                btnPrev.style.display = 'block';
+                btnPrev.onclick = null; // Limpiar onclick anterior
+                btnPrev.removeEventListener('click', btnPrev._clickHandler);
+                btnPrev._clickHandler = () => irAPagina(paginaActual - 1);
+                btnPrev.addEventListener('click', btnPrev._clickHandler);
+            } else {
+                btnPrev.style.display = 'none';
+            }
+
+            // Números de página
+            for (let i = 1; i <= totalPaginas; i++) {
+                const btnPagina = document.createElement('button');
+                btnPagina.className = 'btn-numero-pagina';
+                btnPagina.type = 'button';
+                btnPagina.textContent = i;
+                
+                if (i === paginaActual) {
+                    btnPagina.classList.add('activa');
+                    btnPagina.style.cssText = 'background-color: #4CAF50; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;';
+                } else {
+                    btnPagina.style.cssText = 'background-color: #f0f0f0; border: 1px solid #ddd; padding: 8px 12px; border-radius: 4px; cursor: pointer; transition: background-color 0.3s;';
+                    btnPagina.onmouseover = () => btnPagina.style.backgroundColor = '#e0e0e0';
+                    btnPagina.onmouseout = () => btnPagina.style.backgroundColor = '#f0f0f0';
+                }
+                
+                btnPagina.addEventListener('click', () => irAPagina(i));
+                containerPaginas.appendChild(btnPagina);
+            }
+
+            // Botón siguiente
+            if (paginaActual < totalPaginas) {
+                btnNext.style.display = 'block';
+                btnNext.onclick = null; // Limpiar onclick anterior
+                btnNext.removeEventListener('click', btnNext._clickHandler);
+                btnNext._clickHandler = () => irAPagina(paginaActual + 1);
+                btnNext.addEventListener('click', btnNext._clickHandler);
+            } else {
+                btnNext.style.display = 'none';
+            }
+        } else {
+            btnPrev.style.display = 'none';
+            btnNext.style.display = 'none';
+        }
+    }
+
+    // Función para ir a una página específica
+    function irAPagina(numPagina) {
+        paginaActual = numPagina;
+        aplicarFiltrosYBusqueda();
+        // Scroll al inicio de la tabla
+        document.querySelector('#usuariosTable').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     // Función para eliminar usuario
-async function desactivarUsuario(id) {
-    if (!confirm('¿Está seguro que desea dar de baja este usuario?')) return;
+    async function desactivarUsuario(id) {
+        if (!confirm('¿Está seguro que desea dar de baja este usuario?')) return;
 
-    try {
-        const response = await fetch(`/api/auth/desactivar/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+        try {
+            const response = await fetch(`/api/auth/desactivar/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al dar de baja al usuario');
             }
-        });
 
-        if (!response.ok) {
-            throw new Error('Error al dar de baja al usuario');
+            alert('Usuario dado de baja con éxito');
+            cargarUsuarios(); // o refrescar tabla
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al dar de baja al usuario: ' + error.message);
         }
-
-        alert('Usuario dado de baja con éxito');
-        cargarUsuarios(); // o refrescar tabla
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Error al dar de baja al usuario: ' + error.message);
     }
-}
 
-// dar de alta
-async function activarUsuario(id) {
-    try {
-        const response = await fetch(`/api/auth/activar/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+    // dar de alta
+    async function activarUsuario(id) {
+        try {
+            const response = await fetch(`/api/auth/activar/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al dar de alta al usuario.');
             }
-        });
 
-        if (!response.ok) {
-            throw new Error('Error al dar de alta al usuario.');
+            alert('Usuario dado de alta con éxito');
+            cargarUsuarios(); // o refrescar tabla
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al dar de alta al usuario: ' + error.message);
         }
-
-        alert('Usuario dado de alta con éxito');
-        cargarUsuarios(); // o refrescar tabla
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Error al dar de alta al usuario: ' + error.message);
     }
-}
 
 
     // Cargar usuarios al iniciar

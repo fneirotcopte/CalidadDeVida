@@ -41,7 +41,7 @@ const rubrosPorCategoria = {
 const documentosRequeridos = {
     comunes: [
         { id: "doc_declaracion_rentas", nombre: "Declaración jurada de Rentas", requerido: true },
-        { id: "sellado_bromatologico", nombre: "Último pago / Sell. Bromatológico", requerido: true }
+        { id: "sellado_bromatologico", nombre: "Sellado Bromatológico", requerido: true }
     ],
     "comercio en general": [
         { id: "doc_plano", nombre: "Plano del local aprobado", requerido: true },
@@ -54,15 +54,12 @@ const documentosRequeridos = {
         { id: "doc_bomberos", nombre: "Certificado de bomberos", requerido: true }
     ],
     "food truck": [
-        { id: "doc_manipulacion", nombre: "Certificado de manipulación de alimentos", requerido: true },
-        { id: "doc_seguro", nombre: "Póliza de seguro", requerido: true },
-        { id: "doc_permiso", nombre: "Permiso de ubicación", requerido: true }
-        // El comprobante de pago ya está en "comunes"
+        { id: "doc_manipulacion", nombre: "Manipulación de alimentos", requerido: true },
+        { id: "doc_seguro", nombre: "Seguro del vehículo", requerido: true },
+        { id: "doc_permiso", nombre: "Permiso municipal", requerido: true }
     ],
     "vendedor ambulante": [
-        { id: "doc_frentista", nombre: "Conformidad del frentista", requerido: true }
-        // El pago/sellado ya está en documentos comunes
-        // No se pide declaración jurada de rentas
+        { id: "doc_frentista", nombre: "Certificado frentista", requerido: true }
     ]
 };
 
@@ -95,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Evento para cambiar categoría
     categoriaSelect.addEventListener('change', function () {
+
         const categoria = this.value;
 
         // 👉 Mostrar/ocultar metros cuadrados según categoría
@@ -153,6 +151,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Habilitar botón para agregar anexos
         btnAddAnexo.disabled = false;
+
+        // 🔒 Deshabilitar botón de Maps si no hay categoría válida seleccionada
+        if (!categoria || categoria.trim() === "") {
+            btnBuscarMapa.disabled = true;
+        } else {
+            btnBuscarMapa.disabled = false;
+        }
 
         // Reiniciar contador de anexos
         anexoCount = 1;
@@ -963,7 +968,7 @@ function cargarDocumentosEspecificos(categoria) {
         col.innerHTML = `
             <div class="documento-item">
                 <label for="${doc.id}" class="form-label">${doc.nombre} ${doc.requerido ? '*' : ''}</label>
-                <input type="file" class="form-control" id="${doc.id}" ${doc.requerido ? 'required' : ''}>
+                <input type="file" class="form-control" id="${doc.id}" name="${doc.id}" ${doc.requerido ? 'required' : ''}>
                 <div class="file-info d-none">
                     <span class="file-name"></span>
                     <span class="file-status documento-cargado">✓ Cargado</span>
@@ -988,30 +993,30 @@ function cargarDocumentosEspecificos(categoria) {
         // Para comercio/bares/food truck → comunes completos
         cargarDocumentosComunes();
     } else {
-        // Para ambulantes → solo el pago/sellado
+        // Para ambulantes → solo el sellado bromatológico
         const container = document.getElementById('documentosComunes');
         container.innerHTML = '<h6 class="mb-3">Documentos Comunes a Vendedor Ambulante</h6><div class="row g-3"></div>';
         const row = container.querySelector('.row');
 
-        // Buscar solo el doc_pago_inspeccion
-        const doc = documentosRequeridos.comunes.find(d => d.id === "doc_pago_inspeccion");
+        // Buscar solo el sellado bromatológico
+        const doc = documentosRequeridos.comunes.find(d => d.id === "sellado_bromatologico");
         if (doc) {
             const col = document.createElement('div');
             col.className = 'col-md-6';
 
             col.innerHTML = `
-                <div class="documento-item">
-                    <label for="${doc.id}" class="form-label">${doc.nombre} ${doc.requerido ? '*' : ''}</label>
-                    <input type="file" class="form-control" id="${doc.id}" ${doc.requerido ? 'required' : ''}>
-                    <div class="file-info d-none">
-                        <span class="file-name"></span>
-                        <span class="file-status documento-cargado">✓ Cargado</span>
-                    </div>
-                    <div class="invalid-feedback">
-                        Por favor cargue este documento.
-                    </div>
+            <div class="documento-item">
+                <label for="${doc.id}" class="form-label">${doc.nombre} ${doc.requerido ? '*' : ''}</label>
+                <input type="file" class="form-control" id="${doc.id}" ${doc.requerido ? 'required' : ''}>
+                <div class="file-info d-none">
+                    <span class="file-name"></span>
+                    <span class="file-status documento-cargado">✓ Cargado</span>
                 </div>
-            `;
+                <div class="invalid-feedback">
+                    Por favor cargue este documento.
+                </div>
+            </div>
+        `;
 
             // Evento para manejar carga
             const input = col.querySelector('input');
@@ -1498,12 +1503,13 @@ async function enviarFormulario() {
         // ⚠️ Si falla, mostrar el error detallado y cerrar el modal
         if (!response.ok) {
             let mensaje = `Error al registrar comercio (HTTP ${response.status})`;
+            const rawBody = await response.text(); // se lee una sola vez
+
             try {
-                const errorData = await response.json();
+                const errorData = JSON.parse(rawBody);
                 mensaje = errorData.error || errorData.details || mensaje;
             } catch {
-                const raw = await response.text();
-                if (raw) mensaje = raw;
+                if (rawBody) mensaje = rawBody;
             }
 
             // 🔻 Cerrar el modal para que no tape el mensaje
@@ -1514,7 +1520,7 @@ async function enviarFormulario() {
             }
 
             alert(mensaje);
-            mostrarToast(mensaje, 'error');
+            window.alert(mensaje, 'error');
             return; // 🚫 corta acá
         }
 
@@ -1534,33 +1540,15 @@ async function enviarFormulario() {
         const estadoPago = document.getElementById('estadoPago').value;
         const m2 = parseFloat(document.getElementById('metrosCuadrados').value) || 0;
 
-        // if (estadoPago === "Abonado" && m2 <= 20) {
-        //     window.alert("✅ Comercio habilitado: pago realizado, sin necesidad de inspección.");
-        // } else if (estadoPago !== "Abonado" && m2 > 20) {
-        //     window.alert("⚠️ Falta realizar el pago del sellado y la inspección ocular para quedar habilitado.");
-        // } else if (estadoPago !== "Abonado") {
-        //     window.alert("⚠️ Falta realizar el pago para quedar habilitado.");
-        // } else if (m2 > 20) {
-        //     window.alert("⚠️ Pendiente de inspección ocular para quedar habilitado.");
-        // }
-        const categoriasConInspeccion = [
-    'comercio en general', 
-    'bares nocturnos, confiterias y restaurantes'
-];
-const categoriaLower = (categoria || '').toLowerCase();
-
-if (categoriasConInspeccion.includes(categoriaLower)) {
-    // Para comercios que requieren inspección
-    window.alert("✅ Comercio registrado exitosamente. Queda como PENDIENTE DE INSPECCIÓN OCULAR. Un inspector visitará el establecimiento para realizar la verificación correspondiente.");
-} else {
-    // Para vendedores ambulantes y food trucks - se habilitan inmediatamente
-    window.alert("✅ Comercio habilitado exitosamente.");
-    
-    // Mensajes adicionales según estado de pago para categorías sin inspección
-    if (estadoPago !== "Abonado") {
-        window.alert("⚠️ Recuerde que debe realizar el pago para mantener la habilitación.");
-    }
-}
+        if (estadoPago === "Abonado" && m2 <= 20) {
+            window.alert("✅ Comercio habilitado: pago realizado, sin necesidad de inspección.");
+        } else if (estadoPago !== "Abonado" && m2 > 20) {
+            window.alert("⚠️ Falta realizar el pago del sellado y la inspección ocular para quedar habilitado.");
+        } else if (estadoPago !== "Abonado") {
+            window.alert("⚠️ Falta realizar el pago para quedar habilitado.");
+        } else if (m2 > 20) {
+            window.alert("⚠️ Pendiente de inspección ocular para quedar habilitado.");
+        }
 
         // 🟣 Generar y mostrar QR en modal (después de las notificaciones)
         try {
@@ -1617,10 +1605,11 @@ if (categoriasConInspeccion.includes(categoriaLower)) {
             console.error('Error generando/mostrando QR:', e);
         }
 
-} catch (error) {
-    console.error("Error:", error);
-    alert('Error al registrar comercio: ' + error.message);
-}
+
+    } catch (error) {
+        console.error("Error:", error);
+        window.alert('Error al registrar comercio', 'error');
+    }
 }
 
 async function verificarSucursalAntesDeEnviar() {
@@ -1685,7 +1674,6 @@ async function cargarDocumentacionTitular(idTitular, tipo) {
         if ((tipo || '').toLowerCase() === 'food truck') {
             lista.push({ clave: 'cert_conducta', nombre: 'Cert. de Conducta' });
         }
-
 
 
         for (const doc of lista) {

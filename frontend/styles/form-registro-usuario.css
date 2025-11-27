@@ -131,16 +131,41 @@ body, html {
   filter: brightness(85%);
 }
 
+/* ===== HEADER MEJORADO ===== */
 .header {
   text-align: center;
   width: 100%;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.header h1 {
+  font-size: 1.8rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.header h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  width: 50%;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #ffffff, transparent);
+  border-radius: 2px;
 }
 
 .header h2 {
   font-size: 0.9rem;
-  color: #ffffff;
-  margin-top: 0.2rem;
-  font-weight: normal;
+  color: #e8f5e8;
+  font-weight: 300;
+  opacity: 0.9;
 }
 
 .titulo-area {
@@ -160,27 +185,57 @@ body, html {
   color: #ffffff;
 }
 
+/* ===== FORMULARIO MEJORADO ===== */
 .form-container {
-  background-color: rgba(255, 255, 255, 0.95);
-  border-radius: 8px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 12px;
   padding: 1.5rem;
   width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
+/* Secciones del formulario con mejor diseño */
 .form-section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(42, 74, 42, 0.1);
+  border-left: 4px solid #2a4a2a;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(42, 74, 42, 0.15);
 }
 
 .form-section h3 {
   color: #2a4a2a;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   font-size: 1.1rem;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e8f5e8;
+  padding-bottom: 0.8rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.8rem;
+  font-weight: 600;
+}
+
+/* Iconos para las secciones */
+.form-section:nth-child(1) h3::before {
+  content: "\f007";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  color: #2a4a2a;
+}
+
+.form-section:nth-child(2) h3::before {
+  content: "\f084";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  color: #2a4a2a;
 }
 
 .form-row {
@@ -190,31 +245,58 @@ body, html {
   margin-bottom: 1rem;
 }
 
+/* Grupos de formulario mejorados */
 .form-group {
-  margin-bottom: 0.8rem;
+  margin-bottom: 1.2rem;
+  position: relative;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
-  color: #424242;
+  margin-bottom: 0.6rem;
+  color: #2a4a2a;
   font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .form-group input,
 .form-group select {
   width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
   font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background: #fafafa;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
   border-color: #2a4a2a;
-  box-shadow: 0 0 0 2px rgba(42, 74, 42, 0.2);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(42, 74, 42, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Estados de validación */
+.form-group input:valid {
+  border-color: #4caf50;
+}
+
+/* .form-group input:invalid:not(:focus):not(:placeholder-shown) {
+  border-color: #ff4444;
+} */
+
+/* Estilos para selects */
+.form-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232a4a2a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
 }
 
 .form-actions {
@@ -222,32 +304,86 @@ body, html {
   margin-top: 1.5rem;
 }
 
+/* ===== BOTÓN MEJORADO ===== */
 .boton-alta {
-  background: linear-gradient(to bottom, #50e36d, #318f45);
+  background: linear-gradient(135deg, #50e36d 0%, #318f45 100%);
   color: white;
   border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 30px;
+  padding: 1rem 2rem;
+  border-radius: 50px;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(80, 227, 109, 0.4);
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.8rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.boton-alta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
 }
 
 .boton-alta:hover {
-  background: linear-gradient(to bottom, #3ec75a, #2a7a3a);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #3ec75a 0%, #2a7a3a 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(80, 227, 109, 0.6);
+}
+
+.boton-alta:hover::before {
+  left: 100%;
+}
+
+.boton-alta:active {
+  transform: translateY(-1px);
+}
+
+/* Animación de carga para el botón */
+.boton-alta.loading {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.boton-alta.loading::after {
+  content: '';
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 0.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .error-mensaje {
   color: #ff4444;
   font-size: 0.8rem;
-  margin-top: 0.3rem;
+  margin-top: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+}
+
+.error-mensaje::before {
+  content: "\f06a";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
 }
 
 .logo-capital {
@@ -266,19 +402,23 @@ body, html {
     border-radius: 14px;
   }
   
-  .titulo-area h1 {
-    font-size: 1.6rem;
-  }
-  
-  .logo-calidad {
-    height: 80px;
+  .header h1 {
+    font-size: 2.2rem;
   }
   
   .header h2 {
     font-size: 1rem;
   }
   
+  .logo-calidad {
+    height: 80px;
+  }
+  
   .form-container {
+    padding: 2rem;
+  }
+  
+  .form-section {
     padding: 2rem;
   }
   
@@ -344,20 +484,21 @@ body, html {
     padding: 2.5rem;
   }
   
-  .titulo-area h1 {
-    font-size: 2.5rem;
+  .header h1 {
+    font-size: 2.8rem;
+  }
+  
+  .header h2 {
+    font-size: 1.2rem;
   }
   
   .logo-calidad {
     height: 120px;
   }
   
-  .header h2 {
-    font-size: 1.4rem;
-  }
-  
   .form-container {
-    max-width: 900px;
+    max-width: 800px;
+    margin: 0 auto;
   }
   
   .form-section h3 {
@@ -408,20 +549,20 @@ body, html {
     padding: 4rem;
   }
   
-  .titulo-area h1 {
+  .header h1 {
     font-size: 3.5rem;
+  }
+  
+  .header h2 {
+    font-size: 1.8rem;
   }
   
   .logo-calidad {
     height: 180px;
   }
   
-  .header h2 {
-    font-size: 2rem;
-  }
-  
   .form-container {
-    max-width: 1200px;
+    max-width: 1000px;
     padding: 3rem;
   }
   
